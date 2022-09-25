@@ -15,6 +15,7 @@ export function Input(props: { db: Firestore }) {
                 name='Input URL'
                 placeholder='Type label name...'
                 autoFocus
+                autoComplete='off'
             />
             <Button text='ADD' onClick={handleAdd} disabled={text.length === 0} />
 
