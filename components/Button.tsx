@@ -1,3 +1,5 @@
+import { consts } from '../utils/consts'
+
 export function Button(props: { text: string; onClick: () => void; disabled: boolean }) {
     function handleClick() {
         if (!props.disabled) props.onClick()
@@ -12,8 +14,8 @@ export function Button(props: { text: string; onClick: () => void; disabled: boo
                     width: 150px;
                     background-color: #ffffff;
                     border: none;
-                    padding: 10px;
-                    border-radius: 10px;
+                    padding: 15px;
+                    border-radius: ${consts.borderRadius}px;
                     font-size: 15px;
                     cursor: ${props.disabled ? 'not-allowed' : 'pointer'};
                     font-weight: bold;

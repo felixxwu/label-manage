@@ -1,5 +1,6 @@
 import { addDoc, collection, Firestore } from 'firebase/firestore'
 import React, { useState } from 'react'
+import { consts } from '../utils/consts'
 import { getPassword } from '../utils/getPassword'
 import { Button } from './Button'
 
@@ -26,7 +27,6 @@ export function Input(props: { db: Firestore }) {
                     justify-content: center;
                     align-items: center;
                     padding: 20px;
-                    padding-top: 30vh;
                     flex-direction: column;
                     gap: 20px;
                 }
@@ -38,6 +38,8 @@ export function Input(props: { db: Firestore }) {
                     text-align: center;
                     color: white;
                     background-color: transparent;
+                    width: 100%;
+                    max-width: ${consts.maxAppWidth}px;
                 }
             `}</style>
         </div>

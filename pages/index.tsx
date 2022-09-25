@@ -4,6 +4,7 @@ import React from 'react'
 import { useInitDb } from '../utils/db'
 import { Input } from '../components/Input'
 import { List } from '../components/List'
+import { consts } from '../utils/consts'
 
 export default function Home() {
     const { db, error } = useInitDb()
@@ -36,6 +37,10 @@ export default function Home() {
                     box-sizing: border-box;
                     font-family: 'Lexend Deca', sans-serif;
                     user-select: none;
+                }
+
+                main {
+                    padding: ${consts.appEndSpace} 0;
                 }
             `}</style>
         </div>
