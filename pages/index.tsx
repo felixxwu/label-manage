@@ -1,14 +1,34 @@
 import Head from 'next/head'
-import React, { MouseEventHandler, useRef, useState } from 'react'
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react'
+
+import { collection, addDoc, onSnapshot } from 'firebase/firestore'
+import { useInitDb } from './db'
+import { getPassword } from './getPassword'
 
 export default function Home() {
-    const [list, setList] = useState([])
+    const [list, setList] = useState<string[]>([])
     const input = useRef<HTMLInputElement>(null)
+    const { db, error } = useInitDb()
 
-    function handleAdd() {
-        console.log('add', input.current.value)
+    useEffect(() => {
+        if (!db) return
+        onSnapshot(collection(db, getPassword()), doc => {
+            setList(doc.docs.map(doc => doc.data().name))
+        })
+    }, [db])
+
+    if (error) return <>{error}</>
+    if (!db) return <>loading...</>
+
+    async function handleAdd() {
         if (input.current.value) {
-            setList(list.concat(input.current.value))
+            try {
+                const docRef = await addDoc(collection(db, getPassword()), {
+                    name: input.current.value,
+                })
+            } catch (e) {
+                alert(e)
+            }
         }
     }
 
@@ -21,7 +41,11 @@ export default function Home() {
                 </div>
                 <div className='list'>
                     {list.map((li, i) => {
-                        return <div className='listItem' key={i}>{li}</div>
+                        return (
+                            <div className='listItem' key={i}>
+                                {li}
+                            </div>
+                        )
                     })}
                 </div>
             </main>
