@@ -34,7 +34,12 @@ export default function Home() {
     }
 
     return (
-        <>
+        <div>
+            <Head>
+                <link rel='preconnect' href='https://fonts.googleapis.com' />
+                <link rel='preconnect' href='https://fonts.gstatic.com' />
+                <link href='https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap' rel='stylesheet' />
+            </Head>
             <main>
                 <div className='inputArea'>
                     <input ref={input} type='url' name='Input URL' />
@@ -63,12 +68,11 @@ export default function Home() {
                 body {
                     padding: 0;
                     margin: 0;
-                    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-                        Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
                 }
 
                 * {
                     box-sizing: border-box;
+                    font-family: 'Lexend Deca', sans-serif;
                 }
 
                 .inputArea {
@@ -88,6 +92,6 @@ export default function Home() {
                     width: 300px;
                 }
             `}</style>
-        </>
+        </div>
     )
 }
