@@ -2,8 +2,8 @@ import Head from 'next/head'
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react'
 
 import { collection, addDoc, onSnapshot } from 'firebase/firestore'
-import { useInitDb } from './db'
-import { getPassword } from './getPassword'
+import { useInitDb } from '../utils/db'
+import { getPassword } from '../utils/getPassword'
 
 export default function Home() {
     const [list, setList] = useState<string[]>([])
@@ -12,6 +12,7 @@ export default function Home() {
 
     useEffect(() => {
         if (!db) return
+        if (!getPassword()) return
         onSnapshot(collection(db, getPassword()), doc => {
             setList(doc.docs.map(doc => doc.data().name))
         })

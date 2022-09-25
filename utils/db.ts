@@ -2,6 +2,7 @@ import { Firestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import { getPassword } from './getPassword'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDdEEWeBs77K0H7WUU1pBUYNpNKzJhfuU8',
@@ -17,6 +18,7 @@ export function useInitDb() {
     const [error, setError] = useState<string>(null)
 
     useEffect(() => {
+        if (!getPassword()) setError('No password')
         ;(async () => {
             try {
                 const app = initializeApp(firebaseConfig)
