@@ -25,7 +25,7 @@ export function useInitDb() {
                 const db = getFirestore(app)
                 setDb(db)
             } catch (e) {
-                setError(e)
+                setError(`${e}`)
             }
         })()
     }, [])
