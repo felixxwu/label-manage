@@ -1,6 +1,7 @@
 import { consts } from '../utils/consts'
 
 export interface Item {
+    id: string
     name: string
 }
 

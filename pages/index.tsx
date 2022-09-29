@@ -1,13 +1,15 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useInitDb } from '../utils/db'
 import { Input } from '../components/Input'
 import { List } from '../components/List'
 import { consts } from '../utils/consts'
+import { useLabelList } from '../utils/labelList'
 
 export default function Home() {
     const { db, error } = useInitDb()
+    const list = useLabelList(db)
 
     if (error) return <>{error}</>
     if (!db) return <>loading...</>
@@ -22,7 +24,7 @@ export default function Home() {
 
             <main>
                 <Input db={db} />
-                <List db={db} />
+                <List list={list} />
             </main>
 
             <style jsx global>{`
