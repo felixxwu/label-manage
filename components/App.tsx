@@ -26,7 +26,7 @@ export function App() {
     }
 
     if (error) return <>{error}</>
-    if (!db) return <>loading...</>
+    if (!db) return <>Loading...</>
 
     function getSelectedLabel() {
         return labels.find(label => label.id === selectedLabelId)

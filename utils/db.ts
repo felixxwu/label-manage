@@ -4,6 +4,7 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getPassword } from './getPassword'
 import { Label } from './types'
+import { fade } from './animate'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDdEEWeBs77K0H7WUU1pBUYNpNKzJhfuU8',
@@ -24,6 +25,7 @@ export function useInitDb() {
             try {
                 const app = initializeApp(firebaseConfig)
                 const db = getFirestore(app)
+                await fade()
                 setDb(db)
             } catch (e) {
                 setError(`${e}`)
