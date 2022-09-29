@@ -32,6 +32,7 @@ export default function Home() {
                     box-sizing: border-box;
                     font-family: 'Lexend Deca', sans-serif;
                     user-select: none;
+                    -webkit-tap-highlight-color: transparent;
                 }
 
                 main {
