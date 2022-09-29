@@ -1,9 +1,11 @@
+import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
 
 export function ListItem(props: { item: Label; store: Store }) {
-    function handleClick() {
+    async function handleClick() {
+        await fade()
         props.store.selectedLabelId = props.item.id
     }
 

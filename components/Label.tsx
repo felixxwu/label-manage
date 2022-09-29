@@ -5,6 +5,7 @@ import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { fade } from '../utils/animate'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -17,13 +18,14 @@ export function Label(props: { item: Label; store: Store }) {
         setConfirmOpen(false)
     }
 
-    function handleBack() {
+    async function handleBack() {
+        await fade()
         props.store.selectedLabelId = null
     }
 
     async function handleDelete() {
         await deleteDocTyped(props.store.db, props.item.id)
-        handleBack()
+        await handleBack()
     }
 
     return (

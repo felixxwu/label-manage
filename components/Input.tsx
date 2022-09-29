@@ -1,6 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
+import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { addDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
@@ -19,6 +20,7 @@ export function Input(props: { store: Store }) {
         if (name) {
             try {
                 const doc = await addDocTyped(props.store.db, name)
+                await fade()
                 props.store.selectedLabelId = doc.id
             } catch (e) {
                 alert(e)
@@ -36,7 +38,6 @@ export function Input(props: { store: Store }) {
                 id='outlined-basic'
                 label='Type label name...'
                 variant='outlined'
-                autoFocus
                 sx={{ color: theme.palette.primary.main, width: '100%', maxWidth: consts.maxAppWidth }}
                 value={name}
                 onChange={handleChange}
