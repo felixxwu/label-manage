@@ -23,8 +23,8 @@ export function Input(props: { store: Store }) {
             try {
                 setLoading(true)
                 await shortWait()
-                await fade()
                 const doc = await addDocTyped(props.store.db, name)
+                await fade()
                 props.store.selectedLabelId = doc.id
             } catch (e) {
                 alert(e)

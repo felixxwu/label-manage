@@ -1,4 +1,4 @@
-const transition = 300
+const transition = 200
 
 export async function fade() {
     window.document.body.style.transition = transition + 'ms'
