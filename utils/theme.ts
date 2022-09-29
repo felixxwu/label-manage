@@ -1,16 +1,22 @@
 import { createTheme } from '@mui/material/styles'
 import { consts } from './consts'
 
-const primary = '#eee'
+const primary = '#ddd'
 const secondary = '#555'
+const warning = '#a00'
+const background = '#222'
 
 export const theme = createTheme({
     palette: {
+        mode: 'dark',
         primary: {
             main: primary,
         },
         secondary: {
             main: secondary,
+        },
+        warning: {
+            main: warning,
         },
     },
     components: {
@@ -18,38 +24,24 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     width: '200px',
-                    '&.Mui-disabled': {
-                        opacity: 0.4,
-                        backgroundColor: primary,
-                    },
+                    borderRadius: consts.borderRadius,
                 },
             },
         },
         MuiTextField: {
             styleOverrides: {
                 root: {
-                    color: primary,
-                    input: {
-                        color: primary,
+                    '& fieldset': {
+                        borderRadius: consts.borderRadius,
                     },
-                    '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                            borderColor: secondary,
-                            borderRadius: consts.borderRadius,
-                        },
-                        '&:hover fieldset': {
-                            borderColor: secondary,
-                        },
-                        '&.Mui-focused fieldset': {
-                            borderColor: primary,
-                        },
-                    },
-                    '& .MuiFormLabel-root': {
-                        color: secondary,
-                        fontSize: '17px',
-                        '&.Mui-focused': {
-                            color: primary,
-                        },
+                },
+            },
+        },
+        MuiDialog: {
+            styleOverrides: {
+                root: {
+                    '& .MuiDialog-paper': {
+                        borderRadius: consts.borderRadius,
                     },
                 },
             },

@@ -1,5 +1,5 @@
 export const consts = {
     maxAppWidth: 500,
-    borderRadius: 10,
+    borderRadius: 6,
     appEndSpace: '30vh',
 }

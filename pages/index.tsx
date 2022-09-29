@@ -8,13 +8,32 @@ import { consts } from '../utils/consts'
 import { useLabelList } from '../utils/labelList'
 import { ThemeProvider } from '@emotion/react'
 import { theme } from '../utils/theme'
+import { Label } from '../components/Label'
+import { Store } from '../utils/types'
 
 export default function Home() {
     const { db, error } = useInitDb()
+    const [selectedLabelId, setSelectedLabelId] = useState<string>(null)
     const list = useLabelList(db)
+
+    const store: Store = {
+        db,
+        error,
+        list,
+        get selectedLabelId() {
+            return selectedLabelId
+        },
+        set selectedLabelId(id) {
+            setSelectedLabelId(id)
+        },
+    }
 
     if (error) return <>{error}</>
     if (!db) return <>loading...</>
+
+    function getLabelFromId() {
+        return list.find(label => label.id === selectedLabelId)
+    }
 
     return (
         <div>
@@ -29,8 +48,14 @@ export default function Home() {
 
             <main>
                 <ThemeProvider theme={theme}>
-                    <Input db={db} />
-                    <List list={list} />
+                    {selectedLabelId ? (
+                        <Label item={getLabelFromId()} store={store} />
+                    ) : (
+                        <>
+                            <Input store={store} />
+                            <List store={store} />
+                        </>
+                    )}
                 </ThemeProvider>
             </main>
 

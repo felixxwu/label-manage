@@ -5,9 +5,33 @@ import React, { useState } from 'react'
 import { consts } from '../utils/consts'
 import { getPassword } from '../utils/getPassword'
 import { theme } from '../utils/theme'
+import { Store } from '../utils/types'
 
-export function Input(props: { db: Firestore }) {
+export function Input(props: { store: Store }) {
     const [text, setText] = useState('')
+
+    function handleKeyUp(e: React.KeyboardEvent) {
+        if (e.key === 'Enter') {
+            handleAdd()
+        }
+    }
+
+    async function handleAdd() {
+        if (text) {
+            try {
+                const doc = await addDoc(collection(props.store.db, getPassword()), {
+                    name: text,
+                })
+                props.store.selectedLabelId = doc.id
+            } catch (e) {
+                alert(e)
+            }
+        }
+    }
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setText(e.target.value)
+    }
 
     return (
         <div className='inputArea'>
@@ -19,7 +43,9 @@ export function Input(props: { db: Firestore }) {
                 sx={{ color: theme.palette.primary.main, width: '100%', maxWidth: consts.maxAppWidth }}
                 value={text}
                 onChange={handleChange}
+                onKeyUp={handleKeyUp}
                 autoComplete='off'
+                onSubmit={handleAdd}
             />
             <Button
                 color='primary'
@@ -44,21 +70,4 @@ export function Input(props: { db: Firestore }) {
             `}</style>
         </div>
     )
-
-    async function handleAdd() {
-        if (text) {
-            try {
-                await addDoc(collection(props.db, getPassword()), {
-                    name: text,
-                })
-                setText('')
-            } catch (e) {
-                alert(e)
-            }
-        }
-    }
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setText(e.target.value)
-    }
 }
