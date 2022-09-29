@@ -3,11 +3,11 @@ import { Firestore } from 'firebase/firestore'
 export interface Store {
     db: Firestore
     error: string
-    list: Item[]
+    labels: Label[]
     selectedLabelId: string
 }
 
-export interface Item {
+export interface Label {
     id: string
     name: string
     link: string

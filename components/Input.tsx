@@ -7,7 +7,7 @@ import { theme } from '../utils/theme'
 import { Store } from '../utils/types'
 
 export function Input(props: { store: Store }) {
-    const [text, setText] = useState('')
+    const [name, setName] = useState('')
 
     function handleKeyUp(e: React.KeyboardEvent) {
         if (e.key === 'Enter') {
@@ -16,9 +16,9 @@ export function Input(props: { store: Store }) {
     }
 
     async function handleAdd() {
-        if (text) {
+        if (name) {
             try {
-                const doc = await addDocTyped(props.store.db, { name: text })
+                const doc = await addDocTyped(props.store.db, name)
                 props.store.selectedLabelId = doc.id
             } catch (e) {
                 alert(e)
@@ -27,7 +27,7 @@ export function Input(props: { store: Store }) {
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setText(e.target.value)
+        setName(e.target.value)
     }
 
     return (
@@ -38,7 +38,7 @@ export function Input(props: { store: Store }) {
                 variant='outlined'
                 autoFocus
                 sx={{ color: theme.palette.primary.main, width: '100%', maxWidth: consts.maxAppWidth }}
-                value={text}
+                value={name}
                 onChange={handleChange}
                 onKeyUp={handleKeyUp}
                 autoComplete='off'
@@ -47,9 +47,9 @@ export function Input(props: { store: Store }) {
             <Button
                 color='primary'
                 variant='contained'
-                endIcon={<AddIcon />}
+                startIcon={<AddIcon />}
                 onClick={handleAdd}
-                disabled={text.length === 0}
+                disabled={name.length === 0}
             >
                 Add
             </Button>

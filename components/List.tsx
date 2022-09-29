@@ -4,7 +4,7 @@ import { ListItem } from './ListItem'
 export function List(props: { store: Store }) {
     return (
         <div className='list'>
-            {props.store.list.map((label, i) => {
+            {props.store.labels.map((label, i) => {
                 return <ListItem item={label} key={i} store={props.store} />
             })}
 

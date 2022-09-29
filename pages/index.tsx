@@ -1,40 +1,10 @@
 import Head from 'next/head'
-import React, { useState } from 'react'
-
-import { useInitDb } from '../utils/db'
-import { Input } from '../components/Input'
-import { List } from '../components/List'
+import React from 'react'
 import { consts } from '../utils/consts'
-import { useLabelList } from '../utils/labelList'
-import { ThemeProvider } from '@emotion/react'
+import { App } from '../components/App'
 import { theme } from '../utils/theme'
-import { Label } from '../components/Label'
-import { Store } from '../utils/types'
 
 export default function Home() {
-    const { db, error } = useInitDb()
-    const [selectedLabelId, setSelectedLabelId] = useState<string>(null)
-    const list = useLabelList(db)
-
-    const store: Store = {
-        db,
-        error,
-        list,
-        get selectedLabelId() {
-            return selectedLabelId
-        },
-        set selectedLabelId(id) {
-            setSelectedLabelId(id)
-        },
-    }
-
-    if (error) return <>{error}</>
-    if (!db) return <>loading...</>
-
-    function getLabelFromId() {
-        return list.find(label => label.id === selectedLabelId)
-    }
-
     return (
         <div>
             <Head>
@@ -47,16 +17,7 @@ export default function Home() {
             </Head>
 
             <main>
-                <ThemeProvider theme={theme}>
-                    {selectedLabelId ? (
-                        <Label item={getLabelFromId()} store={store} />
-                    ) : (
-                        <>
-                            <Input store={store} />
-                            <List store={store} />
-                        </>
-                    )}
-                </ThemeProvider>
+                <App />
             </main>
 
             <style jsx global>{`
@@ -75,6 +36,8 @@ export default function Home() {
 
                 main {
                     padding: ${consts.appEndSpace} 0;
+                    text-align: center;
+                    color: ${theme.palette.primary.main};
                 }
             `}</style>
         </div>

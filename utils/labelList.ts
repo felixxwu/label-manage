@@ -1,17 +1,17 @@
-import { collection, Firestore, onSnapshot } from 'firebase/firestore'
+import { Firestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { getPassword } from '../utils/getPassword'
 import { onSnapshotTyped } from './db'
-import { Item } from './types'
+import { Label } from './types'
 
-export function useLabelList(db: Firestore) {
-    const [list, setList] = useState<Item[]>([])
+export function useLabels(db: Firestore) {
+    const [labels, setLabels] = useState<Label[]>([])
 
     useEffect(() => {
         if (!db) return
         if (!getPassword()) return
-        onSnapshotTyped(db, items => setList(items))
+        onSnapshotTyped(db, setLabels)
     }, [db])
 
-    return list
+    return labels
 }

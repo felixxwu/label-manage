@@ -3,7 +3,7 @@ import { consts } from './consts'
 
 const primary = '#ddd'
 const secondary = '#555'
-const warning = '#a00'
+const warning = '#444'
 const background = '#222'
 
 export const theme = createTheme({
@@ -23,7 +23,6 @@ export const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    width: '200px',
                     borderRadius: consts.borderRadius,
                 },
             },
