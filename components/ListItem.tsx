@@ -1,11 +1,6 @@
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
-import { Store } from '../utils/types'
-
-export interface Item {
-    id: string
-    name: string
-}
+import { Item, Store } from '../utils/types'
 
 export function ListItem(props: { item: Item; store: Store }) {
     function handleClick() {

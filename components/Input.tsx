@@ -1,9 +1,8 @@
 import AddIcon from '@mui/icons-material/Add'
 import { Button, TextField } from '@mui/material'
-import { addDoc, collection, Firestore } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { consts } from '../utils/consts'
-import { getPassword } from '../utils/getPassword'
+import { addDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import { Store } from '../utils/types'
 
@@ -19,9 +18,7 @@ export function Input(props: { store: Store }) {
     async function handleAdd() {
         if (text) {
             try {
-                const doc = await addDoc(collection(props.store.db, getPassword()), {
-                    name: text,
-                })
+                const doc = await addDocTyped(props.store.db, { name: text })
                 props.store.selectedLabelId = doc.id
             } catch (e) {
                 alert(e)

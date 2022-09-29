@@ -1,9 +1,5 @@
-import { collection, Firestore, onSnapshot } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
-import { getPassword } from '../utils/getPassword'
-import { useLabelList } from '../utils/labelList'
 import { Store } from '../utils/types'
-import { Item, ListItem } from './ListItem'
+import { ListItem } from './ListItem'
 
 export function List(props: { store: Store }) {
     return (

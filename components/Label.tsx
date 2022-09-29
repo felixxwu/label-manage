@@ -1,10 +1,8 @@
-import { Button, Dialog, DialogActions, DialogContentText, DialogTitle } from '@mui/material'
-import { deleteDoc, doc } from 'firebase/firestore'
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import { useState } from 'react'
-import { getPassword } from '../utils/getPassword'
+import { deleteDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
-import { Store } from '../utils/types'
-import { Item } from './ListItem'
+import { Item, Store } from '../utils/types'
 
 export function Label(props: { item: Item; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -22,7 +20,7 @@ export function Label(props: { item: Item; store: Store }) {
     }
 
     async function handleDelete() {
-        await deleteDoc(doc(props.store.db, getPassword(), props.item.id))
+        await deleteDocTyped(props.store.db, props.item)
         handleBack()
     }
 
