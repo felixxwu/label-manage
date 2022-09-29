@@ -1,14 +1,16 @@
 import AddIcon from '@mui/icons-material/Add'
 import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
-import { fade } from '../utils/animate'
+import { fade, shortWait } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { addDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import { Store } from '../utils/types'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 export function Input(props: { store: Store }) {
     const [name, setName] = useState('')
+    const [loading, setLoading] = useState(false)
 
     function handleKeyUp(e: React.KeyboardEvent) {
         if (e.key === 'Enter') {
@@ -19,8 +21,10 @@ export function Input(props: { store: Store }) {
     async function handleAdd() {
         if (name) {
             try {
-                const doc = await addDocTyped(props.store.db, name)
+                setLoading(true)
+                await shortWait()
                 await fade()
+                const doc = await addDocTyped(props.store.db, name)
                 props.store.selectedLabelId = doc.id
             } catch (e) {
                 alert(e)
@@ -45,15 +49,16 @@ export function Input(props: { store: Store }) {
                 autoComplete='off'
                 onSubmit={handleAdd}
             />
-            <Button
+            <LoadingButton
                 color='primary'
                 variant='contained'
                 startIcon={<AddIcon />}
                 onClick={handleAdd}
                 disabled={name.length === 0}
+                loading={loading}
             >
                 Add
-            </Button>
+            </LoadingButton>
 
             <style jsx>{`
                 .inputArea {

@@ -8,3 +8,7 @@ export async function fade() {
 
     window.document.body.style.opacity = '1'
 }
+
+export async function shortWait() {
+    await new Promise(r => setTimeout(r, 600))
+}
