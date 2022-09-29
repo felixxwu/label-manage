@@ -1,4 +1,5 @@
 import { consts } from '../utils/consts'
+import { theme } from '../utils/theme'
 
 export interface Item {
     id: string
@@ -17,7 +18,7 @@ export function ListItem(props: { item: Item }) {
                     padding: 20px;
                     margin: 10px;
                     border-radius: ${consts.borderRadius}px;
-                    border: 1px solid #444;
+                    border: 1px solid ${theme.palette.secondary.main};
                     cursor: pointer;
                 }
 

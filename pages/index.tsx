@@ -6,6 +6,8 @@ import { Input } from '../components/Input'
 import { List } from '../components/List'
 import { consts } from '../utils/consts'
 import { useLabelList } from '../utils/labelList'
+import { ThemeProvider } from '@emotion/react'
+import { theme } from '../utils/theme'
 
 export default function Home() {
     const { db, error } = useInitDb()
@@ -22,11 +24,14 @@ export default function Home() {
                 <link href='https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap' rel='stylesheet' />
                 <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
                 <link rel='shortcut icon' href='/favicon.svg' />
+                <title>Label Manager</title>
             </Head>
 
             <main>
-                <Input db={db} />
-                <List list={list} />
+                <ThemeProvider theme={theme}>
+                    <Input db={db} />
+                    <List list={list} />
+                </ThemeProvider>
             </main>
 
             <style jsx global>{`

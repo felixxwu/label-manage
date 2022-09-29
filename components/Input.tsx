@@ -1,24 +1,35 @@
+import AddIcon from '@mui/icons-material/Add'
+import { Button, TextField } from '@mui/material'
 import { addDoc, collection, Firestore } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { consts } from '../utils/consts'
 import { getPassword } from '../utils/getPassword'
-import { Button } from './Button'
+import { theme } from '../utils/theme'
 
 export function Input(props: { db: Firestore }) {
     const [text, setText] = useState('')
 
     return (
         <div className='inputArea'>
-            <input
+            <TextField
+                id='outlined-basic'
+                label='Type label name...'
+                variant='outlined'
+                autoFocus
+                sx={{ color: theme.palette.primary.main, width: '100%', maxWidth: consts.maxAppWidth }}
                 value={text}
                 onChange={handleChange}
-                type='url'
-                name='Input URL'
-                placeholder='Type label name...'
-                autoFocus
                 autoComplete='off'
             />
-            <Button text='ADD' onClick={handleAdd} disabled={text.length === 0} />
+            <Button
+                color='primary'
+                variant='contained'
+                endIcon={<AddIcon />}
+                onClick={handleAdd}
+                disabled={text.length === 0}
+            >
+                Add
+            </Button>
 
             <style jsx>{`
                 .inputArea {
@@ -29,17 +40,6 @@ export function Input(props: { db: Firestore }) {
                     padding: 20px;
                     flex-direction: column;
                     gap: 20px;
-                }
-
-                input {
-                    font-size: 30px;
-                    outline: none;
-                    border: none;
-                    text-align: center;
-                    color: white;
-                    background-color: transparent;
-                    width: 100%;
-                    max-width: ${consts.maxAppWidth}px;
                 }
             `}</style>
         </div>
