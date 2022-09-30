@@ -7,6 +7,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
 import GoogleIcon from '@mui/icons-material/Google'
+import ClearIcon from '@mui/icons-material/Clear'
 
 export function LinkForm(props: { label: Label; store: Store }) {
     const [searchLoading, loadSearch] = useShortLoad()
@@ -23,16 +24,23 @@ export function LinkForm(props: { label: Label; store: Store }) {
     }
 
     async function handlePaste() {
+        await loadPaste()
+
         const regex =
             /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
 
-        const text = (await navigator.clipboard.readText()).match(regex)[0].split('?')[0]
-        await loadPaste()
+        const results = (await navigator.clipboard.readText()).match(regex)
+        if (!results || results.length === 0) return
+        const text = results[0].split('?')[0]
         updateDocTyped(props.store.db, props.label.id, { link: text })
     }
 
     function handlLaunch() {
         window.open(props.label.link, '_blank').focus()
+    }
+
+    function handleClear() {
+        updateDocTyped(props.store.db, props.label.id, { link: '' })
     }
 
     return (
@@ -46,9 +54,14 @@ export function LinkForm(props: { label: Label; store: Store }) {
                 onChange={handleTextInput}
             />
             {props.label.link ? (
-                <IconButton onClick={handlLaunch}>
-                    <LaunchIcon />
-                </IconButton>
+                <div>
+                    <IconButton onClick={handlLaunch}>
+                        <LaunchIcon />
+                    </IconButton>
+                    <IconButton onClick={handleClear}>
+                        <ClearIcon />
+                    </IconButton>
+                </div>
             ) : (
                 <>
                     <LoadingButton
