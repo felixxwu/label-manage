@@ -42,7 +42,7 @@ export function Label(props: { item: Label; store: Store }) {
             {props.item ? (
                 <>
                     <NameForm label={props.item} store={props.store} />
-                    <LinkForm item={props.item} store={props.store} />
+                    <LinkForm label={props.item} store={props.store} />
                 </>
             ) : (
                 <h1>Label deleted</h1>

@@ -64,7 +64,6 @@ export function Input(props: { store: Store }) {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    padding: 20px;
                     flex-direction: column;
                     gap: 20px;
                 }
