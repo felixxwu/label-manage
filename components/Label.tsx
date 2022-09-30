@@ -6,6 +6,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { fade, shortWait } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
+import { LinkForm } from './LinkForm'
+import { NameForm } from './NameForm'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -39,7 +41,8 @@ export function Label(props: { item: Label; store: Store }) {
         <div className='label'>
             {props.item ? (
                 <>
-                    <h1>{props.item?.name}</h1>
+                    <NameForm label={props.item} store={props.store} />
+                    <LinkForm item={props.item} store={props.store} />
                 </>
             ) : (
                 <h1>Label deleted</h1>

@@ -7,10 +7,11 @@ import { addDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import { Store } from '../utils/types'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { useShortLoad } from '../utils/useShortLoad'
 
 export function Input(props: { store: Store }) {
     const [name, setName] = useState('')
-    const [loading, setLoading] = useState(false)
+    const [loading, shortLoad] = useShortLoad()
 
     function handleKeyUp(e: React.KeyboardEvent) {
         if (e.key === 'Enter') {
@@ -21,8 +22,7 @@ export function Input(props: { store: Store }) {
     async function handleAdd() {
         if (name) {
             try {
-                setLoading(true)
-                await shortWait()
+                await shortLoad()
                 const doc = await addDocTyped(props.store.db, name)
                 await fade()
                 props.store.selectedLabelId = doc.id
@@ -39,15 +39,13 @@ export function Input(props: { store: Store }) {
     return (
         <div className='inputArea'>
             <TextField
-                id='outlined-basic'
                 label='Type label name...'
                 variant='outlined'
-                sx={{ color: theme.palette.primary.main, width: '100%', maxWidth: consts.maxAppWidth }}
+                sx={{ width: '100%', maxWidth: consts.maxAppWidth }}
                 value={name}
                 onChange={handleChange}
                 onKeyUp={handleKeyUp}
                 autoComplete='off'
-                onSubmit={handleAdd}
             />
             <LoadingButton
                 color='primary'

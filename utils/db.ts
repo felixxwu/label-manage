@@ -37,7 +37,17 @@ export function useInitDb() {
 }
 
 export async function addDocTyped(db: Firestore, name: string) {
-    return addDoc(collection(db, getPassword()), { name })
+    const emptyDoc: Omit<Label, 'id'> = {
+        name,
+        artists: [],
+        email: '',
+        followers: '?',
+        link: '',
+        notes: '',
+        styles: [],
+        submission: '',
+    }
+    return addDoc(collection(db, getPassword()), emptyDoc)
 }
 
 export async function updateDocTyped(db: Firestore, id: string, item: Omit<Partial<Label>, 'id'>) {

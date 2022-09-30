@@ -11,7 +11,7 @@ export interface Label {
     id: string
     name: string
     link: string
-    followers: '1k' | '5k' | '10k' | '50k' | '100k' | '500k' | '1m'
+    followers: '1k' | '5k' | '10k' | '50k' | '100k' | '500k' | '1m' | '?'
     styles: ('Liquid' | 'Deep' | 'Heavy' | 'Melodic' | 'Vocal')[]
     artists: string[]
     notes: string
