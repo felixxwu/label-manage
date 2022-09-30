@@ -1,20 +1,31 @@
-import React from 'react'
+import { TextField } from '@mui/material'
+import React, { useState } from 'react'
 import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
 
 export function NameForm(props: { label: Label; store: Store }) {
+    const [name, setName] = useState(props.label.name)
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setName(e.target.value)
         updateDocTyped(props.store.db, props.label.id, { name: e.target.value })
     }
 
     return (
         <>
-            <input type='text' value={props.label.name} onChange={handleChange} />
+            <input
+                type='text'
+                value={name}
+                onChange={handleChange}
+                autoComplete='off'
+                autoCorrect='off'
+                spellCheck='false'
+            />
 
             <style jsx>{`
                 input {
-                    font-size: 50px;
+                    font-size: 30px;
                     text-align: center;
                     background-color: transparent;
                     border: none;
