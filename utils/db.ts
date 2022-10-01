@@ -47,25 +47,41 @@ export async function addDocTyped(db: Firestore, name: string) {
         styles: [],
         submission: '',
     }
-    return addDoc(collection(db, getPassword()), emptyDoc)
+    try {
+        return addDoc(collection(db, getPassword()), emptyDoc)
+    } catch (e) {
+        alert(e)
+    }
 }
 
 export async function updateDocTyped(db: Firestore, id: string, item: Omit<Partial<Label>, 'id'>) {
-    return updateDoc(doc(db, getPassword(), id), item)
+    try {
+        return updateDoc(doc(db, getPassword(), id), item)
+    } catch (e) {
+        alert(e)
+    }
 }
 
 export async function deleteDocTyped(db: Firestore, id: string) {
-    return deleteDoc(doc(db, getPassword(), id))
+    try {
+        return deleteDoc(doc(db, getPassword(), id))
+    } catch (e) {
+        alert(e)
+    }
 }
 
 export function onSnapshotTyped(db: Firestore, callback: (items: Label[]) => void) {
-    onSnapshot(collection(db, getPassword()), snapshot => {
-        const items = snapshot.docs.map(doc => {
-            return {
-                ...doc.data(),
-                id: doc.id,
-            } as Label
+    try {
+        onSnapshot(collection(db, getPassword()), snapshot => {
+            const items = snapshot.docs.map(doc => {
+                return {
+                    ...doc.data(),
+                    id: doc.id,
+                } as Label
+            })
+            callback(items)
         })
-        callback(items)
-    })
+    } catch (e) {
+        alert(e)
+    }
 }

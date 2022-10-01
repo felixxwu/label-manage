@@ -5,7 +5,7 @@ export function List(props: { store: Store }) {
     return (
         <div className='list'>
             {props.store.labels.map((label, i) => {
-                return <ListItem item={label} key={i} store={props.store} />
+                return <ListItem label={label} key={i} store={props.store} />
             })}
 
             <style jsx>{`

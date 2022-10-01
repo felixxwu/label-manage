@@ -2,17 +2,24 @@ import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
+import PeopleIcon from '@mui/icons-material/People'
 
-export function ListItem(props: { item: Label; store: Store }) {
+export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {
         await fade()
-        props.store.selectedLabelId = props.item.id
+        props.store.selectedLabelId = props.label.id
     }
 
     return (
         <>
             <div className='item' onClick={handleClick}>
-                {props.item.name}
+                <div className='header'>
+                    <div className='name'>{props.label.name}</div>
+                    <div className='followers'>
+                        <PeopleIcon />
+                        {props.label.followers}
+                    </div>
+                </div>
             </div>
 
             <style jsx>{`
@@ -20,16 +27,29 @@ export function ListItem(props: { item: Label; store: Store }) {
                     width: 100%;
                     max-width: ${consts.maxAppWidth}px;
                     color: ${theme.palette.primary.main};
+                    background-color: ${theme.palette.grey[800]};
                     padding: 20px;
                     margin: 10px;
                     border-radius: ${consts.borderRadius}px;
-                    border: 1px solid ${theme.palette.divider};
                     cursor: pointer;
                     text-align: left;
                 }
 
                 .item:hover {
                     background-color: #ffffff11;
+                }
+
+                .header {
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                }
+
+                .followers {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    color: ${theme.palette.grey[400]};
                 }
             `}</style>
         </>

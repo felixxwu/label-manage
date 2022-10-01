@@ -37,11 +37,19 @@ export function App() {
             {selectedLabelId ? (
                 <Label item={getSelectedLabel()} store={store} />
             ) : (
-                <>
+                <div className='list'>
                     <Input store={store} />
                     <List store={store} />
-                </>
+                </div>
             )}
+
+            <style jsx>{`
+                .list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            `}</style>
         </ThemeProvider>
     )
 }

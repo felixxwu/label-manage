@@ -39,7 +39,7 @@ export function Input(props: { store: Store }) {
     return (
         <div className='inputArea'>
             <TextField
-                label='Type label name...'
+                label='Type to add label...'
                 variant='outlined'
                 sx={{ width: '100%', maxWidth: consts.maxAppWidth }}
                 value={name}

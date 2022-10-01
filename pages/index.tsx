@@ -25,7 +25,7 @@ export default function Home() {
                 body {
                     padding: 0;
                     margin: 0;
-                    background-color: #222;
+                    background-color: ${theme.palette.grey[900]};
                 }
 
                 * {

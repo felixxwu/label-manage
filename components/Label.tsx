@@ -8,6 +8,8 @@ import { fade, shortWait } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
 import { LinkForm } from './LinkForm'
 import { NameForm } from './NameForm'
+import { FollowersForm } from './FollowersForm'
+import { consts } from '../utils/consts'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -43,6 +45,7 @@ export function Label(props: { item: Label; store: Store }) {
                 <>
                     <NameForm label={props.item} store={props.store} />
                     <LinkForm label={props.item} store={props.store} />
+                    <FollowersForm label={props.item} store={props.store} />
                 </>
             ) : (
                 <h1>Label deleted</h1>
@@ -53,7 +56,7 @@ export function Label(props: { item: Label; store: Store }) {
                 </Button>
                 {props.item && (
                     <LoadingButton
-                        color='warning'
+                        color='secondary'
                         variant='contained'
                         onClick={openConfirmDelete}
                         startIcon={<DeleteIcon />}
@@ -81,6 +84,8 @@ export function Label(props: { item: Label; store: Store }) {
                     justify-content: center;
                     align-items: center;
                     gap: 20px;
+                    max-width: ${consts.maxAppWidth}px;
+                    margin: auto;
                 }
 
                 .bottom-buttons {
