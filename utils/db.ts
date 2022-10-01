@@ -5,6 +5,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getPassword } from './getPassword'
 import { DbExtra, Label } from './types'
 import { fade } from './animate'
+import { consts } from './consts'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDdEEWeBs77K0H7WUU1pBUYNpNKzJhfuU8',
@@ -14,8 +15,6 @@ const firebaseConfig = {
     messagingSenderId: '245804327017',
     appId: '1:245804327017:web:ef7bc5eb7f4bbf6b6a02f8',
 }
-
-const dbExtraId = 'extra'
 
 export function useInitDb() {
     const [db, setDb] = useState<Firestore>(null)
@@ -83,7 +82,7 @@ function initExtra(db: Firestore) {
         songs: [],
     }
     try {
-        return setDoc(doc(db, getPassword(), dbExtraId), emptyExtra)
+        return setDoc(doc(db, getPassword(), consts.dbExtraId), emptyExtra)
     } catch (e) {
         alert(e)
     }
@@ -109,14 +108,14 @@ export function onSnapshotTyped(db: Firestore, callback: (items: Label[], extra:
     try {
         onSnapshot(collection(db, getPassword()), snapshot => {
             const items = snapshot.docs
-                .filter(doc => doc.id !== dbExtraId)
+                .filter(doc => doc.id !== consts.dbExtraId)
                 .map(doc => {
                     return {
                         ...doc.data(),
                         id: doc.id,
                     } as Label
                 })
-            const extra = snapshot.docs.find(doc => doc.id === dbExtraId)?.data() as DbExtra
+            const extra = snapshot.docs.find(doc => doc.id === consts.dbExtraId)?.data() as DbExtra
             callback(items, extra)
         })
     } catch (e) {

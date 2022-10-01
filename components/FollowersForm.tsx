@@ -1,4 +1,4 @@
-import { Slider, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../utils/db'
 import { followerOptions, Label, Store } from '../utils/types'

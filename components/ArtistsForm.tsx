@@ -1,14 +1,4 @@
-import {
-    Button,
-    Chip,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    Stack,
-    TextField,
-} from '@mui/material'
+import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import { Label, Store } from '../utils/types'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'

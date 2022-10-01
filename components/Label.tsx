@@ -52,6 +52,7 @@ export function Label(props: { item: Label; store: Store }) {
             ) : (
                 <h1>Label deleted</h1>
             )}
+
             <div className='bottom-buttons'>
                 <Button color='primary' variant='contained' onClick={handleBack} startIcon={<ArrowBackIcon />}>
                     Back

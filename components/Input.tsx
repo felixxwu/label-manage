@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import { TextField } from '@mui/material'
 import React, { useState } from 'react'
-import { fade, shortWait } from '../utils/animate'
+import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { addDocTyped } from '../utils/db'
 import { Store } from '../utils/types'
