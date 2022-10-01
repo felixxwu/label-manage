@@ -85,6 +85,8 @@ export function LinkForm(props: { label: Label; store: Store }) {
 
                 .link {
                     color: ${theme.palette.primary.main};
+                    flex: 1;
+                    word-break: break-all;
                 }
             `}</style>
         </div>
