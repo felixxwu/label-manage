@@ -9,16 +9,11 @@ import { updateDocTyped } from '../utils/db'
 import GoogleIcon from '@mui/icons-material/Google'
 import ClearIcon from '@mui/icons-material/Backspace'
 import { useState } from 'react'
+import { theme } from '../utils/theme'
 
 export function LinkForm(props: { label: Label; store: Store }) {
-    const [link, setLink] = useState(props.label.link)
     const [searchLoading, loadSearch] = useShortLoad()
     const [pasteLoading, loadPaste] = useShortLoad()
-
-    function handleTextInput(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setLink(e.target.value)
-        updateDocTyped(props.store.db, props.label.id, { link: e.target.value })
-    }
 
     async function handleSearch() {
         await loadSearch()
@@ -35,40 +30,27 @@ export function LinkForm(props: { label: Label; store: Store }) {
         const results = (await navigator.clipboard.readText()).match(regex)
         if (!results || results.length === 0) return
         const text = results[0].split('?')[0]
-        setLink(text)
         updateDocTyped(props.store.db, props.label.id, { link: text })
     }
 
-    function handlLaunch() {
-        window.open(link, '_blank').focus()
-    }
-
     function handleClear() {
-        setLink('')
         updateDocTyped(props.store.db, props.label.id, { link: '' })
     }
 
     return (
         <div className='link-form'>
-            <TextField
-                label='Link'
-                variant='outlined'
-                sx={{ width: '100%', flex: '1' }}
-                value={link}
-                autoComplete='off'
-                onChange={handleTextInput}
-            />
-            {link ? (
-                <ButtonGroup>
+            {props.label.link ? (
+                <>
+                    <a className='link' href={props.label.link} target='_blank'>
+                        {props.label.link}
+                    </a>
                     <Button onClick={handleClear} color='secondary' variant='contained' startIcon={<ClearIcon />}>
                         Clear
                     </Button>
-                    <Button onClick={handlLaunch} color='secondary' variant='contained' startIcon={<LaunchIcon />}>
-                        Launch
-                    </Button>
-                </ButtonGroup>
+                </>
             ) : (
-                <ButtonGroup>
+                <>
+                    Link:
                     <LoadingButton
                         variant='contained'
                         color='secondary'
@@ -89,7 +71,7 @@ export function LinkForm(props: { label: Label; store: Store }) {
                     >
                         Search
                     </LoadingButton>
-                </ButtonGroup>
+                </>
             )}
 
             <style jsx>{`
@@ -97,8 +79,12 @@ export function LinkForm(props: { label: Label; store: Store }) {
                     width: 100%;
                     max-width: ${consts.maxAppWidth}px;
                     display: flex;
-                    gap: 10px;
+                    gap: 20px;
                     align-items: center;
+                }
+
+                .link {
+                    color: ${theme.palette.primary.main};
                 }
             `}</style>
         </div>
