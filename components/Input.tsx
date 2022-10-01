@@ -40,7 +40,7 @@ export function Input(props: { store: Store }) {
             <TextField
                 label='Type to add label...'
                 variant='outlined'
-                sx={{ width: '100%', maxWidth: consts.maxAppWidth }}
+                sx={{ width: '100%' }}
                 value={name}
                 onChange={handleChange}
                 onKeyUp={handleKeyUp}
@@ -60,10 +60,11 @@ export function Input(props: { store: Store }) {
             <style jsx>{`
                 .inputArea {
                     width: 100%;
+                    max-width: ${consts.maxAppWidth}px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    flex-direction: column;
+                    flex-direction: row;
                     gap: 20px;
                 }
             `}</style>
