@@ -25,12 +25,12 @@ export function NameForm(props: { label: Label; store: Store }) {
             <style jsx>{`
                 input {
                     font-size: 30px;
-                    text-align: center;
                     background-color: transparent;
                     border: none;
                     outline: none;
                     color: ${theme.palette.primary.main};
                     max-width: 100%;
+                    padding: 0;
                 }
             `}</style>
         </>

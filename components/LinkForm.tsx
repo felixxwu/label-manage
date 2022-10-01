@@ -7,7 +7,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
 import GoogleIcon from '@mui/icons-material/Google'
-import ClearIcon from '@mui/icons-material/Clear'
+import ClearIcon from '@mui/icons-material/Backspace'
 import { useState } from 'react'
 
 export function LinkForm(props: { label: Label; store: Store }) {
@@ -60,11 +60,11 @@ export function LinkForm(props: { label: Label; store: Store }) {
             />
             {link ? (
                 <div>
-                    <IconButton onClick={handlLaunch}>
-                        <LaunchIcon />
-                    </IconButton>
                     <IconButton onClick={handleClear}>
                         <ClearIcon />
+                    </IconButton>
+                    <IconButton onClick={handlLaunch}>
+                        <LaunchIcon />
                     </IconButton>
                 </div>
             ) : (

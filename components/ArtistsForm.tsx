@@ -1,6 +1,6 @@
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import { Label, Store } from '../utils/types'
-import AddIcon from '@mui/icons-material/Add'
+import AddIcon from '@mui/icons-material/AddCircleOutline'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../utils/useShortLoad'
@@ -54,15 +54,15 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
 
     return (
         <div className='chips'>
+            Artists:
             {props.label.artists.map((artist, index) => (
                 <div onClick={() => openDeleteDialog(artist)} key={index}>
                     <Chip sx={{ cursor: 'pointer' }} label={artist} />
                 </div>
             ))}
-            <IconButton onClick={openAddDialog}>
+            <IconButton onClick={openAddDialog} sx={{ paddingLeft: 0 }}>
                 <AddIcon />
             </IconButton>
-
             <Dialog open={dialogContent !== 'closed'} onClose={closeDialog}>
                 {dialogContent === 'add' && (
                     <>
@@ -98,7 +98,6 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
                     </>
                 )}
             </Dialog>
-
             <style jsx>{`
                 .chips {
                     display: flex;

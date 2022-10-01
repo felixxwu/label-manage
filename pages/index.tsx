@@ -37,7 +37,6 @@ export default function Home() {
 
                 main {
                     padding: ${consts.appEndSpace} 20px;
-                    text-align: center;
                     color: ${theme.palette.primary.main};
                 }
             `}</style>

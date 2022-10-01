@@ -2,26 +2,50 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../utils/db'
 import { followerOptions, Label, Store } from '../utils/types'
+import EditIcon from '@mui/icons-material/Edit'
 
 export function FollowersForm(props: { label: Label; store: Store }) {
     const [followers, setFollowers] = useState(props.label.followers)
+    const [editMode, setEditMode] = useState(false)
 
     function handleChange(_, newFollowers: typeof followerOptions[number]) {
-        updateDocTyped(props.store.db, props.label.id, { followers: newFollowers })
-        setFollowers(newFollowers)
+        if (newFollowers) {
+            updateDocTyped(props.store.db, props.label.id, { followers: newFollowers })
+            setFollowers(newFollowers)
+        }
+        toggleEditMode()
+    }
+
+    function toggleEditMode() {
+        setEditMode(!editMode)
     }
 
     return (
         <div>
-            <ToggleButtonGroup color='primary' exclusive value={followers} onChange={handleChange}>
-                {followerOptions.map((option, index) => (
-                    <ToggleButton value={option} key={index}>
-                        {option}
-                    </ToggleButton>
-                ))}
-            </ToggleButtonGroup>
+            {editMode ? (
+                <ToggleButtonGroup color='primary' exclusive value={followers} onChange={handleChange}>
+                    {followerOptions.map((option, index) => (
+                        <ToggleButton value={option} key={index}>
+                            {option}
+                        </ToggleButton>
+                    ))}
+                </ToggleButtonGroup>
+            ) : (
+                <div className='count' onClick={toggleEditMode}>
+                    Followers: {props.label.followers === '?' ? '' : '~'}
+                    {props.label.followers}
+                    <EditIcon />
+                </div>
+            )}
 
-            <style jsx>{``}</style>
+            <style jsx>{`
+                .count {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    cursor: pointer;
+                }
+            `}</style>
         </div>
     )
 }
