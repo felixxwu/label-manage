@@ -86,7 +86,7 @@ export function Label(props: { item: Label; store: Store }) {
                     flex-direction: column;
                     justify-content: center;
                     align-items: flex-start;
-                    gap: 20px;
+                    gap: 30px;
                     max-width: ${consts.maxAppWidth}px;
                     margin: auto;
                 }

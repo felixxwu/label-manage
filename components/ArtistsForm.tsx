@@ -1,6 +1,6 @@
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import { Label, Store } from '../utils/types'
-import AddIcon from '@mui/icons-material/AddCircleOutline'
+import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../utils/useShortLoad'
@@ -60,7 +60,7 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
                     <Chip sx={{ cursor: 'pointer' }} label={artist} />
                 </div>
             ))}
-            <IconButton onClick={openAddDialog} sx={{ paddingLeft: 0 }}>
+            <IconButton onClick={openAddDialog} sx={{ marginLeft: '-8px' }}>
                 <AddIcon />
             </IconButton>
             <Dialog open={dialogContent !== 'closed'} onClose={closeDialog}>

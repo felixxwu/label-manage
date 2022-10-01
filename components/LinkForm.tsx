@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab'
-import { IconButton, TextField } from '@mui/material'
+import { Button, ButtonGroup, IconButton, TextField } from '@mui/material'
 import { consts } from '../utils/consts'
 import { Label, Store } from '../utils/types'
 import LaunchIcon from '@mui/icons-material/Launch'
@@ -59,27 +59,19 @@ export function LinkForm(props: { label: Label; store: Store }) {
                 onChange={handleTextInput}
             />
             {link ? (
-                <div>
-                    <IconButton onClick={handleClear}>
-                        <ClearIcon />
-                    </IconButton>
-                    <IconButton onClick={handlLaunch}>
-                        <LaunchIcon />
-                    </IconButton>
-                </div>
+                <ButtonGroup>
+                    <Button onClick={handleClear} color='secondary' variant='contained' startIcon={<ClearIcon />}>
+                        Clear
+                    </Button>
+                    <Button onClick={handlLaunch} color='secondary' variant='contained' startIcon={<LaunchIcon />}>
+                        Launch
+                    </Button>
+                </ButtonGroup>
             ) : (
-                <>
+                <ButtonGroup>
                     <LoadingButton
                         variant='contained'
-                        sx={{ height: 'min-content' }}
-                        startIcon={<GoogleIcon />}
-                        onClick={handleSearch}
-                        loading={searchLoading}
-                    >
-                        Search
-                    </LoadingButton>
-                    <LoadingButton
-                        variant='contained'
+                        color='secondary'
                         sx={{ height: 'min-content' }}
                         startIcon={<ContentPasteIcon />}
                         onClick={handlePaste}
@@ -87,7 +79,17 @@ export function LinkForm(props: { label: Label; store: Store }) {
                     >
                         Paste
                     </LoadingButton>
-                </>
+                    <LoadingButton
+                        variant='contained'
+                        color='secondary'
+                        sx={{ height: 'min-content' }}
+                        startIcon={<GoogleIcon />}
+                        onClick={handleSearch}
+                        loading={searchLoading}
+                    >
+                        Search
+                    </LoadingButton>
+                </ButtonGroup>
             )}
 
             <style jsx>{`
@@ -95,7 +97,7 @@ export function LinkForm(props: { label: Label; store: Store }) {
                     width: 100%;
                     max-width: ${consts.maxAppWidth}px;
                     display: flex;
-                    gap: 20px;
+                    gap: 10px;
                     align-items: center;
                 }
             `}</style>

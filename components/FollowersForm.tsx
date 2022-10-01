@@ -1,4 +1,4 @@
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../utils/db'
 import { followerOptions, Label, Store } from '../utils/types'
@@ -31,10 +31,12 @@ export function FollowersForm(props: { label: Label; store: Store }) {
                     ))}
                 </ToggleButtonGroup>
             ) : (
-                <div className='count' onClick={toggleEditMode}>
+                <div className='count'>
                     Followers: {props.label.followers === '?' ? '' : '~'}
                     {props.label.followers}
-                    <EditIcon />
+                    <Button variant='contained' color='secondary' startIcon={<EditIcon />} onClick={toggleEditMode}>
+                        Edit
+                    </Button>
                 </div>
             )}
 
@@ -43,7 +45,6 @@ export function FollowersForm(props: { label: Label; store: Store }) {
                     display: flex;
                     align-items: center;
                     gap: 20px;
-                    cursor: pointer;
                 }
             `}</style>
         </div>
