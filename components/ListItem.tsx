@@ -3,6 +3,7 @@ import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
 import PeopleIcon from '@mui/icons-material/People'
+import { Chip } from '@mui/material'
 
 export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {
@@ -20,6 +21,11 @@ export function ListItem(props: { label: Label; store: Store }) {
                         {props.label.followers}
                     </div>
                 </div>
+                <div className='artists'>
+                    {props.label.artists.map(artist => (
+                        <Chip label={artist} />
+                    ))}
+                </div>
             </div>
 
             <style jsx>{`
@@ -33,6 +39,9 @@ export function ListItem(props: { label: Label; store: Store }) {
                     border-radius: ${consts.borderRadius}px;
                     cursor: pointer;
                     text-align: left;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
                 }
 
                 .item:hover {
@@ -50,6 +59,12 @@ export function ListItem(props: { label: Label; store: Store }) {
                     align-items: center;
                     gap: 10px;
                     color: ${theme.palette.grey[400]};
+                }
+
+                .artists {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
                 }
             `}</style>
         </>
