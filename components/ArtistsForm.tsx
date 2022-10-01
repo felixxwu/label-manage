@@ -64,8 +64,8 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
 
     return (
         <div className='chips'>
-            {props.label.artists.map(artist => (
-                <div onClick={() => openDeleteDialog(artist)}>
+            {props.label.artists.map((artist, index) => (
+                <div onClick={() => openDeleteDialog(artist)} key={index}>
                     <Chip sx={{ cursor: 'pointer' }} label={artist} />
                 </div>
             ))}

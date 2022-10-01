@@ -1,17 +1,19 @@
 import { ThemeProvider } from '@emotion/react'
+import { Fab } from '@mui/material'
 import { useState } from 'react'
-import { useInitDb } from '../utils/db'
-import { useLabels } from '../utils/labelList'
+import { useInitDb, useDb } from '../utils/db'
 import { theme } from '../utils/theme'
 import { Store } from '../utils/types'
 import { Input } from './Input'
 import { Label } from './Label'
 import { List } from './List'
+import { Music } from './Music'
 
 export function App() {
     const { db, error } = useInitDb()
     const [selectedLabelId, setSelectedLabelId] = useState<string>(null)
-    const labels = useLabels(db)
+    const [showMusic, setShowMusic] = useState(false)
+    const { labels, extra } = useDb(db)
 
     const store: Store = {
         db,
@@ -23,10 +25,16 @@ export function App() {
         set selectedLabelId(id) {
             setSelectedLabelId(id)
         },
+        get showMusic() {
+            return showMusic
+        },
+        set showMusic(value) {
+            setShowMusic(value)
+        },
     }
 
     if (error) return <>{error}</>
-    if (!db) return <>Loading...</>
+    if (!db || !labels || !extra) return <>Loading...</>
 
     function getSelectedLabel() {
         return labels.find(label => label.id === selectedLabelId)
@@ -34,23 +42,13 @@ export function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            {selectedLabelId ? (
-                <Label item={getSelectedLabel()} store={store} />
-            ) : (
-                <div className='list'>
-                    <Input store={store} />
-                    <List store={store} />
-                </div>
-            )}
+            {(() => {
+                if (showMusic) return <Music />
 
-            <style jsx>{`
-                .list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    align-items: center;
-                }
-            `}</style>
+                if (selectedLabelId) return <Label item={getSelectedLabel()} store={store} />
+
+                return <List store={store} />
+            })()}
         </ThemeProvider>
     )
 }

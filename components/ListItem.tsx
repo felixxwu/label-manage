@@ -22,8 +22,8 @@ export function ListItem(props: { label: Label; store: Store }) {
                     </div>
                 </div>
                 <div className='artists'>
-                    {props.label.artists.map(artist => (
-                        <Chip label={artist} />
+                    {props.label.artists.map((artist, index) => (
+                        <Chip label={artist} key={index} />
                     ))}
                 </div>
             </div>
@@ -35,7 +35,6 @@ export function ListItem(props: { label: Label; store: Store }) {
                     color: ${theme.palette.primary.main};
                     background-color: ${theme.palette.grey[800]};
                     padding: 20px;
-                    margin: 10px;
                     border-radius: ${consts.borderRadius}px;
                     cursor: pointer;
                     text-align: left;
@@ -65,6 +64,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                     display: flex;
                     gap: 10px;
                     flex-wrap: wrap;
+                    pointer-events: none;
                 }
             `}</style>
         </>
