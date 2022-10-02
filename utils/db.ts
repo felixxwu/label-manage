@@ -2,7 +2,7 @@ import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot, setDoc, upda
 import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
-import { getPassword } from './getPassword'
+import { getUrlPassword } from './getPassword'
 import { DbExtra, followersToIndex, Label } from './types'
 import { fade } from './animate'
 import { consts } from './consts'
@@ -42,7 +42,7 @@ export function useDb(db: Firestore) {
 
     useEffect(() => {
         if (!db) return
-        if (!getPassword()) return
+        if (!getUrlPassword()) return
 
         onSnapshotTyped(db, (labels, extra) => {
             setLabels(labels.sort((a, b) => followersToIndex(b.followers) - followersToIndex(a.followers)))
@@ -71,7 +71,7 @@ export async function addDocTyped(db: Firestore, name: string) {
         submission: '',
     }
     try {
-        return addDoc(collection(db, getPassword()), emptyDoc)
+        return addDoc(collection(db, getUrlPassword()), emptyDoc)
     } catch (e) {
         alert(e)
     }
@@ -82,7 +82,7 @@ function initExtra(db: Firestore) {
         songs: [],
     }
     try {
-        return setDoc(doc(db, getPassword(), consts.dbExtraId), emptyExtra)
+        return setDoc(doc(db, getUrlPassword(), consts.dbExtraId), emptyExtra)
     } catch (e) {
         alert(e)
     }
@@ -90,7 +90,7 @@ function initExtra(db: Firestore) {
 
 export async function updateDocTyped(db: Firestore, id: string, item: Omit<Partial<Label>, 'id'> | Partial<DbExtra>) {
     try {
-        return updateDoc(doc(db, getPassword(), id), item)
+        return updateDoc(doc(db, getUrlPassword(), id), item)
     } catch (e) {
         alert(e)
     }
@@ -98,7 +98,7 @@ export async function updateDocTyped(db: Firestore, id: string, item: Omit<Parti
 
 export async function deleteDocTyped(db: Firestore, id: string) {
     try {
-        return deleteDoc(doc(db, getPassword(), id))
+        return deleteDoc(doc(db, getUrlPassword(), id))
     } catch (e) {
         alert(e)
     }
@@ -106,7 +106,7 @@ export async function deleteDocTyped(db: Firestore, id: string) {
 
 export function onSnapshotTyped(db: Firestore, callback: (items: Label[], extra: DbExtra) => void) {
     try {
-        onSnapshot(collection(db, getPassword()), snapshot => {
+        onSnapshot(collection(db, getUrlPassword()), snapshot => {
             const items = snapshot.docs
                 .filter(doc => doc.id !== consts.dbExtraId)
                 .map(doc => {

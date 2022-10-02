@@ -29,11 +29,13 @@ export function ListItem(props: { label: Label; store: Store }) {
                         {props.label.followers}
                     </div>
                 </div>
-                <div className='artists'>
-                    {props.label.artists.map((artist, index) => (
-                        <Chip label={artist} key={index} />
-                    ))}
-                </div>
+                {props.label.artists.length !== 0 && (
+                    <div className='artists'>
+                        {props.label.artists.map((artist, index) => (
+                            <Chip label={artist} key={index} />
+                        ))}
+                    </div>
+                )}
             </div>
 
             <style jsx>{`
