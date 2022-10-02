@@ -13,9 +13,23 @@ export function ImageForm(props: { label: Label; store: Store }) {
     }
 
     async function handlePaste() {
-        const url = await navigator.clipboard.readText()
-        if (!url) return
-        updateDocTyped(props.store.db, props.label.id, { image: url })
+        const list = await navigator.clipboard.read()
+        let image_type
+        const item = list.find(item =>
+            item.types.some(type => {
+                if (type.startsWith('image/')) {
+                    image_type = type
+                    return true
+                }
+            })
+        )
+        const file = item && (await item.getType(image_type))
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = function () {
+            const base64data = reader.result
+            updateDocTyped(props.store.db, props.label.id, { image: base64data.toString() })
+        }
     }
 
     function handleClear() {
