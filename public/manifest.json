@@ -1,0 +1,16 @@
+{
+    "name": "Label Manager",
+    "short_name": "Label Manager",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#444",
+    "theme_color": "#444",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/favicon.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }

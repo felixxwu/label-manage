@@ -13,6 +13,7 @@ export default function Home() {
                 <link href='https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap' rel='stylesheet' />
                 <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
                 <link rel='shortcut icon' href='/favicon.svg' />
+                <link rel='manifest' href='manifest.json' />
                 <title>Label Manager</title>
             </Head>
 
