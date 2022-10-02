@@ -23,8 +23,12 @@ export function ListItem(props: { label: Label; store: Store }) {
                             sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
                         />
                         {props.label.name}
-                        {props.label.submission && <LinkIcon sx={{ opacity: 0.5 }} />}
-                        {props.label.email && <EmailIcon sx={{ opacity: 0.5 }} />}
+                        {props.label.submission && !props.label.submission.includes('@') && (
+                            <LinkIcon sx={{ opacity: 0.5 }} />
+                        )}
+                        {props.label.submission && props.label.submission.includes('@') && (
+                            <EmailIcon sx={{ opacity: 0.5 }} />
+                        )}
                     </div>
                     <div className='followers'>
                         <PeopleIcon />

@@ -26,7 +26,6 @@ export interface Label {
     styles: Style[]
     artists: string[]
     notes: string
-    email: string
     submission: string
 }
 

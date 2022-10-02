@@ -63,7 +63,6 @@ export async function addDocTyped(db: Firestore, name: string) {
         name,
         image: '',
         artists: [],
-        email: '',
         followers: '?',
         link: '',
         notes: '',

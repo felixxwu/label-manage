@@ -6,7 +6,6 @@ export function LinkForm(props: { label: Label; store: Store }) {
         <LinkOrEmail
             label={props.label}
             dbKey='link'
-            type='link'
             useGoogleIcon={true}
             searchUrl={'https://www.google.com/search?q=' + encodeURIComponent(props.label.name + ' soundcloud')}
             store={props.store}

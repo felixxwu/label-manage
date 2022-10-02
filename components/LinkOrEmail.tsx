@@ -18,7 +18,6 @@ export function LinkOrEmail(props: {
     label: Label
     store: Store
     searchUrl: string
-    type: 'link' | 'email'
     dbKey: StringOnlyKeys<Label>
     useGoogleIcon: boolean
     prompt: string
@@ -60,13 +59,12 @@ export function LinkOrEmail(props: {
         <div className='link-form'>
             {props.label[props.dbKey] ? (
                 <>
-                    {props.type === 'link' && (
-                        <a className='link' href={props.label[props.dbKey]} target='_blank'>
+                    {props.label[props.dbKey].includes('@') ? (
+                        <a className='link' href={'mailto:' + props.label[props.dbKey]} target='_blank'>
                             {props.label[props.dbKey]}
                         </a>
-                    )}
-                    {props.type === 'email' && (
-                        <a className='link' href={'mailto:' + props.label[props.dbKey]}>
+                    ) : (
+                        <a className='link' href={props.label[props.dbKey]} target='_blank'>
                             {props.label[props.dbKey]}
                         </a>
                     )}
