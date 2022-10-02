@@ -5,6 +5,7 @@ import { Label, Store } from '../utils/types'
 import PeopleIcon from '@mui/icons-material/People'
 import { Avatar, Chip } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
+import EmailIcon from '@mui/icons-material/Email'
 
 export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {
@@ -22,7 +23,8 @@ export function ListItem(props: { label: Label; store: Store }) {
                             sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
                         />
                         {props.label.name}
-                        {props.label.link && <LinkIcon sx={{ opacity: 0.5 }} />}
+                        {props.label.submission && <LinkIcon sx={{ opacity: 0.5 }} />}
+                        {props.label.email && <EmailIcon sx={{ opacity: 0.5 }} />}
                     </div>
                     <div className='followers'>
                         <PeopleIcon />
