@@ -12,6 +12,7 @@ import { FollowersForm } from './FollowersForm'
 import { consts } from '../utils/consts'
 import { ArtistsForm } from './ArtistsForm'
 import { ImageForm } from './ImageForm'
+import { SubmissionForm } from './SubmissionForm'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -52,6 +53,7 @@ export function Label(props: { item: Label; store: Store }) {
                     <ImageForm label={props.item} store={props.store} />
                     <NameForm label={props.item} store={props.store} />
                     <LinkForm label={props.item} store={props.store} />
+                    <SubmissionForm label={props.item} store={props.store} />
                     <FollowersForm label={props.item} store={props.store} />
                     <ArtistsForm label={props.item} store={props.store} />
                 </>
@@ -92,7 +94,7 @@ export function Label(props: { item: Label; store: Store }) {
                     flex-direction: column;
                     justify-content: center;
                     align-items: flex-start;
-                    gap: 30px;
+                    gap: 20px;
                     max-width: ${consts.maxAppWidth}px;
                     margin: auto;
                 }
