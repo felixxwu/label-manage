@@ -16,6 +16,7 @@ type Style = 'Liquid' | 'Deep' | 'Heavy' | 'Melodic' | 'Vocal'
 export interface Label {
     id: string
     name: string
+    image: string
     link: string
     followers: typeof followerOptions[number] | '?'
     styles: Style[]

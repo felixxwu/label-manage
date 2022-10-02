@@ -11,6 +11,7 @@ import { NameForm } from './NameForm'
 import { FollowersForm } from './FollowersForm'
 import { consts } from '../utils/consts'
 import { ArtistsForm } from './ArtistsForm'
+import { ImageForm } from './ImageForm'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -44,6 +45,7 @@ export function Label(props: { item: Label; store: Store }) {
         <div className='label'>
             {props.item ? (
                 <>
+                    <ImageForm label={props.item} store={props.store} />
                     <NameForm label={props.item} store={props.store} />
                     <LinkForm label={props.item} store={props.store} />
                     <FollowersForm label={props.item} store={props.store} />

@@ -3,7 +3,7 @@ import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
 import PeopleIcon from '@mui/icons-material/People'
-import { Chip } from '@mui/material'
+import { Avatar, Chip } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
 
 export function ListItem(props: { label: Label; store: Store }) {
@@ -17,6 +17,10 @@ export function ListItem(props: { label: Label; store: Store }) {
             <div className='item' onClick={handleClick}>
                 <div className='header'>
                     <div className='name'>
+                        <Avatar
+                            src={props.label.image}
+                            sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
+                        />
                         {props.label.name}
                         {props.label.link && <LinkIcon sx={{ opacity: 0.5 }} />}
                     </div>

@@ -61,6 +61,7 @@ export function useDb(db: Firestore) {
 export async function addDocTyped(db: Firestore, name: string) {
     const emptyDoc: Omit<Label, 'id'> = {
         name,
+        image: '',
         artists: [],
         email: '',
         followers: '?',

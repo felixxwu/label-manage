@@ -5,4 +5,6 @@ export const consts = {
     transition: 200,
     dbExtraId: 'extra',
     urlPasswordParam: 'p',
+    listAvatarSize: 25,
+    labelAvatarSize: 100,
 }
