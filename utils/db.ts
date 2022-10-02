@@ -21,7 +21,6 @@ export function useInitDb() {
     const [error, setError] = useState<string>(null)
 
     useEffect(() => {
-        if (!getPassword()) setError('No password')
         ;(async () => {
             try {
                 const app = initializeApp(firebaseConfig)
