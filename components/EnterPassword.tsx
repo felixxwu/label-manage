@@ -38,6 +38,7 @@ export function EnterPassword() {
                 onChange={handleChange}
                 onKeyUp={handleKeyUp}
                 autoComplete='off'
+                autoFocus
             />
             <Button variant='contained' onClick={enterPassword} endIcon={<ArrowForwardIcon />}>
                 Enter

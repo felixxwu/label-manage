@@ -4,6 +4,7 @@ import { theme } from '../utils/theme'
 import { Label, Store } from '../utils/types'
 import PeopleIcon from '@mui/icons-material/People'
 import { Chip } from '@mui/material'
+import LinkIcon from '@mui/icons-material/Link'
 
 export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {
@@ -15,7 +16,10 @@ export function ListItem(props: { label: Label; store: Store }) {
         <>
             <div className='item' onClick={handleClick}>
                 <div className='header'>
-                    <div className='name'>{props.label.name}</div>
+                    <div className='name'>
+                        {props.label.name}
+                        {props.label.link && <LinkIcon sx={{ opacity: 0.5 }} />}
+                    </div>
                     <div className='followers'>
                         <PeopleIcon />
                         {props.label.followers}
@@ -51,6 +55,12 @@ export function ListItem(props: { label: Label; store: Store }) {
                     display: flex;
                     width: 100%;
                     justify-content: space-between;
+                }
+
+                .name {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
                 }
 
                 .followers {
