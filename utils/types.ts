@@ -4,6 +4,7 @@ export interface Store {
     db: Firestore
     error: string
     labels: Label[]
+    extra: DbExtra
     selectedLabelId: string
     showMusic: boolean
 }
@@ -25,6 +26,7 @@ export interface Label {
 }
 
 export interface Song {
+    id: string
     title: string
     link: string
     styles: Style[]

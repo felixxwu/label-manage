@@ -13,6 +13,8 @@ export function List(props: { store: Store }) {
 
     return (
         <div className='list'>
+            <h1>Label List</h1>
+
             <Input store={props.store} />
 
             {props.store.labels.map((label, i) => {

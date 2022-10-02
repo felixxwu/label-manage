@@ -67,7 +67,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                     display: flex;
                     align-items: center;
                     gap: 10px;
-                    color: ${theme.palette.grey[400]};
+                    opacity: 0.5;
                 }
 
                 .artists {

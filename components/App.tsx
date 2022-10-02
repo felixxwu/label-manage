@@ -29,7 +29,8 @@ export function App() {
     const store: Store = {
         db,
         error,
-        labels: labels,
+        labels,
+        extra,
         get selectedLabelId() {
             return selectedLabelId
         },
