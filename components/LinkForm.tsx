@@ -8,7 +8,6 @@ import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
 import GoogleIcon from '@mui/icons-material/Google'
 import ClearIcon from '@mui/icons-material/Backspace'
-import { useState } from 'react'
 import { theme } from '../utils/theme'
 
 export function LinkForm(props: { label: Label; store: Store }) {

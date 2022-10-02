@@ -5,6 +5,8 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { updateDocTyped } from '../utils/db'
 import ClearIcon from '@mui/icons-material/Clear'
 import { consts } from '../utils/consts'
+import GoogleIcon from '@mui/icons-material/Google'
+import { theme } from '../utils/theme'
 
 export function ImageForm(props: { label: Label; store: Store }) {
     function searchImage() {
@@ -50,15 +52,21 @@ export function ImageForm(props: { label: Label; store: Store }) {
                 </>
             ) : (
                 <>
-                    <div onClick={searchImage}>
+                    <div onClick={handlePaste}>
                         <Avatar
-                            sx={{ width: consts.labelAvatarSize, height: consts.labelAvatarSize, cursor: 'pointer' }}
+                            sx={{
+                                width: consts.labelAvatarSize,
+                                height: consts.labelAvatarSize,
+                                cursor: 'pointer',
+                                bgcolor: theme.palette.secondary.main,
+                                color: theme.palette.primary.main,
+                            }}
                         >
-                            <AddIcon />
+                            <ContentPasteIcon />
                         </Avatar>
                     </div>
-                    <IconButton onClick={handlePaste}>
-                        <ContentPasteIcon />
+                    <IconButton onClick={searchImage}>
+                        <GoogleIcon />
                     </IconButton>
                 </>
             )}
