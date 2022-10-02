@@ -32,10 +32,10 @@ export function FollowersForm(props: { label: Label; store: Store }) {
                 </ToggleButtonGroup>
             ) : (
                 <div className='count'>
-                    Followers: {props.label.followers === '?' ? '' : '~'}
+                    Followers: {props.label.followers && '~'}
                     {props.label.followers}
                     <Button variant='contained' color='secondary' startIcon={<EditIcon />} onClick={toggleEditMode}>
-                        Edit
+                        Choose
                     </Button>
                 </div>
             )}

@@ -22,7 +22,7 @@ export interface Label {
     name: string
     image: string
     link: string
-    followers: typeof followerOptions[number] | '?'
+    followers: typeof followerOptions[number] | ''
     styles: Style[]
     artists: string[]
     notes: string
