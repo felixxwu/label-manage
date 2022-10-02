@@ -8,7 +8,7 @@ import { consts } from '../utils/consts'
 
 export function ImageForm(props: { label: Label; store: Store }) {
     function searchImage() {
-        const link = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(props.label.name)
+        const link = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(props.label.name + ' logo')
         window.open(link, '_blank').focus()
     }
 

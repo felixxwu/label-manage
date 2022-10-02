@@ -47,10 +47,21 @@ export function App() {
 
     useEffect(() => {
         window.addEventListener('keyup', handleKeyUp)
+        window.onhashchange = () => {
+            if (!window.location.hash) {
+                goHome()
+            }
+        }
     }, [])
 
     async function handleKeyUp(e: KeyboardEvent) {
-        if (e.key === 'Escape' && page !== 'list') {
+        if (e.key === 'Escape') {
+            goHome()
+        }
+    }
+
+    async function goHome() {
+        if (page !== 'list') {
             await fade()
             setSelectedLabelId(null)
             setShowMusic(false)

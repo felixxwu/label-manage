@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { deleteDocTyped } from '../utils/db'
 import { Label, Store } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -17,6 +17,10 @@ export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loadingDialog, setLoadingDialog] = useState(false)
+
+    useEffect(() => {
+        history.pushState('nohb', null, '#label')
+    }, [])
 
     async function openConfirmDelete() {
         setLoadingDialog(true)

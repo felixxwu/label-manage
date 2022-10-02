@@ -4,8 +4,13 @@ import { ListItem } from './ListItem'
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
 import { Input } from './Input'
 import { fade } from '../utils/animate'
+import { useEffect } from 'react'
 
 export function List(props: { store: Store }) {
+    useEffect(() => {
+        history.pushState('nohb', null, '#')
+    }, [])
+
     async function showMusic() {
         await fade()
         props.store.showMusic = true

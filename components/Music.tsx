@@ -5,7 +5,7 @@ import { Song, Store } from '../utils/types'
 import { consts } from '../utils/consts'
 import { fade } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
@@ -19,6 +19,10 @@ export function Music(props: { store: Store }) {
     const [deleteDialog, setDeleteDialog] = useState(false)
     const [localTitle, setLocalTitle] = useState('')
     const [localLink, setLocalLink] = useState('')
+
+    useEffect(() => {
+        history.pushState('nohb', null, '#music')
+    }, [])
 
     async function handleBack() {
         await fade()
