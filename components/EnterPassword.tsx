@@ -18,13 +18,12 @@ export function EnterPassword() {
 
     function handleKeyUp(e: React.KeyboardEvent<HTMLElement>) {
         if (e.key === 'Enter') {
-            window.localStorage.setItem('password', password)
-            console.log('password', password)
             enterPassword()
         }
     }
 
     function enterPassword() {
+        window.localStorage.setItem('password', password)
         const urlParams = new URLSearchParams(window.location.search)
         urlParams.set('p', password)
         window.location.search = urlParams.toString()
