@@ -11,6 +11,10 @@ export interface Store {
 
 export const followerOptions = ['2k', '5k', '10k', '20k', '50k', '100k', '200k'] as const
 
+export function followersToIndex(followers: Label['followers']) {
+    return followerOptions.findIndex(option => option === followers)
+}
+
 type Style = 'Liquid' | 'Deep' | 'Heavy' | 'Melodic' | 'Vocal'
 
 export interface Label {

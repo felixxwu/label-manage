@@ -59,6 +59,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                     display: flex;
                     width: 100%;
                     justify-content: space-between;
+                    gap: 10px;
                 }
 
                 .name {
