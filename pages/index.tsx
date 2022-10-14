@@ -37,7 +37,7 @@ export default function Home() {
                 }
 
                 main {
-                    padding: ${consts.appEndSpace} 0;
+                    padding: ${consts.appEndSpace} 20px;
                     color: ${theme.palette.primary.main};
                 }
             `}</style>
