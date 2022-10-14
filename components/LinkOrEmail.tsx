@@ -25,9 +25,22 @@ export function LinkOrEmail(props: {
     }
 
     async function handlePaste() {
-        const text = await navigator.clipboard.readText()
+        if (value.includes('@')) {
+            const email = await navigator.clipboard.readText()
+            updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: email })
+        } else {
+            const regex =
+                /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
+
+            const results = (await navigator.clipboard.readText()).match(regex)
+            if (!results || results.length === 0) return
+            console.log(`results[0]`, results[0])
+            const link = results[0].split('?')[0]
+            console.log(`link`, link)
+            updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: link })
+        }
+
         setOpen(false)
-        updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: text })
     }
 
     function handleClear() {
