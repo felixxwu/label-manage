@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
+import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { deleteDocTyped } from '../utils/db'
 import { Label, Store } from '../utils/types'
@@ -12,6 +12,7 @@ import { FollowersForm } from '../components/FollowersForm'
 import { ArtistsForm } from '../components/ArtistsForm'
 import { ImageForm } from '../components/ImageForm'
 import { SubmissionForm } from '../components/SubmissionForm'
+import { Progress } from '../components/Progress'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -49,7 +50,10 @@ export function Label(props: { item: Label; store: Store }) {
         <div className='label'>
             {props.item ? (
                 <>
-                    <ImageForm label={props.item} store={props.store} />
+                    <div className='header'>
+                        <ImageForm label={props.item} store={props.store} />
+                        <Progress label={props.item} store={props.store} />
+                    </div>
                     <NameForm label={props.item} store={props.store} />
                     <LinkForm label={props.item} store={props.store} />
                     <SubmissionForm label={props.item} store={props.store} />
@@ -101,6 +105,13 @@ export function Label(props: { item: Label; store: Store }) {
                 .bottom-buttons {
                     display: flex;
                     gap: 20px;
+                }
+
+                .header {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
                 }
             `}</style>
         </div>
