@@ -38,4 +38,5 @@ export interface Song {
 
 export interface DbExtra {
     songs: Song[]
+    compact: boolean
 }

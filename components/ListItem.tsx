@@ -18,10 +18,13 @@ export function ListItem(props: { label: Label; store: Store }) {
             <div className='item' onClick={handleClick}>
                 <div className='header'>
                     <div className='name'>
-                        <Avatar
-                            src={props.label.image}
-                            sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
-                        />
+                        {!props.store.extra.compact && (
+                            <Avatar
+                                src={props.label.image}
+                                sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
+                            />
+                        )}
+
                         {props.label.name}
                         {props.label.submission && !props.label.submission.includes('@') && (
                             <LinkIcon sx={{ opacity: 0.5 }} />
@@ -35,7 +38,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                         {props.label.followers}
                     </div>
                 </div>
-                {props.label.artists.length !== 0 && (
+                {props.label.artists.length !== 0 && !props.store.extra.compact && (
                     <div className='artists'>
                         {props.label.artists.map((artist, index) => (
                             <Chip label={artist} key={index} />
@@ -49,8 +52,8 @@ export function ListItem(props: { label: Label; store: Store }) {
                     width: 100%;
                     max-width: ${consts.maxAppWidth}px;
                     color: ${theme.palette.primary.main};
-                    background-color: ${theme.palette.grey[800]};
-                    padding: 20px;
+                    background-color: ${props.store.extra.compact ? '' : theme.palette.grey[800]};
+                    padding: ${props.store.extra.compact ? '' : '20px'};
                     border-radius: ${consts.borderRadius}px;
                     cursor: pointer;
                     text-align: left;
@@ -60,7 +63,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                 }
 
                 .item:hover {
-                    background-color: #ffffff11;
+                    background-color: ${props.store.extra.compact ? '' : '#ffffff11'};
                 }
 
                 .header {

@@ -79,6 +79,7 @@ export async function addDocTyped(db: Firestore, name: string) {
 function initExtra(db: Firestore) {
     const emptyExtra: DbExtra = {
         songs: [],
+        compact: false,
     }
     try {
         return setDoc(doc(db, getUrlPassword(), consts.dbExtraId), emptyExtra)
