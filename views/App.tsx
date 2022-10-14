@@ -1,14 +1,16 @@
 import { ThemeProvider } from '@emotion/react'
 import React, { useEffect, useState } from 'react'
 import { fade } from '../utils/animate'
+import { consts } from '../utils/consts'
 import { useInitDb, useDb } from '../utils/db'
 import { usePassword } from '../utils/getPassword'
 import { theme } from '../utils/theme'
 import { Store } from '../utils/types'
-import { EnterPassword } from './EnterPassword'
+import { EnterPassword } from '../components/EnterPassword'
 import { Label } from './Label'
 import { List } from './List'
 import { Music } from './Music'
+import { CircularProgress } from '@mui/material'
 
 export function App() {
     const { db, error } = useInitDb()
@@ -70,13 +72,31 @@ export function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            {page === 'password' && <EnterPassword />}
-            {page === 'error' && <>{error}</>}
-            {page === 'loading' && <>Loading...</>}
+            <div className='app'>
+                <div className='content'>
+                    {page === 'password' && <EnterPassword />}
+                    {page === 'error' && <>{error}</>}
+                    {page === 'loading' && <CircularProgress />}
 
-            {page === 'music' && <Music store={store} />}
-            {page === 'label' && <Label store={store} item={labels.find(l => l.id === selectedLabelId)} />}
-            {page === 'list' && <List store={store} />}
+                    {page === 'label' && <Label store={store} item={labels.find(l => l.id === selectedLabelId)} />}
+                    {page === 'list' && <List store={store} />}
+                    {page === 'music' && <Music store={store} />}
+                </div>
+
+                <style jsx>{`
+                    .app {
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    .content {
+                        display: flex;
+                        justify-content: center;
+                        max-width: ${consts.maxAppWidth}px;
+                        width: 100%;
+                    }
+                `}</style>
+            </div>
         </ThemeProvider>
     )
 }

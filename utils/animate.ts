@@ -10,5 +10,5 @@ export async function fade() {
 }
 
 export async function shortWait() {
-    await new Promise(r => setTimeout(r, 500))
+    await new Promise(r => setTimeout(r, 300))
 }

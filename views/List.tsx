@@ -1,8 +1,8 @@
 import { Fab } from '@mui/material'
 import { Store } from '../utils/types'
-import { ListItem } from './ListItem'
+import { ListItem } from '../components/ListItem'
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
-import { Input } from './Input'
+import { Input } from '../components/Input'
 import { fade } from '../utils/animate'
 import { useEffect } from 'react'
 

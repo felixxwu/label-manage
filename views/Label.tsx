@@ -6,13 +6,12 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { fade, shortWait } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
-import { LinkForm } from './LinkForm'
-import { NameForm } from './NameForm'
-import { FollowersForm } from './FollowersForm'
-import { consts } from '../utils/consts'
-import { ArtistsForm } from './ArtistsForm'
-import { ImageForm } from './ImageForm'
-import { SubmissionForm } from './SubmissionForm'
+import { LinkForm } from '../components/LinkForm'
+import { NameForm } from '../components/NameForm'
+import { FollowersForm } from '../components/FollowersForm'
+import { ArtistsForm } from '../components/ArtistsForm'
+import { ImageForm } from '../components/ImageForm'
+import { SubmissionForm } from '../components/SubmissionForm'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -90,12 +89,12 @@ export function Label(props: { item: Label; store: Store }) {
 
             <style jsx>{`
                 .label {
+                    width: 100%;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: flex-start;
                     gap: 20px;
-                    max-width: ${consts.maxAppWidth}px;
                     margin: auto;
                 }
 

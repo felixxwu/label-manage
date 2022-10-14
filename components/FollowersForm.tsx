@@ -1,8 +1,8 @@
-import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../utils/db'
 import { followerOptions, Label, Store } from '../utils/types'
-import EditIcon from '@mui/icons-material/Edit'
+import { EditButton } from './EditButton'
 
 export function FollowersForm(props: { label: Label; store: Store }) {
     const [followers, setFollowers] = useState(props.label.followers)
@@ -21,7 +21,7 @@ export function FollowersForm(props: { label: Label; store: Store }) {
     }
 
     return (
-        <div>
+        <div className='form'>
             {editMode ? (
                 <ToggleButtonGroup color='primary' exclusive value={followers} onChange={handleChange}>
                     {followerOptions.map((option, index) => (
@@ -32,19 +32,25 @@ export function FollowersForm(props: { label: Label; store: Store }) {
                 </ToggleButtonGroup>
             ) : (
                 <div className='count'>
-                    Followers: {props.label.followers && '~'}
-                    {props.label.followers}
-                    <Button variant='contained' color='secondary' startIcon={<EditIcon />} onClick={toggleEditMode}>
-                        Choose
-                    </Button>
+                    {props.label.followers ? (
+                        `~ ${props.label.followers} followers`
+                    ) : (
+                        <div style={{ opacity: 0.5 }}>Followers:</div>
+                    )}
+                    <EditButton onClick={toggleEditMode} secondary={!!props.label.followers} />
                 </div>
             )}
 
             <style jsx>{`
+                .form {
+                    width: 100%;
+                }
+
                 .count {
                     display: flex;
                     align-items: center;
                     gap: 20px;
+                    justify-content: space-between;
                 }
             `}</style>
         </div>

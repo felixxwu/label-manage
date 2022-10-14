@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
 import { consts } from '../utils/consts'
-import { App } from '../components/App'
+import { App } from '../views/App'
 import { theme } from '../utils/theme'
 
 export default function Home() {
@@ -37,7 +37,7 @@ export default function Home() {
                 }
 
                 main {
-                    padding: ${consts.appEndSpace} 20px;
+                    padding: ${consts.appEndSpace} 0;
                     color: ${theme.palette.primary.main};
                 }
             `}</style>

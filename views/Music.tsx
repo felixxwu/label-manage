@@ -168,12 +168,12 @@ export function Music(props: { store: Store }) {
 
             <style jsx>{`
                 .music {
+                    width: 100%;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
                     gap: 20px;
-                    max-width: ${consts.maxAppWidth}px;
                     margin: auto;
                 }
 
