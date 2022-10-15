@@ -77,6 +77,8 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
                                 onChange={handleInput}
                                 onKeyUp={handleKeyUp}
                                 value={artistToAdd}
+                                autoComplete='off'
+                                autoCorrect='off'
                             />
                         </DialogContent>
                         <DialogActions>
