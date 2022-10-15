@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getUrlPassword } from './getPassword'
-import { DbExtra, followersToIndex, Label } from './types'
+import { DbExtra, Label } from './types'
 import { fade } from './animate'
 import { consts } from './consts'
 
@@ -45,7 +45,7 @@ export function useDb(db: Firestore) {
         if (!getUrlPassword()) return
 
         onSnapshotTyped(db, (labels, extra) => {
-            setLabels(labels.sort((a, b) => followersToIndex(b.followers) - followersToIndex(a.followers)))
+            setLabels(labels)
 
             if (extra) {
                 setExtra(extra)

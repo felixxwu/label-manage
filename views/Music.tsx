@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import AddIcon from '@mui/icons-material/Add'
-import { Song, Store } from '../utils/types'
+import { Song } from '../utils/types'
 import { consts } from '../utils/consts'
 import { fade } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
@@ -11,6 +11,7 @@ import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import LinkIcon from '@mui/icons-material/Link'
 import { setHistory } from '../utils/history'
+import { Store } from '../utils/store'
 
 export function Music(props: { store: Store }) {
     const [loadingSave, loadSave] = useShortLoad()

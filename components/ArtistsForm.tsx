@@ -1,10 +1,11 @@
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
-import { Label, Store } from '../utils/types'
+import { Label } from '../utils/types'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
+import { Store } from '../utils/store'
 
 export function ArtistsForm(props: { label: Label; store: Store }) {
     const [dialogContent, setDialogContent] = useState<'delete' | 'add' | 'closed'>('closed')

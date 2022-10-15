@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { addDocTyped } from '../utils/db'
-import { Store } from '../utils/types'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useShortLoad } from '../utils/useShortLoad'
+import { Store } from '../utils/store'
 
 export function Input(props: { store: Store }) {
     const [name, setName] = useState('')

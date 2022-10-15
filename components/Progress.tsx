@@ -1,6 +1,7 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
-import { Label, Store } from '../utils/types'
+import { Label } from '../utils/types'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
+import { Store } from '../utils/store'
 
 export function Progress(props: { label: Label; store: Store }) {
     const fields: (keyof Label)[] = ['artists', 'followers', 'image', 'link', 'submission']

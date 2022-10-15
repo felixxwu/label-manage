@@ -1,4 +1,5 @@
-import { Label, Store } from '../utils/types'
+import { Store } from '../utils/store';
+import { Label } from '../utils/types'
 import { LinkOrEmail } from './LinkOrEmail'
 
 export function LinkForm(props: { label: Label; store: Store }) {

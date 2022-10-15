@@ -1,10 +1,11 @@
-import { Label, Store } from '../utils/types'
+import { Label } from '../utils/types'
 import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import { EditButton } from './EditButton'
 import { useState } from 'react'
 import { ClearButton } from './ClearButton'
 import { PasteSearchPopup } from './PasteSearchPopup'
+import { Store } from '../utils/store'
 
 type StringOnlyKeys<T extends Label> = {
     [K in keyof T]: T[K] extends String ? K : never

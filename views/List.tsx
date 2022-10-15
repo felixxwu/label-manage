@@ -1,12 +1,13 @@
-import { Fab, FormControlLabel, Switch } from '@mui/material'
-import { Store } from '../utils/types'
+import { Fab } from '@mui/material'
 import { ListItem } from '../components/ListItem'
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
 import { Input } from '../components/Input'
 import { fade } from '../utils/animate'
-import { updateDocTyped } from '../utils/db'
-import { consts } from '../utils/consts'
 import { setHistory } from '../utils/history'
+import { CompactViewSwitch } from '../components/CompactViewSwitch'
+import { Sort } from '../components/Sort'
+import { Store } from '../utils/store'
+import { followersToIndex } from '../utils/types'
 
 export function List(props: { store: Store }) {
     setHistory('')
@@ -16,9 +17,14 @@ export function List(props: { store: Store }) {
         props.store.showMusic = true
     }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateDocTyped(props.store.db, consts.dbExtraId, { compact: event.target.checked })
-    }
+    const labels = props.store.labels.sort((a, b) => {
+        if (props.store.sort === 'follower') {
+            return followersToIndex(b.followers) - followersToIndex(a.followers)
+        }
+        if (props.store.sort === 'name') {
+            return a.name > b.name ? 1 : -1
+        }
+    })
 
     return (
         <div className='list'>
@@ -26,13 +32,13 @@ export function List(props: { store: Store }) {
 
             <Input store={props.store} />
 
-            <FormControlLabel
-                control={<Switch onChange={handleChange} checked={props.store.extra.compact} />}
-                label='Compact View'
-            />
+            <div className='options'>
+                <CompactViewSwitch store={props.store} />
+                <Sort store={props.store} />
+            </div>
 
             <div className='list-items'>
-                {props.store.labels.map((label, i) => {
+                {labels.map((label, i) => {
                     return <ListItem label={label} key={i} store={props.store} />
                 })}
             </div>
@@ -56,6 +62,13 @@ export function List(props: { store: Store }) {
                     flex-direction: column;
                     align-items: center;
                     gap: ${props.store.extra.compact ? '' : '20px'};
+                }
+
+                .options {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
                 }
             `}</style>
         </div>

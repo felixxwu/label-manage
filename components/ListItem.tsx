@@ -1,11 +1,12 @@
 import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
-import { Label, Store } from '../utils/types'
+import { Label } from '../utils/types'
 import PeopleIcon from '@mui/icons-material/People'
 import { Avatar, Chip } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/Email'
+import { Store } from '../utils/store'
 
 export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {

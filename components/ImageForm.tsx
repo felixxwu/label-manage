@@ -1,5 +1,5 @@
 import { Avatar, IconButton } from '@mui/material'
-import { Label, Store } from '../utils/types'
+import { Label } from '../utils/types'
 import { updateDocTyped } from '../utils/db'
 import ClearIcon from '@mui/icons-material/Clear'
 import { consts } from '../utils/consts'
@@ -7,6 +7,7 @@ import { theme } from '../utils/theme'
 import EditIcon from '@mui/icons-material/Edit'
 import { PasteSearchPopup } from './PasteSearchPopup'
 import { useState } from 'react'
+import { Store } from '../utils/store'
 
 export function ImageForm(props: { label: Label; store: Store }) {
     const [open, setOpen] = useState(false)

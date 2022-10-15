@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import { useState } from 'react'
 import { deleteDocTyped } from '../utils/db'
-import { Label, Store } from '../utils/types'
+import { Label } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { fade, shortWait } from '../utils/animate'
@@ -14,8 +14,9 @@ import { ImageForm } from '../components/ImageForm'
 import { SubmissionForm } from '../components/SubmissionForm'
 import { Progress } from '../components/Progress'
 import { setHistory } from '../utils/history'
+import { Store } from '../utils/store'
 
-export function Label(props: { item: Label; store: Store }) {
+export function Label(props: { label: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loadingDialog, setLoadingDialog] = useState(false)
@@ -41,23 +42,23 @@ export function Label(props: { item: Label; store: Store }) {
     async function handleDelete() {
         setLoading(true)
         await shortWait()
-        await deleteDocTyped(props.store.db, props.item.id)
+        await deleteDocTyped(props.store.db, props.label.id)
         await handleBack()
     }
 
     return (
         <div className='label'>
-            {props.item ? (
+            {props.label ? (
                 <>
                     <div className='header'>
-                        <ImageForm label={props.item} store={props.store} />
-                        <Progress label={props.item} store={props.store} />
+                        <ImageForm label={props.label} store={props.store} />
+                        <Progress label={props.label} store={props.store} />
                     </div>
-                    <NameForm label={props.item} store={props.store} />
-                    <LinkForm label={props.item} store={props.store} />
-                    <SubmissionForm label={props.item} store={props.store} />
-                    <FollowersForm label={props.item} store={props.store} />
-                    <ArtistsForm label={props.item} store={props.store} />
+                    <NameForm label={props.label} store={props.store} />
+                    <LinkForm label={props.label} store={props.store} />
+                    <SubmissionForm label={props.label} store={props.store} />
+                    <FollowersForm label={props.label} store={props.store} />
+                    <ArtistsForm label={props.label} store={props.store} />
                 </>
             ) : (
                 <h1>Label deleted</h1>
@@ -67,7 +68,7 @@ export function Label(props: { item: Label; store: Store }) {
                 <Button color='primary' variant='contained' onClick={handleBack} startIcon={<ArrowBackIcon />}>
                     Back
                 </Button>
-                {props.item && (
+                {props.label && (
                     <LoadingButton
                         color='secondary'
                         variant='contained'
