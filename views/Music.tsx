@@ -5,11 +5,12 @@ import { Song, Store } from '../utils/types'
 import { consts } from '../utils/consts'
 import { fade } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import LinkIcon from '@mui/icons-material/Link'
+import { setHistory } from '../utils/history'
 
 export function Music(props: { store: Store }) {
     const [loadingSave, loadSave] = useShortLoad()
@@ -20,9 +21,7 @@ export function Music(props: { store: Store }) {
     const [localTitle, setLocalTitle] = useState('')
     const [localLink, setLocalLink] = useState('')
 
-    useEffect(() => {
-        history.pushState('nohb', null, '#music')
-    }, [])
+    setHistory('music')
 
     async function handleBack() {
         await fade()

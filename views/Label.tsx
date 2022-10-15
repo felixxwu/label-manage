@@ -1,5 +1,5 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
+import { useState } from 'react'
 import { deleteDocTyped } from '../utils/db'
 import { Label, Store } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -13,15 +13,14 @@ import { ArtistsForm } from '../components/ArtistsForm'
 import { ImageForm } from '../components/ImageForm'
 import { SubmissionForm } from '../components/SubmissionForm'
 import { Progress } from '../components/Progress'
+import { setHistory } from '../utils/history'
 
 export function Label(props: { item: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loadingDialog, setLoadingDialog] = useState(false)
 
-    useEffect(() => {
-        history.pushState('nohb', null, '#label')
-    }, [])
+    setHistory('label')
 
     async function openConfirmDelete() {
         setLoadingDialog(true)
