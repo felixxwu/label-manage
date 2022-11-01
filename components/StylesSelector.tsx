@@ -46,7 +46,7 @@ export function StylesSelector(props: { store: Store; onSelectStyle: (style: str
 
     return (
         <div className='style-selector'>
-            <Chips chips={props.store.extra.styles} onClick={handleClick} onDelete={handleDelete} />
+            <Chips chips={props.store.extra.styles} onClick={handleClick} onDelete={handleDelete} colorful />
             {addMode ? (
                 <>
                     <TextField

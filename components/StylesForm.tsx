@@ -14,6 +14,7 @@ export function StylesForm(props: { label: Label; store: Store }) {
     return (
         <Chips
             title='Styles:'
+            colorful
             chips={props.label.styles}
             onDelete={handleDelete}
             addDialog={({ closeDialog }) => {

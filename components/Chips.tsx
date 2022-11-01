@@ -3,9 +3,11 @@ import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../utils/useShortLoad'
+import { getColorHash } from '../utils/colorHash'
 
 export function Chips(props: {
     chips: string[]
+    colorful?: boolean
     title?: string
     onDelete?: (item: string) => Promise<void>
     onClick?: (item: string) => Promise<void>
@@ -50,6 +52,7 @@ export function Chips(props: {
                         onClick={props.onClick && (() => handleClick(item))}
                         onDelete={props.onDelete && (() => openDeleteDialog(item))}
                         key={index}
+                        sx={{ backgroundColor: props.colorful ? getColorHash(item) : '' }}
                     />
                 ))}
             {props.addDialog && (

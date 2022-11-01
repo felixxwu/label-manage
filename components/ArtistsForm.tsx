@@ -20,6 +20,7 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
     return (
         <Chips
             title='Artists:'
+            colorful
             chips={props.label.artists}
             onDelete={handleDelete}
             addDialog={({ closeDialog }) => {

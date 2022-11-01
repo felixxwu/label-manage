@@ -42,7 +42,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                 </div>
                 {props.label.artists.length !== 0 && !props.store.extra.compact && (
                     <div className='artists'>
-                        <Chips chips={props.label.artists} />
+                        <Chips chips={props.label.artists} colorful />
                     </div>
                 )}
             </div>

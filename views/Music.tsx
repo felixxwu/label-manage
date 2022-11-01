@@ -115,7 +115,7 @@ export function Music(props: { store: Store }) {
                         {song.title}
                         {song.link && <LinkIcon />}
                     </div>
-                    <Chips chips={song.styles} />
+                    <Chips chips={song.styles} colorful />
                 </div>
             ))}
 
@@ -171,6 +171,7 @@ export function Music(props: { store: Store }) {
                                 </div>
                                 <Chips
                                     chips={localStyles}
+                                    colorful
                                     title='Styles:'
                                     onDelete={handleDeleteStyle}
                                     addDialog={({ closeDialog }) => {
