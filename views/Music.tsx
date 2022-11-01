@@ -154,7 +154,6 @@ export function Music(props: { store: Store }) {
                                 variant='standard'
                                 onChange={handleTitleChange}
                                 value={localTitle}
-                                autoFocus
                             />
                             <TextField
                                 margin='normal'
