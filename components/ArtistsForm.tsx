@@ -5,18 +5,24 @@ import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../utils/useShortLoad'
 import { Store } from '../utils/store'
 import { Chips } from './Chips'
+import { updateDocTyped } from '../utils/db'
 
 export function ArtistsForm(props: { label: Label; store: Store }) {
     const [itemToAdd, setItemToAdd] = useState('')
     const [loading, load] = useShortLoad()
 
+    async function handleDelete(style: string) {
+        updateDocTyped(props.store.db, props.label.id, {
+            artists: props.label.artists.filter(item => item !== style),
+        })
+    }
+
     return (
         <Chips
-            dbKey='artists'
             title='Artists:'
-            label={props.label}
-            store={props.store}
-            addDialog={({ closeDialog, addItem }) => {
+            chips={props.label.artists}
+            onDelete={handleDelete}
+            addDialog={({ closeDialog }) => {
                 function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
                     setItemToAdd(e.target.value)
                 }
@@ -29,8 +35,11 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
 
                 async function submitItem() {
                     await load()
-                    addItem(itemToAdd)
+                    await updateDocTyped(props.store.db, props.label.id, {
+                        artists: props.label.artists.concat(itemToAdd),
+                    })
                     setItemToAdd('')
+                    closeDialog()
                 }
 
                 return (

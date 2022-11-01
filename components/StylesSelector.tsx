@@ -1,15 +1,16 @@
 import { LoadingButton } from '@mui/lab'
-import { Chip, TextField } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { consts } from '../utils/consts'
 import { updateDocTyped } from '../utils/db'
 import { Store } from '../utils/store'
-import { Label } from '../utils/types'
 import { useShortLoad } from '../utils/useShortLoad'
+import { Chips } from './Chips'
 
-export function StylesSelector(props: { label: Label; store: Store; onSelectStyle: (style: string) => void }) {
+export function StylesSelector(props: { store: Store; onSelectStyle: (style: string) => void }) {
     const [styleToAdd, setStyleToAdd] = useState('')
     const [loading, load] = useShortLoad()
+    const [addMode, setAddMode] = useState(false)
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
         setStyleToAdd(e.target.value)
@@ -40,39 +41,41 @@ export function StylesSelector(props: { label: Label; store: Store; onSelectStyl
     }
 
     async function handleClick(style: string) {
-        await load()
         props.onSelectStyle(style)
     }
 
     return (
         <div className='style-selector'>
-            <div className='chips'>
-                {props.store.extra.styles.map(style => (
-                    <Chip label={style} onClick={() => handleClick(style)} onDelete={() => handleDelete(style)} />
-                ))}
-                {props.store.extra.styles.length === 0 && 'No styles added.'}
-            </div>
-            <TextField
-                margin='normal'
-                label='Add Style...'
-                fullWidth
-                variant='standard'
-                onChange={handleInput}
-                onKeyUp={handleKeyUp}
-                value={styleToAdd}
-                autoComplete='off'
-                autoCorrect='off'
-            />
-            <LoadingButton onClick={addStyle} loading={loading} variant='contained'>
-                Add
-            </LoadingButton>
+            <Chips chips={props.store.extra.styles} onClick={handleClick} onDelete={handleDelete} />
+            {addMode ? (
+                <>
+                    <TextField
+                        margin='normal'
+                        label='New style name...'
+                        fullWidth
+                        variant='standard'
+                        onChange={handleInput}
+                        onKeyUp={handleKeyUp}
+                        value={styleToAdd}
+                        autoComplete='off'
+                        autoCorrect='off'
+                        autoFocus
+                        sx={{ margin: 0 }}
+                    />
+                    <LoadingButton onClick={addStyle} loading={loading}>
+                        Add to list
+                    </LoadingButton>
+                </>
+            ) : (
+                <Button onClick={() => setAddMode(true)}>Add new style</Button>
+            )}
 
             <style jsx>{`
                 .style-selector {
-                    width: 300px;
+                    width: 400px;
                     display: flex;
                     flex-direction: column;
-                    gap: 10px;
+                    gap: 20px;
                     padding: 20px;
                 }
 

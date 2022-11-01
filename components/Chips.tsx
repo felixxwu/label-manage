@@ -1,22 +1,15 @@
-import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
-import { Label } from '../utils/types'
+import { Button, Chip, Dialog, DialogActions, DialogTitle, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../utils/useShortLoad'
-import { updateDocTyped } from '../utils/db'
-import { Store } from '../utils/store'
-
-type StringArrayOnlyKeys<T extends Label> = {
-    [K in keyof T]: T[K] extends String[] ? K : never
-}[keyof T]
 
 export function Chips(props: {
-    label: Label
-    store: Store
-    dbKey: StringArrayOnlyKeys<Label>
-    title: string
-    addDialog: (props: { closeDialog: () => void; addItem: (item: string) => void }) => React.ReactNode
+    chips: string[]
+    title?: string
+    onDelete?: (item: string) => Promise<void>
+    onClick?: (item: string) => Promise<void>
+    addDialog?: (props: { closeDialog: () => void }) => React.ReactNode
 }) {
     const [dialogContent, setDialogContent] = useState<'delete' | 'add' | 'closed'>('closed')
     const [itemToDelete, setItemToDelete] = useState('')
@@ -35,33 +28,37 @@ export function Chips(props: {
         setDialogContent('closed')
     }
 
-    async function addItem(item: string) {
-        if (item === '') return
-        await load()
-        updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: props.label[props.dbKey].concat(item) })
-        closeDialog()
-    }
-
     async function deleteItem() {
         if (itemToDelete === '') return
         await load()
-        updateDocTyped(props.store.db, props.label.id, {
-            [props.dbKey]: props.label[props.dbKey].filter(item => item !== itemToDelete),
-        })
+        await props.onDelete(itemToDelete)
         closeDialog()
+    }
+
+    function handleClick(item: string) {
+        props.onClick(item)
     }
 
     return (
         <div className='chips'>
             {props.title}
-            {props.label[props.dbKey].map((item, index) => (
-                <Chip label={item} onDelete={() => openDeleteDialog(item)} key={index} />
-            ))}
-            <IconButton onClick={openAddDialog} sx={{ marginLeft: '-8px' }}>
-                <AddIcon />
-            </IconButton>
+            {props.chips
+                .sort((a, b) => (a < b ? -1 : 1))
+                .map((item, index) => (
+                    <Chip
+                        label={item}
+                        onClick={props.onClick && (() => handleClick(item))}
+                        onDelete={props.onDelete && (() => openDeleteDialog(item))}
+                        key={index}
+                    />
+                ))}
+            {props.addDialog && (
+                <IconButton onClick={openAddDialog}>
+                    <AddIcon />
+                </IconButton>
+            )}
             <Dialog open={dialogContent !== 'closed'} onClose={closeDialog}>
-                {dialogContent === 'add' && props.addDialog({ addItem, closeDialog })}
+                {dialogContent === 'add' && props.addDialog && props.addDialog({ closeDialog })}
                 {dialogContent === 'delete' && (
                     <>
                         <DialogTitle>Delete {itemToDelete}?</DialogTitle>

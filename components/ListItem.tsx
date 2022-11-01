@@ -3,10 +3,11 @@ import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label } from '../utils/types'
 import PeopleIcon from '@mui/icons-material/People'
-import { Avatar, Chip } from '@mui/material'
+import { Avatar } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/Email'
 import { Store } from '../utils/store'
+import { Chips } from './Chips'
 
 export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {
@@ -41,9 +42,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                 </div>
                 {props.label.artists.length !== 0 && !props.store.extra.compact && (
                     <div className='artists'>
-                        {props.label.artists.map((artist, index) => (
-                            <Chip label={artist} key={index} />
-                        ))}
+                        <Chips chips={props.label.artists} />
                     </div>
                 )}
             </div>
@@ -88,9 +87,6 @@ export function ListItem(props: { label: Label; store: Store }) {
                 }
 
                 .artists {
-                    display: flex;
-                    gap: 10px;
-                    flex-wrap: wrap;
                     pointer-events: none;
                 }
             `}</style>

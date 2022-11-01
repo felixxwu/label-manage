@@ -4,7 +4,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll'
 import { Store } from '../utils/store'
 
 export function Progress(props: { label: Label; store: Store }) {
-    const fields: (keyof Label)[] = ['artists', 'followers', 'image', 'link', 'submission']
+    const fields: (keyof Label)[] = ['artists', 'followers', 'image', 'link', 'submission', 'styles']
     const filledOut = fields.filter(field => {
         if (Array.isArray(props.label[field])) {
             return props.label[field].length !== 0

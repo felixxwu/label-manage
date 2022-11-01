@@ -12,6 +12,8 @@ import { theme } from '../utils/theme'
 import LinkIcon from '@mui/icons-material/Link'
 import { setHistory } from '../utils/history'
 import { Store } from '../utils/store'
+import { StylesSelector } from '../components/StylesSelector'
+import { Chips } from '../components/Chips'
 
 export function Music(props: { store: Store }) {
     const [loadingSave, loadSave] = useShortLoad()
@@ -21,6 +23,7 @@ export function Music(props: { store: Store }) {
     const [deleteDialog, setDeleteDialog] = useState(false)
     const [localTitle, setLocalTitle] = useState('')
     const [localLink, setLocalLink] = useState('')
+    const [localStyles, setLocalStyles] = useState<string[]>([])
 
     setHistory('music')
 
@@ -40,12 +43,14 @@ export function Music(props: { store: Store }) {
         setSelectedSongId(emptySong.id)
         setLocalTitle(emptySong.title)
         setLocalLink(emptySong.link)
+        setLocalStyles(emptySong.styles)
     }
 
     function openDialog(songId: string) {
         setSelectedSongId(songId)
         setLocalTitle(findSong(songId).title)
         setLocalLink(findSong(songId).link)
+        setLocalStyles(findSong(songId).styles)
     }
 
     function closeDialog() {
@@ -65,6 +70,10 @@ export function Music(props: { store: Store }) {
         setLocalLink(e.target.value)
     }
 
+    async function handleDeleteStyle(style: string) {
+        setLocalStyles(localStyles.filter(s => s !== style))
+    }
+
     async function saveEdit() {
         await loadSave()
         await updateDocTyped(props.store.db, consts.dbExtraId, {
@@ -74,7 +83,7 @@ export function Music(props: { store: Store }) {
                         id: song.id,
                         title: localTitle,
                         link: localLink,
-                        styles: song.styles,
+                        styles: localStyles,
                     }
                 } else {
                     return song
@@ -110,6 +119,7 @@ export function Music(props: { store: Store }) {
                             </IconButton>
                         )}
                     </div>
+                    <Chips chips={song.styles} />
                 </div>
             ))}
 
@@ -153,6 +163,21 @@ export function Music(props: { store: Store }) {
                                 variant='standard'
                                 onChange={handleLinkChange}
                                 value={localLink}
+                            />
+                            <Chips
+                                chips={localStyles}
+                                title='Styles:'
+                                onDelete={handleDeleteStyle}
+                                addDialog={({ closeDialog }) => {
+                                    async function handleStyleSelection(style: string) {
+                                        if (!localStyles.includes(style)) {
+                                            setLocalStyles(localStyles.concat(style))
+                                        }
+                                        closeDialog()
+                                    }
+
+                                    return <StylesSelector store={props.store} onSelectStyle={handleStyleSelection} />
+                                }}
                             />
                         </DialogContent>
                         <DialogActions>
