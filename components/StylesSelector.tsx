@@ -72,7 +72,7 @@ export function StylesSelector(props: { store: Store; onSelectStyle: (style: str
 
             <style jsx>{`
                 .style-selector {
-                    width: 400px;
+                    max-width: 400px;
                     display: flex;
                     flex-direction: column;
                     gap: 20px;

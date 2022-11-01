@@ -146,7 +146,16 @@ export function Music(props: { store: Store }) {
                 ) : (
                     <>
                         <DialogTitle>Edit Song</DialogTitle>
-                        <DialogContent>
+                        <DialogContent
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '20px',
+                                padding: '0 24px',
+                                width: '450px',
+                                maxWidth: '100%',
+                            }}
+                        >
                             <TextField
                                 margin='normal'
                                 label='Song Title'
@@ -154,6 +163,7 @@ export function Music(props: { store: Store }) {
                                 variant='standard'
                                 onChange={handleTitleChange}
                                 value={localTitle}
+                                sx={{ margin: 0 }}
                             />
                             <TextField
                                 margin='normal'
@@ -162,6 +172,7 @@ export function Music(props: { store: Store }) {
                                 variant='standard'
                                 onChange={handleLinkChange}
                                 value={localLink}
+                                sx={{ margin: 0 }}
                             />
                             <Chips
                                 chips={localStyles}
