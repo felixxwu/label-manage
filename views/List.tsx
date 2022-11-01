@@ -1,4 +1,4 @@
-import { Fab } from '@mui/material'
+import { Button, Fab } from '@mui/material'
 import { ListItem } from '../components/ListItem'
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
 import { Input } from '../components/Input'
@@ -32,6 +32,10 @@ export function List(props: { store: Store }) {
 
             <Input store={props.store} />
 
+            <Button size='large' variant='contained' fullWidth endIcon={<LibraryMusicIcon />} onClick={showMusic}>
+                Music Library
+            </Button>
+
             <div className='options'>
                 <CompactViewSwitch store={props.store} />
                 <Sort store={props.store} />
@@ -43,17 +47,13 @@ export function List(props: { store: Store }) {
                 })}
             </div>
 
-            <Fab onClick={showMusic} color='secondary' sx={{ position: 'fixed', bottom: '20px', right: '20px' }}>
-                <LibraryMusicIcon />
-            </Fab>
-
             <style jsx>{`
                 .list {
                     width: 100%;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: 20px;
+                    gap: 30px;
                 }
 
                 .list-items {

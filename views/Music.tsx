@@ -113,11 +113,7 @@ export function Music(props: { store: Store }) {
                 <div onClick={() => openDialog(song.id)} className='song' key={index}>
                     <div className='header'>
                         {song.title}
-                        {song.link && (
-                            <IconButton onClick={() => openLink(song.link)}>
-                                <LinkIcon />
-                            </IconButton>
-                        )}
+                        {song.link && <LinkIcon />}
                     </div>
                     <Chips chips={song.styles} />
                 </div>
@@ -146,49 +142,51 @@ export function Music(props: { store: Store }) {
                 ) : (
                     <>
                         <DialogTitle>Edit Song</DialogTitle>
-                        <DialogContent
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '20px',
-                                padding: '0 24px',
-                                width: '450px',
-                                maxWidth: '100%',
-                            }}
-                        >
-                            <TextField
-                                margin='normal'
-                                label='Song Title'
-                                fullWidth
-                                variant='standard'
-                                onChange={handleTitleChange}
-                                value={localTitle}
-                                sx={{ margin: 0 }}
-                            />
-                            <TextField
-                                margin='normal'
-                                label='Song Link'
-                                fullWidth
-                                variant='standard'
-                                onChange={handleLinkChange}
-                                value={localLink}
-                                sx={{ margin: 0 }}
-                            />
-                            <Chips
-                                chips={localStyles}
-                                title='Styles:'
-                                onDelete={handleDeleteStyle}
-                                addDialog={({ closeDialog }) => {
-                                    async function handleStyleSelection(style: string) {
-                                        if (!localStyles.includes(style)) {
-                                            setLocalStyles(localStyles.concat(style))
+                        <DialogContent>
+                            <div className='fields'>
+                                <TextField
+                                    margin='normal'
+                                    label='Song Title'
+                                    fullWidth
+                                    variant='standard'
+                                    onChange={handleTitleChange}
+                                    value={localTitle}
+                                />
+                                <div className='text-with-icon'>
+                                    <div className='text'>
+                                        <TextField
+                                            margin='normal'
+                                            label='Song Link'
+                                            fullWidth
+                                            variant='standard'
+                                            onChange={handleLinkChange}
+                                            value={localLink}
+                                        />
+                                    </div>
+                                    <div className='icon'>
+                                        <IconButton onClick={() => openLink(localLink)}>
+                                            <LinkIcon />
+                                        </IconButton>
+                                    </div>
+                                </div>
+                                <Chips
+                                    chips={localStyles}
+                                    title='Styles:'
+                                    onDelete={handleDeleteStyle}
+                                    addDialog={({ closeDialog }) => {
+                                        async function handleStyleSelection(style: string) {
+                                            if (!localStyles.includes(style)) {
+                                                setLocalStyles(localStyles.concat(style))
+                                            }
+                                            closeDialog()
                                         }
-                                        closeDialog()
-                                    }
 
-                                    return <StylesSelector store={props.store} onSelectStyle={handleStyleSelection} />
-                                }}
-                            />
+                                        return (
+                                            <StylesSelector store={props.store} onSelectStyle={handleStyleSelection} />
+                                        )
+                                    }}
+                                />
+                            </div>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={closeDialog}>Cancel</Button>
@@ -238,6 +236,30 @@ export function Music(props: { store: Store }) {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                }
+
+                .fields {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    width: 450px;
+                    max-width: 100%;
+                }
+
+                .text-with-icon {
+                    width: 100%;
+                    display: flex;
+                    align-items: flex-end;
+                    gap: 10px;
+                }
+
+                .text-with-icon .text {
+                    width: 100%;
+                }
+
+                .text-with-icon .icon {
+                    flex: 1;
+                    margin-bottom: 5px;
                 }
             `}</style>
         </div>
