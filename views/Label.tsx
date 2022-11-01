@@ -15,6 +15,7 @@ import { SubmissionForm } from '../components/SubmissionForm'
 import { Progress } from '../components/Progress'
 import { setHistory } from '../utils/history'
 import { Store } from '../utils/store'
+import { StylesForm } from '../components/StylesForm'
 
 export function Label(props: { label: Label; store: Store }) {
     const [confirmOpen, setConfirmOpen] = useState(false)
@@ -59,6 +60,7 @@ export function Label(props: { label: Label; store: Store }) {
                     <SubmissionForm label={props.label} store={props.store} />
                     <FollowersForm label={props.label} store={props.store} />
                     <ArtistsForm label={props.label} store={props.store} />
+                    <StylesForm label={props.label} store={props.store} />
                 </>
             ) : (
                 <h1>Label deleted</h1>

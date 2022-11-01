@@ -80,6 +80,7 @@ function initExtra(db: Firestore) {
     const emptyExtra: DbExtra = {
         songs: [],
         compact: false,
+        styles: [],
     }
     try {
         return setDoc(doc(db, getUrlPassword(), consts.dbExtraId), emptyExtra)
@@ -88,9 +89,13 @@ function initExtra(db: Firestore) {
     }
 }
 
-export async function updateDocTyped(db: Firestore, id: string, item: Omit<Partial<Label>, 'id'> | Partial<DbExtra>) {
+export async function updateDocTyped(
+    db: Firestore,
+    labelID: string,
+    item: Omit<Partial<Label>, 'id'> | Partial<DbExtra>
+) {
     try {
-        return updateDoc(doc(db, getUrlPassword(), id), item)
+        return updateDoc(doc(db, getUrlPassword(), labelID), item)
     } catch (e) {
         alert(e)
     }

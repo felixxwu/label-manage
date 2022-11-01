@@ -9,15 +9,13 @@ export function followersToIndex(followers: Label['followers']) {
 export const sortTypes = ['follower', 'name'] as const
 export type SortType = typeof sortTypes[number]
 
-type Style = 'Liquid' | 'Deep' | 'Heavy' | 'Melodic' | 'Vocal'
-
 export interface Label {
     id: string
     name: string
     image: string
     link: string
     followers: typeof followerOptions[number] | ''
-    styles: Style[]
+    styles: string[]
     artists: string[]
     notes: string
     submission: string
@@ -27,10 +25,11 @@ export interface Song {
     id: string
     title: string
     link: string
-    styles: Style[]
+    styles: string[]
 }
 
 export interface DbExtra {
     songs: Song[]
     compact: boolean
+    styles: string[]
 }
