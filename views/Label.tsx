@@ -1,5 +1,4 @@
-import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import { useState } from 'react'
+import { IconButton } from '@mui/material'
 import { deleteDocTyped } from '../utils/db'
 import { Label } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -16,23 +15,16 @@ import { Progress } from '../components/Progress'
 import { setHistory } from '../utils/history'
 import { Store } from '../utils/store'
 import { StylesForm } from '../components/StylesForm'
+import { theme } from '../utils/theme'
 
 export function Label(props: { label: Label; store: Store }) {
-    const [confirmOpen, setConfirmOpen] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [loadingDialog, setLoadingDialog] = useState(false)
-
     setHistory('label')
 
     async function openConfirmDelete() {
-        setLoadingDialog(true)
-        await shortWait()
-        setConfirmOpen(true)
-        setLoadingDialog(false)
-    }
-
-    function closeConfirmDelete() {
-        setConfirmOpen(false)
+        props.store.dialog = {
+            message: 'Are you sure you want to delete?',
+            actions: [{ label: 'No' }, { label: 'Delete', callback: handleDelete }],
+        }
     }
 
     async function handleBack() {
@@ -41,8 +33,6 @@ export function Label(props: { label: Label; store: Store }) {
     }
 
     async function handleDelete() {
-        setLoading(true)
-        await shortWait()
         await deleteDocTyped(props.store.db, props.label.id)
         await handleBack()
     }
@@ -52,46 +42,42 @@ export function Label(props: { label: Label; store: Store }) {
             {props.label ? (
                 <>
                     <div className='header'>
+                        <IconButton onClick={handleBack}>
+                            <ArrowBackIcon />
+                        </IconButton>
                         <ImageForm label={props.label} store={props.store} />
                         <Progress label={props.label} store={props.store} />
                     </div>
+                    <div />
                     <NameForm label={props.label} store={props.store} />
+                    <div className='divider' />
                     <LinkForm label={props.label} store={props.store} />
+                    <div className='divider' />
                     <SubmissionForm label={props.label} store={props.store} />
+                    <div className='divider' />
                     <FollowersForm label={props.label} store={props.store} />
+                    <div className='divider' />
                     <ArtistsForm label={props.label} store={props.store} />
+                    <div className='divider' />
                     <StylesForm label={props.label} store={props.store} />
+                    <div className='divider' />
                 </>
             ) : (
                 <h1>Label deleted</h1>
             )}
 
             <div className='bottom-buttons'>
-                <Button color='primary' variant='contained' onClick={handleBack} startIcon={<ArrowBackIcon />}>
-                    Back
-                </Button>
                 {props.label && (
                     <LoadingButton
-                        color='secondary'
+                        color='warning'
                         variant='contained'
                         onClick={openConfirmDelete}
                         startIcon={<DeleteIcon />}
-                        loading={loadingDialog}
                     >
                         Delete
                     </LoadingButton>
                 )}
             </div>
-
-            <Dialog open={confirmOpen} onClose={closeConfirmDelete}>
-                <DialogTitle>Are you sure you want to delete?</DialogTitle>
-                <DialogActions>
-                    <Button onClick={closeConfirmDelete}>No</Button>
-                    <LoadingButton onClick={handleDelete} loading={loading}>
-                        Delete
-                    </LoadingButton>
-                </DialogActions>
-            </Dialog>
 
             <style jsx>{`
                 .label {
@@ -105,8 +91,10 @@ export function Label(props: { label: Label; store: Store }) {
                 }
 
                 .bottom-buttons {
+                    width: 100%;
                     display: flex;
                     gap: 20px;
+                    justify-content: center;
                 }
 
                 .header {
@@ -114,6 +102,20 @@ export function Label(props: { label: Label; store: Store }) {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                }
+
+                .forms {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    gap: 20px;
+                }
+
+                .divider {
+                    height: 1px;
+                    width: 100%;
+                    background-color: ${theme.palette.grey[800]};
                 }
             `}</style>
         </div>

@@ -7,7 +7,7 @@ import { EnterPassword } from '../components/EnterPassword'
 import { Label } from './Label'
 import { List } from './List'
 import { Music } from './Music'
-import { CircularProgress } from '@mui/material'
+import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from '@mui/material'
 import { useStore } from '../utils/store'
 
 export function App() {
@@ -21,6 +21,10 @@ export function App() {
         if (store.selectedLabelId) return 'label' as const
         return 'list' as const
     })()
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [page])
 
     useEffect(() => {
         window.addEventListener('keyup', handleKeyUp)
@@ -59,6 +63,19 @@ export function App() {
                     {page === 'list' && <List store={store} />}
                     {page === 'music' && <Music store={store} />}
                 </div>
+
+                <Dialog open={!!store.dialog} onClose={() => (store.dialog = null)}>
+                    <DialogTitle>Are you sure you want to delete?</DialogTitle>
+                    <DialogActions>
+                        {store.dialog?.actions.map(action => {
+                            const handleClick = () => {
+                                action.callback?.()
+                                store.dialog = null
+                            }
+                            return <Button onClick={handleClick}>{action.label}</Button>
+                        })}
+                    </DialogActions>
+                </Dialog>
 
                 <style jsx>{`
                     .app {

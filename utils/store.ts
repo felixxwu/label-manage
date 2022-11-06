@@ -4,6 +4,11 @@ import { useDb, useInitDb } from './db'
 import { usePassword } from './getPassword'
 import { DbExtra, Label, SortType } from './types'
 
+interface DialogOptions {
+    message: string
+    actions: { label: string; callback?: () => void }[]
+}
+
 export interface Store {
     readonly db: Firestore
     readonly error: string
@@ -13,6 +18,7 @@ export interface Store {
     selectedLabelId: string
     showMusic: boolean
     sort: SortType
+    dialog: DialogOptions
 }
 
 export function useStore() {
@@ -22,6 +28,7 @@ export function useStore() {
     const [selectedLabelId, setSelectedLabelId] = useState<string>(null)
     const [showMusic, setShowMusic] = useState(false)
     const [sort, setSort] = useState<SortType>('follower')
+    const [dialog, setDialog] = useState<DialogOptions>(null)
 
     const store: Store = {
         db,
@@ -46,6 +53,12 @@ export function useStore() {
         },
         set sort(value) {
             setSort(value)
+        },
+        get dialog() {
+            return dialog
+        },
+        set dialog(value) {
+            setDialog(value)
         },
     }
 

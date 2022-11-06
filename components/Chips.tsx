@@ -42,24 +42,26 @@ export function Chips(props: {
     }
 
     return (
-        <div className='chips'>
+        <div className='wrapper'>
             {props.title}
-            {props.chips
-                .sort((a, b) => (a < b ? -1 : 1))
-                .map((item, index) => (
-                    <Chip
-                        label={item}
-                        onClick={props.onClick && (() => handleClick(item))}
-                        onDelete={props.onDelete && (() => openDeleteDialog(item))}
-                        key={index}
-                        sx={{ backgroundColor: props.colorful ? getColorHash(item) : '' }}
-                    />
-                ))}
-            {props.addDialog && (
-                <IconButton onClick={openAddDialog}>
-                    <AddIcon />
-                </IconButton>
-            )}
+            <div className='chips'>
+                {props.chips
+                    .sort((a, b) => (a < b ? -1 : 1))
+                    .map((item, index) => (
+                        <Chip
+                            label={item}
+                            onClick={props.onClick && (() => handleClick(item))}
+                            onDelete={props.onDelete && (() => openDeleteDialog(item))}
+                            key={index}
+                            sx={{ backgroundColor: props.colorful ? getColorHash(item) : '' }}
+                        />
+                    ))}
+                {props.addDialog && (
+                    <IconButton onClick={openAddDialog}>
+                        <AddIcon />
+                    </IconButton>
+                )}
+            </div>
             <Dialog open={dialogContent !== 'closed'} onClose={closeDialog}>
                 {dialogContent === 'add' && props.addDialog && props.addDialog({ closeDialog })}
                 {dialogContent === 'delete' && (
@@ -75,6 +77,12 @@ export function Chips(props: {
                 )}
             </Dialog>
             <style jsx>{`
+                .wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
                 .chips {
                     display: flex;
                     gap: 10px;

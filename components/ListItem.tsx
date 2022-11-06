@@ -52,7 +52,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                     width: 100%;
                     max-width: ${consts.maxAppWidth}px;
                     color: ${theme.palette.primary.main};
-                    background-color: ${props.store.extra.compact ? '' : theme.palette.grey[800]};
+                    background-color: ${props.store.extra.compact ? '' : theme.palette.secondary.main};
                     padding: ${props.store.extra.compact ? '' : '20px'};
                     border-radius: ${consts.borderRadius}px;
                     cursor: pointer;
@@ -63,7 +63,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                 }
 
                 .item:hover {
-                    background-color: ${props.store.extra.compact ? '' : '#ffffff11'};
+                    background-color: ${props.store.extra.compact ? '' : '#ffffff08'};
                 }
 
                 .header {

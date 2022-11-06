@@ -107,7 +107,21 @@ export function Music(props: { store: Store }) {
 
     return (
         <div className='music'>
-            <h1>Music Library</h1>
+            <div className='header'>
+                <IconButton onClick={handleBack}>
+                    <ArrowBackIcon />
+                </IconButton>
+                <h1>Music Library</h1>
+                <IconButton sx={{ opacity: 0 }}>
+                    <ArrowBackIcon />
+                </IconButton>
+            </div>
+
+            <div className='buttons'>
+                <Button color='primary' variant='contained' onClick={addSong} startIcon={<AddIcon />}>
+                    Add Song
+                </Button>
+            </div>
 
             {props.store.extra.songs.map((song, index) => (
                 <div onClick={() => openDialog(song.id)} className='song' key={index}>
@@ -118,15 +132,6 @@ export function Music(props: { store: Store }) {
                     <Chips chips={song.styles} colorful />
                 </div>
             ))}
-
-            <div className='bottom-buttons'>
-                <Button color='primary' variant='contained' onClick={handleBack} startIcon={<ArrowBackIcon />}>
-                    Back
-                </Button>
-                <Button color='primary' variant='contained' onClick={addSong} startIcon={<AddIcon />}>
-                    Add Song
-                </Button>
-            </div>
 
             <Dialog open={selectedSongId !== null} onClose={saveEdit}>
                 {deleteDialog ? (
@@ -211,7 +216,7 @@ export function Music(props: { store: Store }) {
                     margin: auto;
                 }
 
-                .bottom-buttons {
+                .buttons {
                     display: flex;
                     gap: 20px;
                 }
@@ -219,7 +224,7 @@ export function Music(props: { store: Store }) {
                 .song {
                     width: 100%;
                     color: ${theme.palette.primary.main};
-                    background-color: ${theme.palette.grey[800]};
+                    background-color: ${theme.palette.secondary.main};
                     padding: 20px;
                     border-radius: ${consts.borderRadius}px;
                     cursor: pointer;
@@ -261,6 +266,12 @@ export function Music(props: { store: Store }) {
                 .text-with-icon .icon {
                     flex: 1;
                     margin-bottom: 5px;
+                }
+
+                .header {
+                    display: flex;
+                    justify-items: space-between;
+                    width: 100%;
                 }
             `}</style>
         </div>

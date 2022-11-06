@@ -49,6 +49,7 @@ export function Input(props: { store: Store }) {
             <LoadingButton
                 color='primary'
                 variant='contained'
+                size='large'
                 startIcon={<AddIcon />}
                 onClick={handleAdd}
                 disabled={name.length === 0}

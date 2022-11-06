@@ -1,15 +1,10 @@
-import { Button } from '@mui/material'
-import ClearIcon from '@mui/icons-material/Backspace'
+import { IconButton } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Delete'
 
 export function ClearButton(props: { onClick: React.MouseEventHandler<HTMLButtonElement>; secondary?: boolean }) {
     return (
-        <Button
-            variant='contained'
-            color={props.secondary ? 'secondary' : 'primary'}
-            startIcon={<ClearIcon />}
-            onClick={props.onClick}
-        >
-            Clear
-        </Button>
+        <IconButton onClick={props.onClick}>
+            <ClearIcon />
+        </IconButton>
     )
 }

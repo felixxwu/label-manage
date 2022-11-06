@@ -1,7 +1,6 @@
 import { Avatar, IconButton } from '@mui/material'
 import { Label } from '../utils/types'
 import { updateDocTyped } from '../utils/db'
-import ClearIcon from '@mui/icons-material/Clear'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import EditIcon from '@mui/icons-material/Edit'
@@ -43,20 +42,25 @@ export function ImageForm(props: { label: Label; store: Store }) {
     }
 
     function handleClear() {
-        updateDocTyped(props.store.db, props.label.id, { image: '' })
+        props.store.dialog = {
+            message: 'Are you sure you want to delete the image?',
+            actions: [
+                { label: 'No' },
+                { label: 'Delete', callback: () => updateDocTyped(props.store.db, props.label.id, { image: '' }) },
+            ],
+        }
     }
 
     return (
         <div className='label-image'>
             {props.label.image ? (
                 <>
-                    <Avatar
-                        src={props.label.image}
-                        sx={{ width: consts.labelAvatarSize, height: consts.labelAvatarSize }}
-                    />
-                    <IconButton onClick={handleClear}>
-                        <ClearIcon />
-                    </IconButton>
+                    <div onClick={handleClear}>
+                        <Avatar
+                            src={props.label.image}
+                            sx={{ width: consts.labelAvatarSize, height: consts.labelAvatarSize }}
+                        />
+                    </div>
                 </>
             ) : (
                 <>

@@ -35,9 +35,7 @@ export function LinkOrEmail(props: {
 
             const results = (await navigator.clipboard.readText()).match(regex)
             if (!results || results.length === 0) return
-            console.log(`results[0]`, results[0])
             const link = results[0].split('?')[0]
-            console.log(`link`, link)
             updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: link })
         }
 

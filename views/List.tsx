@@ -8,8 +8,12 @@ import { CompactViewSwitch } from '../components/CompactViewSwitch'
 import { Sort } from '../components/Sort'
 import { Store } from '../utils/store'
 import { followersToIndex } from '../utils/types'
+import { useState } from 'react'
+import Add from '@mui/icons-material/Add'
 
 export function List(props: { store: Store }) {
+    const [showInput, setShowInput] = useState(false)
+
     setHistory('')
 
     async function showMusic() {
@@ -30,11 +34,13 @@ export function List(props: { store: Store }) {
         <div className='list'>
             <h1>Label List</h1>
 
-            <Input store={props.store} />
-
-            <Button size='large' variant='contained' fullWidth endIcon={<LibraryMusicIcon />} onClick={showMusic}>
-                Music Library
-            </Button>
+            {showInput ? (
+                <Input store={props.store} />
+            ) : (
+                <Button variant='contained' onClick={() => setShowInput(true)} startIcon={<Add />}>
+                    Add Label
+                </Button>
+            )}
 
             <div className='options'>
                 <CompactViewSwitch store={props.store} />
@@ -46,6 +52,15 @@ export function List(props: { store: Store }) {
                     return <ListItem label={label} key={i} store={props.store} />
                 })}
             </div>
+
+            <Fab
+                onClick={showMusic}
+                color='secondary'
+                sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
+                size='large'
+            >
+                <LibraryMusicIcon />
+            </Fab>
 
             <style jsx>{`
                 .list {
