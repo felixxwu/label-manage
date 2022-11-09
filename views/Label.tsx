@@ -5,17 +5,18 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { fade, shortWait } from '../utils/animate'
 import { LoadingButton } from '@mui/lab'
-import { LinkForm } from '../components/LinkForm'
-import { NameForm } from '../components/NameForm'
-import { FollowersForm } from '../components/FollowersForm'
-import { ArtistsForm } from '../components/ArtistsForm'
-import { ImageForm } from '../components/ImageForm'
-import { SubmissionForm } from '../components/SubmissionForm'
+import { LinkForm } from '../components/forms/LinkForm'
+import { NameForm } from '../components/forms/NameForm'
+import { FollowersForm } from '../components/forms/FollowersForm'
+import { ArtistsForm } from '../components/forms/ArtistsForm'
+import { ImageForm } from '../components/forms/ImageForm'
+import { SubmissionForm } from '../components/forms/SubmissionForm'
 import { Progress } from '../components/Progress'
 import { setHistory } from '../utils/history'
 import { Store } from '../utils/store'
-import { StylesForm } from '../components/StylesForm'
+import { StylesForm } from '../components/forms/StylesForm'
 import { theme } from '../utils/theme'
+import { NotesForm } from '../components/forms/NotesForm'
 
 export function Label(props: { label: Label; store: Store }) {
     setHistory('label')
@@ -43,24 +44,24 @@ export function Label(props: { label: Label; store: Store }) {
                 <>
                     <div className='header'>
                         <IconButton onClick={handleBack}>
-                            <ArrowBackIcon />
+                            <ArrowBackIcon color='primary' />
                         </IconButton>
-                        <ImageForm label={props.label} store={props.store} />
-                        <Progress label={props.label} store={props.store} />
+                        <ImageForm {...props} />
+                        <Progress {...props} />
                     </div>
                     <div />
-                    <NameForm label={props.label} store={props.store} />
+                    <NameForm {...props} />
                     <div className='divider' />
-                    <LinkForm label={props.label} store={props.store} />
+                    <LinkForm {...props} />
                     <div className='divider' />
-                    <SubmissionForm label={props.label} store={props.store} />
+                    <SubmissionForm {...props} />
                     <div className='divider' />
-                    <FollowersForm label={props.label} store={props.store} />
+                    <FollowersForm {...props} />
                     <div className='divider' />
-                    <ArtistsForm label={props.label} store={props.store} />
+                    <ArtistsForm {...props} />
                     <div className='divider' />
-                    <StylesForm label={props.label} store={props.store} />
-                    <div className='divider' />
+                    <StylesForm {...props} />
+                    <NotesForm {...props} />
                 </>
             ) : (
                 <h1>Label deleted</h1>
@@ -115,7 +116,7 @@ export function Label(props: { label: Label; store: Store }) {
                 .divider {
                     height: 1px;
                     width: 100%;
-                    background-color: ${theme.palette.grey[800]};
+                    background-color: #545454;
                 }
             `}</style>
         </div>

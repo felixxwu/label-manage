@@ -19,6 +19,7 @@ export interface Label {
     artists: string[]
     notes: string
     submission: string
+    songsReleased: string[]
 }
 
 export interface Song {

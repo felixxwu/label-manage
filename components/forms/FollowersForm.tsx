@@ -1,9 +1,9 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
-import { updateDocTyped } from '../utils/db'
-import { Store } from '../utils/store'
-import { followerOptions, Label } from '../utils/types'
-import { EditButton } from './EditButton'
+import { updateDocTyped } from '../../utils/db'
+import { Store } from '../../utils/store'
+import { followerOptions, Label } from '../../utils/types'
+import { EditButton } from '../EditButton'
 
 export function FollowersForm(props: { label: Label; store: Store }) {
     const [followers, setFollowers] = useState(props.label.followers)

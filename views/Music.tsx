@@ -109,11 +109,11 @@ export function Music(props: { store: Store }) {
         <div className='music'>
             <div className='header'>
                 <IconButton onClick={handleBack}>
-                    <ArrowBackIcon />
+                    <ArrowBackIcon color='primary' />
                 </IconButton>
                 <h1>Music Library</h1>
                 <IconButton sx={{ opacity: 0 }}>
-                    <ArrowBackIcon />
+                    <ArrowBackIcon color='primary' />
                 </IconButton>
             </div>
 
@@ -127,7 +127,7 @@ export function Music(props: { store: Store }) {
                 <div onClick={() => openDialog(song.id)} className='song' key={index}>
                     <div className='header'>
                         {song.title}
-                        {song.link && <LinkIcon />}
+                        {song.link && <LinkIcon color='primary' />}
                     </div>
                     <Chips chips={song.styles} colorful />
                 </div>
@@ -170,7 +170,7 @@ export function Music(props: { store: Store }) {
                                     </div>
                                     <div className='icon'>
                                         <IconButton onClick={() => openLink(localLink)}>
-                                            <LinkIcon />
+                                            <LinkIcon color='primary' />
                                         </IconButton>
                                     </div>
                                 </div>

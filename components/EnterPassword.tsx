@@ -54,7 +54,7 @@ export function EnterPassword() {
             <LoadingButton
                 variant='contained'
                 onClick={() => enterPassword(password)}
-                endIcon={<ArrowForwardIcon />}
+                endIcon={<ArrowForwardIcon color='primary' />}
                 loading={loading}
             >
                 Enter

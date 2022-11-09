@@ -1,11 +1,11 @@
 import { Button, DialogActions, DialogContent, TextField } from '@mui/material'
-import { Label } from '../utils/types'
+import { Label } from '../../utils/types'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
-import { useShortLoad } from '../utils/useShortLoad'
-import { Store } from '../utils/store'
-import { Chips } from './Chips'
-import { updateDocTyped } from '../utils/db'
+import { useShortLoad } from '../../utils/useShortLoad'
+import { Store } from '../../utils/store'
+import { Chips } from '../Chips'
+import { updateDocTyped } from '../../utils/db'
 
 export function ArtistsForm(props: { label: Label; store: Store }) {
     const [itemToAdd, setItemToAdd] = useState('')

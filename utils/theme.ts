@@ -1,11 +1,13 @@
 import { createTheme } from '@mui/material/styles'
 import { consts } from './consts'
 
+const primary = '#ccc'
+
 export const theme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#eee',
+            main: primary,
         },
         secondary: {
             main: '#2d2d2d',
@@ -27,6 +29,9 @@ export const theme = createTheme({
                 root: {
                     '& fieldset': {
                         borderRadius: consts.borderRadius,
+                    },
+                    '& input': {
+                        color: primary,
                     },
                 },
             },

@@ -45,6 +45,7 @@ export function Input(props: { store: Store }) {
                 onChange={handleChange}
                 onKeyUp={handleKeyUp}
                 autoComplete='off'
+                color='primary'
             />
             <LoadingButton
                 color='primary'

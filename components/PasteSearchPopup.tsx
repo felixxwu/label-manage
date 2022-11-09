@@ -32,7 +32,7 @@ export function PasteSearchPopup(props: {
                         <CircularProgress />
                     ) : (
                         <>
-                            <ContentPasteIcon />
+                            <ContentPasteIcon color='primary' />
                             Paste
                         </>
                     )}
@@ -42,7 +42,7 @@ export function PasteSearchPopup(props: {
                         <CircularProgress />
                     ) : (
                         <>
-                            {props.useGoogleIcon ? <GoogleIcon /> : <LaunchIcon />}
+                            {props.useGoogleIcon ? <GoogleIcon color='primary' /> : <LaunchIcon color='primary' />}
                             Search
                         </>
                     )}

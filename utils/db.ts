@@ -16,6 +16,23 @@ const firebaseConfig = {
     appId: '1:245804327017:web:ef7bc5eb7f4bbf6b6a02f8',
 }
 
+export const emptyLabel: Omit<Label, 'id' | 'name'> = {
+    image: '',
+    artists: [],
+    followers: '',
+    link: '',
+    notes: '',
+    styles: [],
+    submission: '',
+    songsReleased: [],
+}
+
+const emptyExtra: DbExtra = {
+    songs: [],
+    compact: false,
+    styles: [],
+}
+
 export function useInitDb() {
     const [db, setDb] = useState<Firestore>(null)
     const [error, setError] = useState<string>(null)
@@ -45,10 +62,10 @@ export function useDb(db: Firestore) {
         if (!getUrlPassword()) return
 
         onSnapshotTyped(db, (labels, extra) => {
-            setLabels(labels)
+            setLabels(labels.map(label => ({ ...emptyLabel, ...label })))
 
             if (extra) {
-                setExtra(extra)
+                setExtra({ ...emptyExtra, ...extra })
             } else {
                 initExtra(db)
             }
@@ -61,13 +78,7 @@ export function useDb(db: Firestore) {
 export async function addDocTyped(db: Firestore, name: string) {
     const emptyDoc: Omit<Label, 'id'> = {
         name,
-        image: '',
-        artists: [],
-        followers: '',
-        link: '',
-        notes: '',
-        styles: [],
-        submission: '',
+        ...emptyLabel,
     }
     try {
         return addDoc(collection(db, getUrlPassword()), emptyDoc)
@@ -77,11 +88,6 @@ export async function addDocTyped(db: Firestore, name: string) {
 }
 
 function initExtra(db: Firestore) {
-    const emptyExtra: DbExtra = {
-        songs: [],
-        compact: false,
-        styles: [],
-    }
     try {
         return setDoc(doc(db, getUrlPassword(), consts.dbExtraId), emptyExtra)
     } catch (e) {

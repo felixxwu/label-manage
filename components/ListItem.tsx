@@ -8,6 +8,8 @@ import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/Email'
 import { Store } from '../utils/store'
 import { Chips } from './Chips'
+import { getProgress } from '../utils/progress'
+import DoneAll from '@mui/icons-material/DoneAll'
 
 export function ListItem(props: { label: Label; store: Store }) {
     async function handleClick() {
@@ -29,14 +31,18 @@ export function ListItem(props: { label: Label; store: Store }) {
 
                         {props.label.name}
                         {props.label.submission && !props.label.submission.includes('@') && (
-                            <LinkIcon sx={{ opacity: 0.5 }} />
+                            <LinkIcon color='primary' sx={{ opacity: 0.5 }} />
                         )}
                         {props.label.submission && props.label.submission.includes('@') && (
-                            <EmailIcon sx={{ opacity: 0.5 }} />
+                            <EmailIcon color='primary' sx={{ opacity: 0.5 }} />
                         )}
                     </div>
                     <div className='followers'>
-                        <PeopleIcon />
+                        {getProgress(props.label) === 100 ? (
+                            <DoneAll color='primary' />
+                        ) : (
+                            <PeopleIcon color='primary' />
+                        )}
                         {props.label.followers}
                     </div>
                 </div>

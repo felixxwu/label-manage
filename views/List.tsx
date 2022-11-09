@@ -37,7 +37,7 @@ export function List(props: { store: Store }) {
             {showInput ? (
                 <Input store={props.store} />
             ) : (
-                <Button variant='contained' onClick={() => setShowInput(true)} startIcon={<Add />}>
+                <Button variant='contained' onClick={() => setShowInput(true)} startIcon={<Add />} color='primary'>
                     Add Label
                 </Button>
             )}
@@ -59,7 +59,7 @@ export function List(props: { store: Store }) {
                 sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
                 size='large'
             >
-                <LibraryMusicIcon />
+                <LibraryMusicIcon color='primary' />
             </Fab>
 
             <style jsx>{`

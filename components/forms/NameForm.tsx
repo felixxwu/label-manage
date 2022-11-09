@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { updateDocTyped } from '../utils/db'
-import { Store } from '../utils/store'
-import { theme } from '../utils/theme'
-import { Label } from '../utils/types'
+import { updateDocTyped } from '../../utils/db'
+import { Store } from '../../utils/store'
+import { theme } from '../../utils/theme'
+import { Label } from '../../utils/types'
 
 export function NameForm(props: { label: Label; store: Store }) {
     const [name, setName] = useState(props.label.name)

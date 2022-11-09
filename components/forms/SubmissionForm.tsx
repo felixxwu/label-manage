@@ -1,6 +1,6 @@
-import { Store } from '../utils/store'
-import { Label } from '../utils/types'
-import { LinkOrEmail } from './LinkOrEmail'
+import { Store } from '../../utils/store'
+import { Label } from '../../utils/types'
+import { LinkOrEmail } from '../LinkOrEmail'
 
 export function SubmissionForm(props: { label: Label; store: Store }) {
     const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(props.label.name + ' demo')

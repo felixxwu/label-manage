@@ -58,7 +58,7 @@ export function Chips(props: {
                     ))}
                 {props.addDialog && (
                     <IconButton onClick={openAddDialog}>
-                        <AddIcon />
+                        <AddIcon color='primary' />
                     </IconButton>
                 )}
             </div>

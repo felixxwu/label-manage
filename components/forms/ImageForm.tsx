@@ -1,12 +1,12 @@
 import { Avatar, IconButton } from '@mui/material'
-import { Label } from '../utils/types'
-import { updateDocTyped } from '../utils/db'
-import { consts } from '../utils/consts'
-import { theme } from '../utils/theme'
+import { Label } from '../../utils/types'
+import { updateDocTyped } from '../../utils/db'
+import { consts } from '../../utils/consts'
+import { theme } from '../../utils/theme'
 import EditIcon from '@mui/icons-material/Edit'
-import { PasteSearchPopup } from './PasteSearchPopup'
+import { PasteSearchPopup } from '../PasteSearchPopup'
 import { useState } from 'react'
-import { Store } from '../utils/store'
+import { Store } from '../../utils/store'
 
 export function ImageForm(props: { label: Label; store: Store }) {
     const [open, setOpen] = useState(false)
@@ -74,7 +74,7 @@ export function ImageForm(props: { label: Label; store: Store }) {
                                 color: theme.palette.primary.main,
                             }}
                         >
-                            <EditIcon />
+                            <EditIcon color='primary' />
                         </Avatar>
                     </div>
                 </>

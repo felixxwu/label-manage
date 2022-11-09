@@ -1,8 +1,8 @@
-import { Store } from '../utils/store'
-import { Label } from '../utils/types'
-import { updateDocTyped } from '../utils/db'
-import { Chips } from './Chips'
-import { StylesSelector } from './StylesSelector'
+import { Store } from '../../utils/store'
+import { Label } from '../../utils/types'
+import { updateDocTyped } from '../../utils/db'
+import { Chips } from '../Chips'
+import { StylesSelector } from '../StylesSelector'
 
 export function StylesForm(props: { label: Label; store: Store }) {
     async function handleDelete(style: string) {

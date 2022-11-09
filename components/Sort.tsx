@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material'
 import { Store } from '../utils/store'
 import { SortType } from '../utils/types'
 
@@ -11,8 +11,12 @@ export function Sort(props: { store: Store }) {
         <FormControl sx={{ minWidth: 120 }} size='small'>
             <InputLabel id='select'>Sort</InputLabel>
             <Select labelId='select' id='select' value={props.store.sort} label='Age' onChange={handleChange}>
-                <MenuItem value={'follower' as SortType}>Followers</MenuItem>
-                <MenuItem value={'name' as SortType}>Name</MenuItem>
+                <MenuItem value={'follower' as SortType}>
+                    <Typography color='primary'>Followers</Typography>
+                </MenuItem>
+                <MenuItem value={'name' as SortType}>
+                    <Typography color='primary'>Name</Typography>
+                </MenuItem>
             </Select>
         </FormControl>
     )
