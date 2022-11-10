@@ -15,8 +15,8 @@ import { Progress } from '../components/Progress'
 import { setHistory } from '../utils/history'
 import { Store } from '../utils/store'
 import { StylesForm } from '../components/forms/StylesForm'
-import { theme } from '../utils/theme'
 import { NotesForm } from '../components/forms/NotesForm'
+import { SongsSubmittedForm } from '../components/forms/SongsSubmittedForm'
 
 export function Label(props: { label: Label; store: Store }) {
     setHistory('label')
@@ -61,6 +61,8 @@ export function Label(props: { label: Label; store: Store }) {
                     <ArtistsForm {...props} />
                     <div className='divider' />
                     <StylesForm {...props} />
+                    <div className='divider' />
+                    <SongsSubmittedForm {...props} />
                     <NotesForm {...props} />
                 </>
             ) : (

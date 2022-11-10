@@ -3,7 +3,7 @@ import { Label } from './types'
 
 export function getProgress(label: Label) {
     const fields: (keyof Label)[] = (Object.keys(emptyLabel) as (keyof typeof emptyLabel)[]).filter(
-        field => field !== 'songsReleased'
+        field => field !== 'songsSubmitted' && field !== 'notes'
     )
     const filledOut = fields.filter(field => {
         if (Array.isArray(label[field])) {

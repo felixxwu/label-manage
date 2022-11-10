@@ -38,10 +38,9 @@ export function ListItem(props: { label: Label; store: Store }) {
                         )}
                     </div>
                     <div className='followers'>
-                        {getProgress(props.label) === 100 ? (
-                            <DoneAll color='primary' />
-                        ) : (
-                            <PeopleIcon color='primary' />
+                        {getProgress(props.label) === 100 && <DoneAll color='primary' />}
+                        {props.label.songsSubmitted.length !== 0 && (
+                            <div className='songsSubmitted'>({props.label.songsSubmitted.length})</div>
                         )}
                         {props.label.followers}
                     </div>

@@ -1,5 +1,3 @@
-import { Firestore } from 'firebase/firestore'
-
 export const followerOptions = ['2k', '5k', '10k', '20k', '50k', '100k', '200k'] as const
 
 export function followersToIndex(followers: Label['followers']) {
@@ -19,7 +17,7 @@ export interface Label {
     artists: string[]
     notes: string
     submission: string
-    songsReleased: string[]
+    songsSubmitted: string[]
 }
 
 export interface Song {

@@ -24,7 +24,7 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     notes: '',
     styles: [],
     submission: '',
-    songsReleased: [],
+    songsSubmitted: [],
 }
 
 const emptyExtra: DbExtra = {
