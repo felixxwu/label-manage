@@ -1,5 +1,6 @@
 import { Firestore } from 'firebase/firestore'
 import { useState } from 'react'
+import { createStore } from 'truly-global-state'
 import { useDb, useInitDb } from './db'
 import { usePassword } from './getPassword'
 import { DbExtra, Label, SortType } from './types'
@@ -64,3 +65,7 @@ export function useStore() {
 
     return store
 }
+
+export const store2 = createStore({
+    listScrollPos: 0,
+})

@@ -45,9 +45,9 @@ export function ListItem(props: { label: Label; store: Store }) {
                         {props.label.followers}
                     </div>
                 </div>
-                {props.label.artists.length !== 0 && !props.store.extra.compact && (
-                    <div className='artists'>
-                        <Chips chips={props.label.artists} colorful />
+                {props.label.styles.length !== 0 && !props.store.extra.compact && (
+                    <div className='styles'>
+                        <Chips chips={props.label.styles} colorful />
                     </div>
                 )}
             </div>
@@ -91,7 +91,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                     opacity: 0.5;
                 }
 
-                .artists {
+                .styles {
                     pointer-events: none;
                 }
             `}</style>

@@ -1,4 +1,4 @@
-import { Button, Fab } from '@mui/material'
+import { Button, debounce, Fab } from '@mui/material'
 import { ListItem } from '../components/ListItem'
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
 import { Input } from '../components/Input'
@@ -6,15 +6,25 @@ import { fade } from '../utils/animate'
 import { setHistory } from '../utils/history'
 import { CompactViewSwitch } from '../components/CompactViewSwitch'
 import { Sort } from '../components/Sort'
-import { Store } from '../utils/store'
+import { Store, store2 } from '../utils/store'
 import { followersToIndex } from '../utils/types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 
 export function List(props: { store: Store }) {
     const [showInput, setShowInput] = useState(false)
 
     setHistory('')
+
+    useEffect(() => {
+        window.scrollTo(0, store2.state.listScrollPos)
+        window.onscroll = debounce(() => {
+            store2.state.listScrollPos = window.scrollY
+        }, 100)
+        return () => {
+            window.onscroll = null
+        }
+    }, [])
 
     async function showMusic() {
         await fade()

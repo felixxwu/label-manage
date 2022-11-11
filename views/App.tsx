@@ -8,10 +8,14 @@ import { Label } from './Label'
 import { List } from './List'
 import { Music } from './Music'
 import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import { useStore } from '../utils/store'
+import { store2, useStore } from '../utils/store'
 
 export function App() {
     const store = useStore()
+
+    if (process.browser) {
+        store2.subscribeToAll()
+    }
 
     const page = (() => {
         if (!store.password) return 'password' as const
@@ -23,6 +27,7 @@ export function App() {
     })()
 
     useEffect(() => {
+        if (page === 'list') return
         window.scrollTo(0, 0)
     }, [page])
 
