@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
 import { consts } from '../utils/consts'
-import { App } from '../views/App'
+import { App } from '../components/views/App'
 import { theme } from '../utils/theme'
 
 export default function Home() {
@@ -10,8 +10,14 @@ export default function Home() {
             <Head>
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
-                <link href='https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap' rel='stylesheet' />
-                <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
+                <link
+                    href='https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap'
+                    rel='stylesheet'
+                />
+                <link
+                    rel='stylesheet'
+                    href='https://fonts.googleapis.com/icon?family=Material+Icons'
+                />
                 <link rel='shortcut icon' href='/favicon.svg' />
                 <link rel='manifest' href='manifest.json' />
                 <title>Label Manager</title>
