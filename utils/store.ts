@@ -10,17 +10,7 @@ interface DialogOptions {
     actions: { label: string; callback?: () => void }[]
 }
 
-export interface Store {
-    readonly db: Firestore
-    readonly error: string
-    readonly labels: Label[]
-    readonly extra: DbExtra
-    readonly password: string
-    selectedLabelId: string
-    showMusic: boolean
-    sort: SortType
-    dialog: DialogOptions
-}
+export type Store = ReturnType<typeof useStore>
 
 export function useStore() {
     const { db, error } = useInitDb()
@@ -31,7 +21,7 @@ export function useStore() {
     const [sort, setSort] = useState<SortType>('follower')
     const [dialog, setDialog] = useState<DialogOptions>(null)
 
-    const store: Store = {
+    const store = {
         db,
         error,
         labels,
