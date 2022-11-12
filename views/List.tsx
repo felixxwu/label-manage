@@ -10,6 +10,7 @@ import { store } from '../utils/store'
 import { followersToIndex } from '../utils/types'
 import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
+import styled from '@emotion/styled'
 
 export function List() {
     const [showInput, setShowInput] = useState(false)
@@ -41,27 +42,32 @@ export function List() {
     })
 
     return (
-        <div className='list'>
+        <Wrapper>
             <h1>Label List</h1>
 
             {showInput ? (
                 <Input />
             ) : (
-                <Button variant='contained' onClick={() => setShowInput(true)} startIcon={<Add />} color='primary'>
+                <Button
+                    variant='contained'
+                    onClick={() => setShowInput(true)}
+                    startIcon={<Add />}
+                    color='primary'
+                >
                     Add Label
                 </Button>
             )}
 
-            <div className='options'>
+            <Options>
                 <CompactViewSwitch />
                 <Sort />
-            </div>
+            </Options>
 
-            <div className='list-items'>
+            <ListItems compact={store().extra.compact}>
                 {labels.map((label, i) => {
                     return <ListItem label={label} key={i} />
                 })}
-            </div>
+            </ListItems>
 
             <Fab
                 onClick={showMusic}
@@ -71,31 +77,29 @@ export function List() {
             >
                 <LibraryMusicIcon color='primary' />
             </Fab>
-
-            <style jsx>{`
-                .list {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 30px;
-                }
-
-                .list-items {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: ${store().extra.compact ? '' : '20px'};
-                }
-
-                .options {
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-            `}</style>
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+`
+
+const ListItems = styled('div')<{ compact: boolean }>`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: ${({ compact }) => (compact ? '' : '20px')};
+`
+
+const Options = styled('div')`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`

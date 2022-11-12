@@ -39,9 +39,7 @@ export function SongsSubmittedForm(props: { label: Label }) {
                                     {song.title}
                                 </Song>
                             ))}
-                            {sortedSongs.length === 0 && (
-                                <Error className='error'>No songs to choose from</Error>
-                            )}
+                            {sortedSongs.length === 0 && <Error>No songs to choose from</Error>}
                         </Wrapper>
                     )
                 }}

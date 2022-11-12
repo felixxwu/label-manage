@@ -2,6 +2,7 @@ import { Button, Chip, Dialog, DialogActions, DialogTitle, IconButton } from '@m
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { getColorHash } from '../utils/colorHash'
+import styled from '@emotion/styled'
 
 export function Chips(props: {
     chips: string[]
@@ -38,9 +39,9 @@ export function Chips(props: {
     }
 
     return (
-        <div className='wrapper'>
+        <Wrapper noClick={!props.onDelete && !props.onClick}>
             {props.title}
-            <div className='chips'>
+            <ChipsWrapper>
                 {props.chips
                     .sort((a, b) => (a < b ? -1 : 1))
                     .map((item, index) => (
@@ -57,7 +58,7 @@ export function Chips(props: {
                         <AddIcon color='primary' />
                     </IconButton>
                 )}
-            </div>
+            </ChipsWrapper>
             <Dialog open={dialogContent !== 'closed'} onClose={closeDialog}>
                 {dialogContent === 'add' && props.addDialog && props.addDialog({ closeDialog })}
                 {dialogContent === 'delete' && (
@@ -70,20 +71,21 @@ export function Chips(props: {
                     </>
                 )}
             </Dialog>
-            <style jsx>{`
-                .wrapper {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                }
-
-                .chips {
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                    flex-wrap: wrap;
-                }
-            `}</style>
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')<{ noClick: boolean }>`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    pointer-events: ${({ noClick }) => (noClick ? 'none' : 'auto')};
+`
+
+const ChipsWrapper = styled('div')`
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+`

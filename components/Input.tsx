@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import AddIcon from '@mui/icons-material/Add'
 import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
@@ -32,7 +33,7 @@ export function Input() {
     }
 
     return (
-        <div className='inputArea'>
+        <Wrapper>
             <TextField
                 label='Type to add label...'
                 variant='outlined'
@@ -54,18 +55,16 @@ export function Input() {
             >
                 Add
             </Button>
-
-            <style jsx>{`
-                .inputArea {
-                    width: 100%;
-                    max-width: ${consts.maxAppWidth}px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: row;
-                    gap: 20px;
-                }
-            `}</style>
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    width: 100%;
+    max-width: ${consts.maxAppWidth}px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px;
+`

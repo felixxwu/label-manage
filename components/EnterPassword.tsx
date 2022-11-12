@@ -2,6 +2,7 @@ import { Button, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { getUrlPassword } from '../utils/getPassword'
+import styled from '@emotion/styled'
 
 export function EnterPassword() {
     const [password, setPassword] = useState('')
@@ -36,7 +37,7 @@ export function EnterPassword() {
     }
 
     return (
-        <div className='password'>
+        <Password>
             <TextField
                 label='Password'
                 variant='outlined'
@@ -54,15 +55,13 @@ export function EnterPassword() {
             >
                 Enter
             </Button>
-
-            <style jsx>{`
-                .password {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 20px;
-                }
-            `}</style>
-        </div>
+        </Password>
     )
 }
+
+const Password = styled('div')`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+`

@@ -9,6 +9,7 @@ import { store } from '../utils/store'
 import { Chips } from './Chips'
 import { getProgress } from '../utils/progress'
 import DoneAll from '@mui/icons-material/DoneAll'
+import styled from '@emotion/styled'
 
 export function ListItem(props: { label: Label }) {
     async function handleClick() {
@@ -18,9 +19,9 @@ export function ListItem(props: { label: Label }) {
 
     return (
         <>
-            <div className='item' onClick={handleClick}>
-                <div className='header'>
-                    <div className='name'>
+            <Wrapper onClick={handleClick} compact={store().extra.compact}>
+                <Header>
+                    <Name>
                         {!store().extra.compact && (
                             <Avatar
                                 src={props.label.image}
@@ -35,65 +36,59 @@ export function ListItem(props: { label: Label }) {
                         {props.label.submission && props.label.submission.includes('@') && (
                             <EmailIcon color='primary' sx={{ opacity: 0.5 }} />
                         )}
-                    </div>
-                    <div className='followers'>
+                    </Name>
+                    <Followers>
                         {getProgress(props.label) === 100 && <DoneAll color='primary' />}
                         {props.label.songsSubmitted.length !== 0 && (
-                            <div className='songsSubmitted'>({props.label.songsSubmitted.length})</div>
+                            <div>({props.label.songsSubmitted.length})</div>
                         )}
                         {props.label.followers}
-                    </div>
-                </div>
+                    </Followers>
+                </Header>
                 {props.label.styles.length !== 0 && !store().extra.compact && (
-                    <div className='styles'>
+                    <div>
                         <Chips chips={props.label.styles} colorful />
                     </div>
                 )}
-            </div>
-
-            <style jsx>{`
-                .item {
-                    width: 100%;
-                    max-width: ${consts.maxAppWidth}px;
-                    color: ${theme.palette.primary.main};
-                    background-color: ${store().extra.compact ? '' : theme.palette.secondary.main};
-                    padding: ${store().extra.compact ? '' : '20px'};
-                    border-radius: ${consts.borderRadius}px;
-                    cursor: pointer;
-                    text-align: left;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                }
-
-                .item:hover {
-                    background-color: ${store().extra.compact ? '' : '#ffffff08'};
-                }
-
-                .header {
-                    display: flex;
-                    width: 100%;
-                    justify-content: space-between;
-                    gap: 10px;
-                }
-
-                .name {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-
-                .followers {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    opacity: 0.5;
-                }
-
-                .styles {
-                    pointer-events: none;
-                }
-            `}</style>
+            </Wrapper>
         </>
     )
 }
+
+const Wrapper = styled('div')<{ compact: boolean }>`
+    width: 100%;
+    max-width: ${consts.maxAppWidth}px;
+    color: ${theme.palette.primary.main};
+    background-color: ${({ compact }) => (compact ? '' : theme.palette.secondary.main)};
+    padding: ${({ compact }) => (compact ? '' : '20px')};
+    border-radius: ${consts.borderRadius}px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &:hover {
+        background-color: ${({ compact }) => (compact ? '' : '#ffffff08')};
+    }
+`
+
+const Header = styled('div')`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+`
+
+const Name = styled('div')`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+`
+
+const Followers = styled('div')`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.5;
+`

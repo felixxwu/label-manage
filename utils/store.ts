@@ -10,7 +10,7 @@ interface DialogOptions {
 
 export type Store = ReturnType<typeof useStore>
 
-let globalStore
+let globalStore: Store
 export function store() {
     return globalStore
 }

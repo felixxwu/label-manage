@@ -1,4 +1,4 @@
-import { Avatar, IconButton } from '@mui/material'
+import { Avatar } from '@mui/material'
 import { Label } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { consts } from '../../utils/consts'
@@ -7,12 +7,15 @@ import EditIcon from '@mui/icons-material/Edit'
 import { PasteSearchPopup } from '../PasteSearchPopup'
 import { useState } from 'react'
 import { store } from '../../utils/store'
+import styled from '@emotion/styled'
 
 export function ImageForm(props: { label: Label }) {
     const [open, setOpen] = useState(false)
 
     function handleSearch() {
-        const link = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(props.label.name + ' logo')
+        const link =
+            'https://www.google.com/search?tbm=isch&q=' +
+            encodeURIComponent(props.label.name + ' logo')
         window.open(link, '_blank').focus()
     }
 
@@ -46,13 +49,16 @@ export function ImageForm(props: { label: Label }) {
             message: 'Are you sure you want to delete the image?',
             actions: [
                 { label: 'No' },
-                { label: 'Delete', callback: () => updateDocTyped(store().db, props.label.id, { image: '' }) },
+                {
+                    label: 'Delete',
+                    callback: () => updateDocTyped(store().db, props.label.id, { image: '' }),
+                },
             ],
         }
     }
 
     return (
-        <div className='label-image'>
+        <Wrapper>
             {props.label.image ? (
                 <>
                     <div onClick={handleClear}>
@@ -80,15 +86,15 @@ export function ImageForm(props: { label: Label }) {
                 </>
             )}
 
-            <PasteSearchPopup {...{ open, setOpen, handlePaste, handleSearch, useGoogleIcon: true }} />
-
-            <style jsx>{`
-                .label-image {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                }
-            `}</style>
-        </div>
+            <PasteSearchPopup
+                {...{ open, setOpen, handlePaste, handleSearch, useGoogleIcon: true }}
+            />
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    display: flex;
+    align-items: center;
+    gap: 20px;
+`

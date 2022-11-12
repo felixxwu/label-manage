@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { ClearButton } from './ClearButton'
 import { PasteSearchPopup } from './PasteSearchPopup'
 import { store } from '../utils/store'
+import styled from '@emotion/styled'
 
 type StringOnlyKeys<T extends Label> = {
     [K in keyof T]: T[K] extends String ? K : never
@@ -48,17 +49,17 @@ export function LinkOrEmail(props: {
     const value = props.label[props.dbKey]
 
     return (
-        <div className='link-form'>
+        <Wrapper>
             {value ? (
                 <>
                     {value.includes('@') ? (
-                        <a className='link' href={'mailto:' + value} target='_blank'>
+                        <Link href={'mailto:' + value} target='_blank'>
                             {value}
-                        </a>
+                        </Link>
                     ) : (
-                        <a className='link' href={value} target='_blank'>
+                        <Link href={value} target='_blank'>
                             {value}
-                        </a>
+                        </Link>
                     )}
                     <ClearButton onClick={handleClear} secondary />
                 </>
@@ -69,23 +70,29 @@ export function LinkOrEmail(props: {
                 </>
             )}
 
-            <PasteSearchPopup {...{ open, setOpen, handlePaste, handleSearch, useGoogleIcon: props.useGoogleIcon }} />
-
-            <style jsx>{`
-                .link-form {
-                    width: 100%;
-                    display: flex;
-                    gap: 20px;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                .link {
-                    color: ${theme.palette.primary.main};
-                    flex: 1;
-                    word-break: break-all;
-                }
-            `}</style>
-        </div>
+            <PasteSearchPopup
+                {...{
+                    open,
+                    setOpen,
+                    handlePaste,
+                    handleSearch,
+                    useGoogleIcon: props.useGoogleIcon,
+                }}
+            />
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const Link = styled('a')`
+    color: ${theme.palette.primary.main};
+    flex: 1;
+    word-break: break-all;
+`

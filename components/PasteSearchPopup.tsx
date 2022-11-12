@@ -1,7 +1,8 @@
-import { CircularProgress, Dialog } from '@mui/material'
+import { Dialog } from '@mui/material'
 import LaunchIcon from '@mui/icons-material/Launch'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import GoogleIcon from '@mui/icons-material/Google'
+import styled from '@emotion/styled'
 
 export function PasteSearchPopup(props: {
     open: boolean
@@ -20,38 +21,39 @@ export function PasteSearchPopup(props: {
 
     return (
         <Dialog open={props.open} onClose={() => props.setOpen(false)}>
-            <div className='choices'>
-                <div className='choice' onClick={handlePaste}>
+            <Choices>
+                <Choice onClick={handlePaste}>
                     <ContentPasteIcon color='primary' />
                     Paste
-                </div>
-                <div className='choice' onClick={handleSearch}>
-                    {props.useGoogleIcon ? <GoogleIcon color='primary' /> : <LaunchIcon color='primary' />}
+                </Choice>
+                <Choice onClick={handleSearch}>
+                    {props.useGoogleIcon ? (
+                        <GoogleIcon color='primary' />
+                    ) : (
+                        <LaunchIcon color='primary' />
+                    )}
                     Search
-                </div>
-            </div>
-
-            <style jsx>{`
-                .choices {
-                    display: flex;
-                }
-
-                .choice {
-                    width: 200px;
-                    height: 200px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 20px;
-
-                    cursor: pointer;
-                }
-
-                .choice:hover {
-                    background-color: rgba(0, 0, 0, 0.05);
-                }
-            `}</style>
+                </Choice>
+            </Choices>
         </Dialog>
     )
 }
+
+const Choices = styled('div')`
+    display: flex;
+`
+
+const Choice = styled('div')`
+    width: 200px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+`

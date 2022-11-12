@@ -20,6 +20,7 @@ import { setHistory } from '../utils/history'
 import { store } from '../utils/store'
 import { StylesSelector } from '../components/StylesSelector'
 import { Chips } from '../components/Chips'
+import styled from '@emotion/styled'
 
 export function Music() {
     const [selectedSongId, setSelectedSongId] = useState<string>(null)
@@ -109,8 +110,8 @@ export function Music() {
     }
 
     return (
-        <div className='music'>
-            <div className='header'>
+        <Wrapper>
+            <Header>
                 <IconButton onClick={handleBack}>
                     <ArrowBackIcon color='primary' />
                 </IconButton>
@@ -118,9 +119,9 @@ export function Music() {
                 <IconButton sx={{ opacity: 0 }}>
                     <ArrowBackIcon color='primary' />
                 </IconButton>
-            </div>
+            </Header>
 
-            <div className='buttons'>
+            <Buttons>
                 <Button
                     color='primary'
                     variant='contained'
@@ -129,16 +130,16 @@ export function Music() {
                 >
                     Add Song
                 </Button>
-            </div>
+            </Buttons>
 
             {store().extra.songs.map((song, index) => (
-                <div onClick={() => openDialog(song.id)} className='song' key={index}>
-                    <div className='header'>
+                <Song onClick={() => openDialog(song.id)} key={index}>
+                    <Header>
                         {song.title}
                         {song.link && <LinkIcon color='primary' />}
-                    </div>
+                    </Header>
                     <Chips chips={song.styles} colorful />
-                </div>
+                </Song>
             ))}
 
             <Dialog open={selectedSongId !== null} onClose={saveEdit}>
@@ -154,7 +155,7 @@ export function Music() {
                     <>
                         <DialogTitle>Edit Song</DialogTitle>
                         <DialogContent>
-                            <div className='fields'>
+                            <Fields>
                                 <TextField
                                     margin='normal'
                                     label='Song Title'
@@ -163,8 +164,8 @@ export function Music() {
                                     onChange={handleTitleChange}
                                     value={localTitle}
                                 />
-                                <div className='text-with-icon'>
-                                    <div className='text'>
+                                <TextWithIcon>
+                                    <ComboText>
                                         <TextField
                                             margin='normal'
                                             label='Song Link'
@@ -173,13 +174,13 @@ export function Music() {
                                             onChange={handleLinkChange}
                                             value={localLink}
                                         />
-                                    </div>
-                                    <div className='icon'>
+                                    </ComboText>
+                                    <ComboIcon>
                                         <IconButton onClick={() => openLink(localLink)}>
                                             <LinkIcon color='primary' />
                                         </IconButton>
-                                    </div>
-                                </div>
+                                    </ComboIcon>
+                                </TextWithIcon>
                                 <Chips
                                     chips={localStyles}
                                     colorful
@@ -201,7 +202,7 @@ export function Music() {
                                         )
                                     }}
                                 />
-                            </div>
+                            </Fields>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={closeDialog}>Cancel</Button>
@@ -211,76 +212,69 @@ export function Music() {
                     </>
                 )}
             </Dialog>
-
-            <style jsx>{`
-                .music {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 20px;
-                    margin: auto;
-                }
-
-                .buttons {
-                    display: flex;
-                    gap: 20px;
-                }
-
-                .song {
-                    width: 100%;
-                    color: ${theme.palette.primary.main};
-                    background-color: ${theme.palette.secondary.main};
-                    padding: 20px;
-                    border-radius: ${consts.borderRadius}px;
-                    cursor: pointer;
-                    text-align: left;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                }
-
-                .song:hover {
-                    background-color: #ffffff11;
-                }
-
-                .header {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                .fields {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                    width: 450px;
-                    max-width: 100%;
-                }
-
-                .text-with-icon {
-                    width: 100%;
-                    display: flex;
-                    align-items: flex-end;
-                    gap: 10px;
-                }
-
-                .text-with-icon .text {
-                    width: 100%;
-                }
-
-                .text-with-icon .icon {
-                    flex: 1;
-                    margin-bottom: 5px;
-                }
-
-                .header {
-                    display: flex;
-                    justify-items: space-between;
-                    width: 100%;
-                }
-            `}</style>
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: auto;
+`
+
+const Buttons = styled('div')`
+    display: flex;
+    gap: 20px;
+`
+
+const Song = styled('div')`
+    width: 100%;
+    color: ${theme.palette.primary.main};
+    background-color: ${theme.palette.secondary.main};
+    padding: 20px;
+    border-radius: ${consts.borderRadius}px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &:hover {
+        background-color: #ffffff11;
+    }
+`
+
+const Header = styled('div')`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+`
+
+const Fields = styled('div')`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 450px;
+    max-width: 100%;
+`
+
+const TextWithIcon = styled('div')`
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+`
+
+const ComboText = styled('div')`
+    width: 100%;
+`
+
+const ComboIcon = styled('div')`
+    flex: 1;
+    margin-bottom: 5px;
+`

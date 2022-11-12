@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@mui/material'
+import { Button, CircularProgress, IconButton } from '@mui/material'
 import { deleteDocTyped } from '../utils/db'
 import { Label } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -16,6 +16,7 @@ import { store } from '../utils/store'
 import { StylesForm } from '../components/forms/StylesForm'
 import { NotesForm } from '../components/forms/NotesForm'
 import { SongsSubmittedForm } from '../components/forms/SongsSubmittedForm'
+import styled from '@emotion/styled'
 
 export function Label(props: { label: Label }) {
     setHistory('label')
@@ -38,37 +39,38 @@ export function Label(props: { label: Label }) {
     }
 
     return (
-        <div className='label'>
+        <Wrapper>
             {props.label ? (
                 <>
-                    <div className='header'>
+                    <Header>
                         <IconButton onClick={handleBack}>
                             <ArrowBackIcon color='primary' />
                         </IconButton>
                         <ImageForm {...props} />
                         <Progress {...props} />
-                    </div>
+                    </Header>
                     <div />
                     <NameForm {...props} />
-                    <div className='divider' />
+                    <Divider />
                     <LinkForm {...props} />
-                    <div className='divider' />
+                    <Divider />
                     <SubmissionForm {...props} />
-                    <div className='divider' />
+                    <Divider />
                     <FollowersForm {...props} />
-                    <div className='divider' />
+                    <Divider />
                     <ArtistsForm {...props} />
-                    <div className='divider' />
+                    <Divider />
                     <StylesForm {...props} />
-                    <div className='divider' />
+                    <Divider />
                     <SongsSubmittedForm {...props} />
                     <NotesForm {...props} />
+                    <div />
                 </>
             ) : (
-                <h1>Label deleted</h1>
+                <CircularProgress />
             )}
 
-            <div className='bottom-buttons'>
+            <Buttons>
                 {props.label && (
                     <Button
                         color='warning'
@@ -79,47 +81,37 @@ export function Label(props: { label: Label }) {
                         Delete
                     </Button>
                 )}
-            </div>
-
-            <style jsx>{`
-                .label {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: flex-start;
-                    gap: 20px;
-                    margin: auto;
-                }
-
-                .bottom-buttons {
-                    width: 100%;
-                    display: flex;
-                    gap: 20px;
-                    justify-content: center;
-                }
-
-                .header {
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                .forms {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: flex-start;
-                    gap: 20px;
-                }
-
-                .divider {
-                    height: 1px;
-                    width: 100%;
-                    background-color: #545454;
-                }
-            `}</style>
-        </div>
+            </Buttons>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin: auto;
+`
+
+const Buttons = styled('div')`
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+`
+
+const Header = styled('div')`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+const Divider = styled('div')`
+    height: 1px;
+    width: 100%;
+    background-color: #545454;
+`
