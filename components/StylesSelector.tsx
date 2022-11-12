@@ -1,3 +1,5 @@
+import styled from '@emotion/styled'
+import Edit from '@mui/icons-material/Edit'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { consts } from '../utils/consts'
@@ -7,7 +9,7 @@ import { Chips } from './Chips'
 
 export function StylesSelector(props: { onSelectStyle: (style: string) => void }) {
     const [styleToAdd, setStyleToAdd] = useState('')
-    const [addMode, setAddMode] = useState(false)
+    const [editMode, setEditMode] = useState(false)
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
         setStyleToAdd(e.target.value)
@@ -39,9 +41,14 @@ export function StylesSelector(props: { onSelectStyle: (style: string) => void }
     }
 
     return (
-        <div className='style-selector'>
-            <Chips chips={store().extra.styles} onClick={handleClick} onDelete={handleDelete} colorful />
-            {addMode ? (
+        <Wrapper>
+            <Chips
+                chips={store().extra.styles}
+                onClick={handleClick}
+                onDelete={editMode ? handleDelete : null}
+                colorful
+            />
+            {editMode ? (
                 <>
                     <TextField
                         margin='normal'
@@ -59,24 +66,18 @@ export function StylesSelector(props: { onSelectStyle: (style: string) => void }
                     <Button onClick={addStyle}>Add to list</Button>
                 </>
             ) : (
-                <Button onClick={() => setAddMode(true)}>Add new style</Button>
+                <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
+                    Edit
+                </Button>
             )}
-
-            <style jsx>{`
-                .style-selector {
-                    max-width: 400px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                    padding: 20px;
-                }
-
-                .chips {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                }
-            `}</style>
-        </div>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled('div')`
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+`
