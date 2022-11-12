@@ -1,15 +1,12 @@
 import { Button, DialogActions, DialogContent, TextField } from '@mui/material'
 import { Label } from '../../utils/types'
 import React, { useState } from 'react'
-import { LoadingButton } from '@mui/lab'
-import { useShortLoad } from '../../utils/useShortLoad'
 import { store } from '../../utils/store'
 import { Chips } from '../Chips'
 import { updateDocTyped } from '../../utils/db'
 
 export function ArtistsForm(props: { label: Label }) {
     const [itemToAdd, setItemToAdd] = useState('')
-    const [loading, load] = useShortLoad()
 
     async function handleDelete(style: string) {
         updateDocTyped(store().db, props.label.id, {
@@ -35,7 +32,6 @@ export function ArtistsForm(props: { label: Label }) {
                 }
 
                 async function submitItem() {
-                    await load()
                     await updateDocTyped(store().db, props.label.id, {
                         artists: props.label.artists.concat(itemToAdd),
                     })
@@ -61,9 +57,7 @@ export function ArtistsForm(props: { label: Label }) {
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={closeDialog}>Cancel</Button>
-                            <LoadingButton onClick={submitItem} loading={loading}>
-                                Add
-                            </LoadingButton>
+                            <Button onClick={submitItem}>Add</Button>
                         </DialogActions>
                     </>
                 )

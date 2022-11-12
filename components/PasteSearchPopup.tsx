@@ -2,7 +2,6 @@ import { CircularProgress, Dialog } from '@mui/material'
 import LaunchIcon from '@mui/icons-material/Launch'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import GoogleIcon from '@mui/icons-material/Google'
-import { useShortLoad } from '../utils/useShortLoad'
 
 export function PasteSearchPopup(props: {
     open: boolean
@@ -11,16 +10,11 @@ export function PasteSearchPopup(props: {
     handleSearch: () => void
     useGoogleIcon: boolean
 }) {
-    const [pasteLoading, loadPaste] = useShortLoad()
-    const [searchLoading, searchPaste] = useShortLoad()
-
     async function handlePaste() {
-        await loadPaste()
         props.handlePaste()
     }
 
     async function handleSearch() {
-        await searchPaste()
         props.handleSearch()
     }
 
@@ -28,24 +22,12 @@ export function PasteSearchPopup(props: {
         <Dialog open={props.open} onClose={() => props.setOpen(false)}>
             <div className='choices'>
                 <div className='choice' onClick={handlePaste}>
-                    {pasteLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <>
-                            <ContentPasteIcon color='primary' />
-                            Paste
-                        </>
-                    )}
+                    <ContentPasteIcon color='primary' />
+                    Paste
                 </div>
                 <div className='choice' onClick={handleSearch}>
-                    {searchLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <>
-                            {props.useGoogleIcon ? <GoogleIcon color='primary' /> : <LaunchIcon color='primary' />}
-                            Search
-                        </>
-                    )}
+                    {props.useGoogleIcon ? <GoogleIcon color='primary' /> : <LaunchIcon color='primary' />}
+                    Search
                 </div>
             </div>
 

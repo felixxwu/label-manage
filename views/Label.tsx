@@ -1,10 +1,9 @@
-import { IconButton } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
 import { deleteDocTyped } from '../utils/db'
 import { Label } from '../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { fade, shortWait } from '../utils/animate'
-import { LoadingButton } from '@mui/lab'
+import { fade } from '../utils/animate'
 import { LinkForm } from '../components/forms/LinkForm'
 import { NameForm } from '../components/forms/NameForm'
 import { FollowersForm } from '../components/forms/FollowersForm'
@@ -71,14 +70,14 @@ export function Label(props: { label: Label }) {
 
             <div className='bottom-buttons'>
                 {props.label && (
-                    <LoadingButton
+                    <Button
                         color='warning'
                         variant='contained'
                         onClick={openConfirmDelete}
                         startIcon={<DeleteIcon />}
                     >
                         Delete
-                    </LoadingButton>
+                    </Button>
                 )}
             </div>
 

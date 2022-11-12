@@ -1,8 +1,6 @@
 import { Button, Chip, Dialog, DialogActions, DialogTitle, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
-import { LoadingButton } from '@mui/lab'
-import { useShortLoad } from '../utils/useShortLoad'
 import { getColorHash } from '../utils/colorHash'
 
 export function Chips(props: {
@@ -15,7 +13,6 @@ export function Chips(props: {
 }) {
     const [dialogContent, setDialogContent] = useState<'delete' | 'add' | 'closed'>('closed')
     const [itemToDelete, setItemToDelete] = useState('')
-    const [loading, load] = useShortLoad()
 
     function openDeleteDialog(item: string) {
         setDialogContent('delete')
@@ -32,7 +29,6 @@ export function Chips(props: {
 
     async function deleteItem() {
         if (itemToDelete === '') return
-        await load()
         await props.onDelete(itemToDelete)
         closeDialog()
     }
@@ -69,9 +65,7 @@ export function Chips(props: {
                         <DialogTitle>Delete {itemToDelete}?</DialogTitle>
                         <DialogActions>
                             <Button onClick={closeDialog}>No</Button>
-                            <LoadingButton onClick={deleteItem} loading={loading}>
-                                Delete
-                            </LoadingButton>
+                            <Button onClick={deleteItem}>Delete</Button>
                         </DialogActions>
                     </>
                 )}

@@ -4,9 +4,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { Song } from '../utils/types'
 import { consts } from '../utils/consts'
 import { fade } from '../utils/animate'
-import { LoadingButton } from '@mui/lab'
 import React, { useState } from 'react'
-import { useShortLoad } from '../utils/useShortLoad'
 import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import LinkIcon from '@mui/icons-material/Link'
@@ -16,9 +14,6 @@ import { StylesSelector } from '../components/StylesSelector'
 import { Chips } from '../components/Chips'
 
 export function Music() {
-    const [loadingSave, loadSave] = useShortLoad()
-    const [loadingDelete, loadDelete] = useShortLoad()
-
     const [selectedSongId, setSelectedSongId] = useState<string>(null)
     const [deleteDialog, setDeleteDialog] = useState(false)
     const [localTitle, setLocalTitle] = useState('')
@@ -75,7 +70,6 @@ export function Music() {
     }
 
     async function saveEdit() {
-        await loadSave()
         await updateDocTyped(store().db, consts.dbExtraId, {
             songs: store().extra.songs.map(song => {
                 if (song.id === selectedSongId) {
@@ -94,7 +88,6 @@ export function Music() {
     }
 
     async function deleteSong() {
-        await loadDelete()
         await updateDocTyped(store().db, consts.dbExtraId, {
             songs: store().extra.songs.filter(song => song.id !== selectedSongId),
         })
@@ -139,9 +132,7 @@ export function Music() {
                         <DialogTitle>Are you sure you want to delete this song?</DialogTitle>
                         <DialogActions>
                             <Button onClick={() => setDeleteDialog(false)}>No</Button>
-                            <LoadingButton onClick={deleteSong} loading={loadingDelete}>
-                                Delete
-                            </LoadingButton>
+                            <Button onClick={deleteSong}>Delete</Button>
                         </DialogActions>
                     </>
                 ) : (
@@ -195,9 +186,7 @@ export function Music() {
                         <DialogActions>
                             <Button onClick={closeDialog}>Cancel</Button>
                             <Button onClick={() => setDeleteDialog(true)}>Delete</Button>
-                            <LoadingButton onClick={saveEdit} loading={loadingSave}>
-                                Save
-                            </LoadingButton>
+                            <Button onClick={saveEdit}>Save</Button>
                         </DialogActions>
                     </>
                 )}

@@ -1,16 +1,13 @@
 import AddIcon from '@mui/icons-material/Add'
-import { TextField } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { addDocTyped } from '../utils/db'
-import LoadingButton from '@mui/lab/LoadingButton'
-import { useShortLoad } from '../utils/useShortLoad'
 import { store } from '../utils/store'
 
 export function Input() {
     const [name, setName] = useState('')
-    const [loading, shortLoad] = useShortLoad()
 
     function handleKeyUp(e: React.KeyboardEvent) {
         if (e.key === 'Enter') {
@@ -21,7 +18,6 @@ export function Input() {
     async function handleAdd() {
         if (name) {
             try {
-                await shortLoad()
                 const doc = await addDocTyped(store().db, name)
                 await fade()
                 store().selectedLabelId = doc.id
@@ -48,17 +44,16 @@ export function Input() {
                 autoFocus
                 color='primary'
             />
-            <LoadingButton
+            <Button
                 color='primary'
                 variant='contained'
                 size='large'
                 startIcon={<AddIcon />}
                 onClick={handleAdd}
                 disabled={name.length === 0}
-                loading={loading}
             >
                 Add
-            </LoadingButton>
+            </Button>
 
             <style jsx>{`
                 .inputArea {

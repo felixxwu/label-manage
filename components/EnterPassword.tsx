@@ -2,12 +2,9 @@ import { Button, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { getUrlPassword } from '../utils/getPassword'
-import { useShortLoad } from '../utils/useShortLoad'
-import { LoadingButton } from '@mui/lab'
 
 export function EnterPassword() {
     const [password, setPassword] = useState('')
-    const [loading, load] = useShortLoad()
 
     useEffect(() => {
         const localPassword = window.localStorage.getItem('password')
@@ -32,7 +29,6 @@ export function EnterPassword() {
 
     async function enterPassword(password: string) {
         if (!password) return
-        await load()
         window.localStorage.setItem('password', password)
         const urlParams = new URLSearchParams(window.location.search)
         urlParams.set('p', password)
@@ -51,14 +47,13 @@ export function EnterPassword() {
                 autoFocus
                 spellCheck='false'
             />
-            <LoadingButton
+            <Button
                 variant='contained'
                 onClick={() => enterPassword(password)}
                 endIcon={<ArrowForwardIcon color='primary' />}
-                loading={loading}
             >
                 Enter
-            </LoadingButton>
+            </Button>
 
             <style jsx>{`
                 .password {

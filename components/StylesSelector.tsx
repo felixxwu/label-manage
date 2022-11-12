@@ -1,15 +1,12 @@
-import { LoadingButton } from '@mui/lab'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { consts } from '../utils/consts'
 import { updateDocTyped } from '../utils/db'
 import { store } from '../utils/store'
-import { useShortLoad } from '../utils/useShortLoad'
 import { Chips } from './Chips'
 
 export function StylesSelector(props: { onSelectStyle: (style: string) => void }) {
     const [styleToAdd, setStyleToAdd] = useState('')
-    const [loading, load] = useShortLoad()
     const [addMode, setAddMode] = useState(false)
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -23,7 +20,6 @@ export function StylesSelector(props: { onSelectStyle: (style: string) => void }
     }
 
     async function addStyle() {
-        await load()
         if (store().extra.styles.includes(styleToAdd)) return
 
         await updateDocTyped(store().db, consts.dbExtraId, {
@@ -33,8 +29,6 @@ export function StylesSelector(props: { onSelectStyle: (style: string) => void }
     }
 
     async function handleDelete(style: string) {
-        await load()
-
         await updateDocTyped(store().db, consts.dbExtraId, {
             styles: store().extra.styles.filter(s => s !== style),
         })
@@ -62,9 +56,7 @@ export function StylesSelector(props: { onSelectStyle: (style: string) => void }
                         autoFocus
                         sx={{ margin: 0 }}
                     />
-                    <LoadingButton onClick={addStyle} loading={loading}>
-                        Add to list
-                    </LoadingButton>
+                    <Button onClick={addStyle}>Add to list</Button>
                 </>
             ) : (
                 <Button onClick={() => setAddMode(true)}>Add new style</Button>
