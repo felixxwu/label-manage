@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'
-import { Store } from '../../utils/store'
+import { store } from '../../utils/store'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
 
-export function NameForm(props: { label: Label; store: Store }) {
+export function NameForm(props: { label: Label }) {
     const [name, setName] = useState(props.label.name)
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setName(e.target.value)
-        updateDocTyped(props.store.db, props.label.id, { name: e.target.value })
+        updateDocTyped(store().db, props.label.id, { name: e.target.value })
     }
 
     return (

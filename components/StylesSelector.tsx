@@ -3,11 +3,11 @@ import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { consts } from '../utils/consts'
 import { updateDocTyped } from '../utils/db'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 import { useShortLoad } from '../utils/useShortLoad'
 import { Chips } from './Chips'
 
-export function StylesSelector(props: { store: Store; onSelectStyle: (style: string) => void }) {
+export function StylesSelector(props: { onSelectStyle: (style: string) => void }) {
     const [styleToAdd, setStyleToAdd] = useState('')
     const [loading, load] = useShortLoad()
     const [addMode, setAddMode] = useState(false)
@@ -24,10 +24,10 @@ export function StylesSelector(props: { store: Store; onSelectStyle: (style: str
 
     async function addStyle() {
         await load()
-        if (props.store.extra.styles.includes(styleToAdd)) return
+        if (store().extra.styles.includes(styleToAdd)) return
 
-        await updateDocTyped(props.store.db, consts.dbExtraId, {
-            styles: props.store.extra.styles.concat(styleToAdd),
+        await updateDocTyped(store().db, consts.dbExtraId, {
+            styles: store().extra.styles.concat(styleToAdd),
         })
         setStyleToAdd('')
     }
@@ -35,8 +35,8 @@ export function StylesSelector(props: { store: Store; onSelectStyle: (style: str
     async function handleDelete(style: string) {
         await load()
 
-        await updateDocTyped(props.store.db, consts.dbExtraId, {
-            styles: props.store.extra.styles.filter(s => s !== style),
+        await updateDocTyped(store().db, consts.dbExtraId, {
+            styles: store().extra.styles.filter(s => s !== style),
         })
     }
 
@@ -46,7 +46,7 @@ export function StylesSelector(props: { store: Store; onSelectStyle: (style: str
 
     return (
         <div className='style-selector'>
-            <Chips chips={props.store.extra.styles} onClick={handleClick} onDelete={handleDelete} colorful />
+            <Chips chips={store().extra.styles} onClick={handleClick} onDelete={handleDelete} colorful />
             {addMode ? (
                 <>
                     <TextField

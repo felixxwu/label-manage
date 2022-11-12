@@ -3,16 +3,16 @@ import { Label } from '../../utils/types'
 import React, { useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import { useShortLoad } from '../../utils/useShortLoad'
-import { Store } from '../../utils/store'
+import { store } from '../../utils/store'
 import { Chips } from '../Chips'
 import { updateDocTyped } from '../../utils/db'
 
-export function ArtistsForm(props: { label: Label; store: Store }) {
+export function ArtistsForm(props: { label: Label }) {
     const [itemToAdd, setItemToAdd] = useState('')
     const [loading, load] = useShortLoad()
 
     async function handleDelete(style: string) {
-        updateDocTyped(props.store.db, props.label.id, {
+        updateDocTyped(store().db, props.label.id, {
             artists: props.label.artists.filter(item => item !== style),
         })
     }
@@ -36,7 +36,7 @@ export function ArtistsForm(props: { label: Label; store: Store }) {
 
                 async function submitItem() {
                     await load()
-                    await updateDocTyped(props.store.db, props.label.id, {
+                    await updateDocTyped(store().db, props.label.id, {
                         artists: props.label.artists.concat(itemToAdd),
                     })
                     setItemToAdd('')

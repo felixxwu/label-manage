@@ -6,9 +6,9 @@ import { theme } from '../../utils/theme'
 import EditIcon from '@mui/icons-material/Edit'
 import { PasteSearchPopup } from '../PasteSearchPopup'
 import { useState } from 'react'
-import { Store } from '../../utils/store'
+import { store } from '../../utils/store'
 
-export function ImageForm(props: { label: Label; store: Store }) {
+export function ImageForm(props: { label: Label }) {
     const [open, setOpen] = useState(false)
 
     function handleSearch() {
@@ -33,7 +33,7 @@ export function ImageForm(props: { label: Label; store: Store }) {
             reader.readAsDataURL(file)
             reader.onloadend = function () {
                 const base64data = reader.result
-                updateDocTyped(props.store.db, props.label.id, { image: base64data.toString() })
+                updateDocTyped(store().db, props.label.id, { image: base64data.toString() })
                 setOpen(false)
             }
         } catch (e) {
@@ -42,11 +42,11 @@ export function ImageForm(props: { label: Label; store: Store }) {
     }
 
     function handleClear() {
-        props.store.dialog = {
+        store().dialog = {
             message: 'Are you sure you want to delete the image?',
             actions: [
                 { label: 'No' },
-                { label: 'Delete', callback: () => updateDocTyped(props.store.db, props.label.id, { image: '' }) },
+                { label: 'Delete', callback: () => updateDocTyped(store().db, props.label.id, { image: '' }) },
             ],
         }
     }

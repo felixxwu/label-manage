@@ -2,19 +2,18 @@ import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label } from '../utils/types'
-import PeopleIcon from '@mui/icons-material/People'
 import { Avatar } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/Email'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 import { Chips } from './Chips'
 import { getProgress } from '../utils/progress'
 import DoneAll from '@mui/icons-material/DoneAll'
 
-export function ListItem(props: { label: Label; store: Store }) {
+export function ListItem(props: { label: Label }) {
     async function handleClick() {
         await fade()
-        props.store.selectedLabelId = props.label.id
+        store().selectedLabelId = props.label.id
     }
 
     return (
@@ -22,7 +21,7 @@ export function ListItem(props: { label: Label; store: Store }) {
             <div className='item' onClick={handleClick}>
                 <div className='header'>
                     <div className='name'>
-                        {!props.store.extra.compact && (
+                        {!store().extra.compact && (
                             <Avatar
                                 src={props.label.image}
                                 sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
@@ -45,7 +44,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                         {props.label.followers}
                     </div>
                 </div>
-                {props.label.styles.length !== 0 && !props.store.extra.compact && (
+                {props.label.styles.length !== 0 && !store().extra.compact && (
                     <div className='styles'>
                         <Chips chips={props.label.styles} colorful />
                     </div>
@@ -57,8 +56,8 @@ export function ListItem(props: { label: Label; store: Store }) {
                     width: 100%;
                     max-width: ${consts.maxAppWidth}px;
                     color: ${theme.palette.primary.main};
-                    background-color: ${props.store.extra.compact ? '' : theme.palette.secondary.main};
-                    padding: ${props.store.extra.compact ? '' : '20px'};
+                    background-color: ${store().extra.compact ? '' : theme.palette.secondary.main};
+                    padding: ${store().extra.compact ? '' : '20px'};
                     border-radius: ${consts.borderRadius}px;
                     cursor: pointer;
                     text-align: left;
@@ -68,7 +67,7 @@ export function ListItem(props: { label: Label; store: Store }) {
                 }
 
                 .item:hover {
-                    background-color: ${props.store.extra.compact ? '' : '#ffffff08'};
+                    background-color: ${store().extra.compact ? '' : '#ffffff08'};
                 }
 
                 .header {

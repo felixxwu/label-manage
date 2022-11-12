@@ -1,17 +1,17 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'
-import { Store } from '../../utils/store'
+import { store } from '../../utils/store'
 import { followerOptions, Label } from '../../utils/types'
 import { EditButton } from '../EditButton'
 
-export function FollowersForm(props: { label: Label; store: Store }) {
+export function FollowersForm(props: { label: Label }) {
     const [followers, setFollowers] = useState(props.label.followers)
     const [editMode, setEditMode] = useState(false)
 
     function handleChange(_, newFollowers: typeof followerOptions[number]) {
         if (newFollowers) {
-            updateDocTyped(props.store.db, props.label.id, { followers: newFollowers })
+            updateDocTyped(store().db, props.label.id, { followers: newFollowers })
             setFollowers(newFollowers)
         }
         toggleEditMode()

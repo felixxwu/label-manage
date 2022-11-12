@@ -1,10 +1,9 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { Label } from '../utils/types'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
-import { Store } from '../utils/store'
 import { getProgress } from '../utils/progress'
 
-export function Progress(props: { label: Label; store: Store }) {
+export function Progress(props: { label: Label }) {
     const percentage = getProgress(props.label)
     return percentage === 100 ? (
         <DoneAllIcon color='primary' />

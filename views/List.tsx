@@ -6,20 +6,20 @@ import { fade } from '../utils/animate'
 import { setHistory } from '../utils/history'
 import { CompactViewSwitch } from '../components/CompactViewSwitch'
 import { Sort } from '../components/Sort'
-import { Store, store2 } from '../utils/store'
+import { store } from '../utils/store'
 import { followersToIndex } from '../utils/types'
 import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 
-export function List(props: { store: Store }) {
+export function List() {
     const [showInput, setShowInput] = useState(false)
 
     setHistory('')
 
     useEffect(() => {
-        window.scrollTo(0, store2.state.listScrollPos)
+        window.scrollTo(0, store().listScrollPos)
         window.onscroll = debounce(() => {
-            store2.state.listScrollPos = window.scrollY
+            store().listScrollPos = window.scrollY
         }, 100)
         return () => {
             window.onscroll = null
@@ -28,14 +28,14 @@ export function List(props: { store: Store }) {
 
     async function showMusic() {
         await fade()
-        props.store.showMusic = true
+        store().showMusic = true
     }
 
-    const labels = props.store.labels.sort((a, b) => {
-        if (props.store.sort === 'follower') {
+    const labels = store().labels.sort((a, b) => {
+        if (store().sort === 'follower') {
             return followersToIndex(b.followers) - followersToIndex(a.followers)
         }
-        if (props.store.sort === 'name') {
+        if (store().sort === 'name') {
             return a.name > b.name ? 1 : -1
         }
     })
@@ -45,7 +45,7 @@ export function List(props: { store: Store }) {
             <h1>Label List</h1>
 
             {showInput ? (
-                <Input store={props.store} />
+                <Input />
             ) : (
                 <Button variant='contained' onClick={() => setShowInput(true)} startIcon={<Add />} color='primary'>
                     Add Label
@@ -53,13 +53,13 @@ export function List(props: { store: Store }) {
             )}
 
             <div className='options'>
-                <CompactViewSwitch store={props.store} />
-                <Sort store={props.store} />
+                <CompactViewSwitch />
+                <Sort />
             </div>
 
             <div className='list-items'>
                 {labels.map((label, i) => {
-                    return <ListItem label={label} key={i} store={props.store} />
+                    return <ListItem label={label} key={i} />
                 })}
             </div>
 
@@ -86,7 +86,7 @@ export function List(props: { store: Store }) {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: ${props.store.extra.compact ? '' : '20px'};
+                    gap: ${store().extra.compact ? '' : '20px'};
                 }
 
                 .options {

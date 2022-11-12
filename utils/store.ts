@@ -1,9 +1,7 @@
-import { Firestore } from 'firebase/firestore'
 import { useState } from 'react'
-import { createStore } from 'truly-global-state'
 import { useDb, useInitDb } from './db'
 import { usePassword } from './getPassword'
-import { DbExtra, Label, SortType } from './types'
+import { SortType } from './types'
 
 interface DialogOptions {
     message: string
@@ -12,50 +10,44 @@ interface DialogOptions {
 
 export type Store = ReturnType<typeof useStore>
 
+let globalStore
+export function store() {
+    return globalStore
+}
+
 export function useStore() {
     const { db, error } = useInitDb()
     const { labels, extra } = useDb(db)
     const password = usePassword()
-    const [selectedLabelId, setSelectedLabelId] = useState<string>(null)
-    const [showMusic, setShowMusic] = useState(false)
-    const [sort, setSort] = useState<SortType>('follower')
-    const [dialog, setDialog] = useState<DialogOptions>(null)
 
-    const store = {
-        db,
-        error,
-        labels,
-        extra,
-        password,
-        get selectedLabelId() {
-            return selectedLabelId
-        },
-        set selectedLabelId(id) {
-            setSelectedLabelId(id)
-        },
-        get showMusic() {
-            return showMusic
-        },
-        set showMusic(value) {
-            setShowMusic(value)
-        },
-        get sort() {
-            return sort
-        },
-        set sort(value) {
-            setSort(value)
-        },
-        get dialog() {
-            return dialog
-        },
-        set dialog(value) {
-            setDialog(value)
-        },
-    }
+    const store = makeStore(
+        { db, error, labels, extra, password },
+        {
+            selectedLabelId: <string>null,
+            showMusic: false,
+            sort: <SortType>'follower',
+            dialog: <DialogOptions>null,
+            listScrollPos: 0,
+        }
+    )
+
+    globalStore = store
 
     return store
 }
 
-export const store2 = createStore({
-    listScrollPos: 0,
-})
+function makeStore<Readonly, Config>(readonly: Readonly, config: Config) {
+    const store = readonly
+    for (const key of Object.keys(config) as (keyof Config)[]) {
+        const [value, setValue] = useState(config[key])
+        Object.defineProperty(store, key, {
+            get() {
+                return value
+            },
+            set(newValue) {
+                return setValue(newValue)
+            },
+        })
+    }
+    return store as Readonly & Config
+}

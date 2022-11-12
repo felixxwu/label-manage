@@ -5,7 +5,7 @@ import { EditButton } from './EditButton'
 import { useState } from 'react'
 import { ClearButton } from './ClearButton'
 import { PasteSearchPopup } from './PasteSearchPopup'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 
 type StringOnlyKeys<T extends Label> = {
     [K in keyof T]: T[K] extends String ? K : never
@@ -13,7 +13,6 @@ type StringOnlyKeys<T extends Label> = {
 
 export function LinkOrEmail(props: {
     label: Label
-    store: Store
     searchUrl: string
     dbKey: StringOnlyKeys<Label>
     useGoogleIcon: boolean
@@ -28,7 +27,7 @@ export function LinkOrEmail(props: {
     async function handlePaste() {
         if (value.includes('@')) {
             const email = await navigator.clipboard.readText()
-            updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: email })
+            updateDocTyped(store().db, props.label.id, { [props.dbKey]: email })
         } else {
             const regex =
                 /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
@@ -36,14 +35,14 @@ export function LinkOrEmail(props: {
             const results = (await navigator.clipboard.readText()).match(regex)
             if (!results || results.length === 0) return
             const link = results[0].split('?')[0]
-            updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: link })
+            updateDocTyped(store().db, props.label.id, { [props.dbKey]: link })
         }
 
         setOpen(false)
     }
 
     function handleClear() {
-        updateDocTyped(props.store.db, props.label.id, { [props.dbKey]: '' })
+        updateDocTyped(store().db, props.label.id, { [props.dbKey]: '' })
     }
 
     const value = props.label[props.dbKey]

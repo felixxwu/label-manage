@@ -1,16 +1,16 @@
-import { Store } from '../../utils/store'
+import { store } from '../../utils/store'
 import { Label } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { Chips } from '../Chips'
 
-export function SongsSubmittedForm(props: { label: Label; store: Store }) {
+export function SongsSubmittedForm(props: { label: Label }) {
     async function handleDelete(song: string) {
-        updateDocTyped(props.store.db, props.label.id, {
+        updateDocTyped(store().db, props.label.id, {
             songsSubmitted: props.label.songsSubmitted.filter(item => item !== song),
         })
     }
 
-    const sortedSongs = props.store.extra.songs.sort((a, b) => (a.title > b.title ? 1 : -1))
+    const sortedSongs = store().extra.songs.sort((a, b) => (a.title > b.title ? 1 : -1))
 
     return (
         <>
@@ -22,7 +22,7 @@ export function SongsSubmittedForm(props: { label: Label; store: Store }) {
                 addDialog={({ closeDialog }) => {
                     async function handleSelection(song: string) {
                         if (!props.label.songsSubmitted.includes(song)) {
-                            updateDocTyped(props.store.db, props.label.id, {
+                            updateDocTyped(store().db, props.label.id, {
                                 songsSubmitted: props.label.songsSubmitted.concat(song),
                             })
                         }

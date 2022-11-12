@@ -6,9 +6,9 @@ import { consts } from '../utils/consts'
 import { addDocTyped } from '../utils/db'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useShortLoad } from '../utils/useShortLoad'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 
-export function Input(props: { store: Store }) {
+export function Input() {
     const [name, setName] = useState('')
     const [loading, shortLoad] = useShortLoad()
 
@@ -22,9 +22,9 @@ export function Input(props: { store: Store }) {
         if (name) {
             try {
                 await shortLoad()
-                const doc = await addDocTyped(props.store.db, name)
+                const doc = await addDocTyped(store().db, name)
                 await fade()
-                props.store.selectedLabelId = doc.id
+                store().selectedLabelId = doc.id
             } catch (e) {
                 alert(e)
             }

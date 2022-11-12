@@ -1,16 +1,16 @@
 import { FormControlLabel, Switch } from '@mui/material'
 import { consts } from '../utils/consts'
 import { updateDocTyped } from '../utils/db'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 
-export function CompactViewSwitch(props: { store: Store }) {
+export function CompactViewSwitch() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateDocTyped(props.store.db, consts.dbExtraId, { compact: event.target.checked })
+        updateDocTyped(store().db, consts.dbExtraId, { compact: event.target.checked })
     }
 
     return (
         <FormControlLabel
-            control={<Switch onChange={handleChange} checked={props.store.extra.compact} />}
+            control={<Switch onChange={handleChange} checked={store().extra.compact} />}
             label='Compact View'
         />
     )

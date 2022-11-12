@@ -13,16 +13,16 @@ import { ImageForm } from '../components/forms/ImageForm'
 import { SubmissionForm } from '../components/forms/SubmissionForm'
 import { Progress } from '../components/Progress'
 import { setHistory } from '../utils/history'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 import { StylesForm } from '../components/forms/StylesForm'
 import { NotesForm } from '../components/forms/NotesForm'
 import { SongsSubmittedForm } from '../components/forms/SongsSubmittedForm'
 
-export function Label(props: { label: Label; store: Store }) {
+export function Label(props: { label: Label }) {
     setHistory('label')
 
     async function openConfirmDelete() {
-        props.store.dialog = {
+        store().dialog = {
             message: 'Are you sure you want to delete?',
             actions: [{ label: 'No' }, { label: 'Delete', callback: handleDelete }],
         }
@@ -30,11 +30,11 @@ export function Label(props: { label: Label; store: Store }) {
 
     async function handleBack() {
         await fade()
-        props.store.selectedLabelId = null
+        store().selectedLabelId = null
     }
 
     async function handleDelete() {
-        await deleteDocTyped(props.store.db, props.label.id)
+        await deleteDocTyped(store().db, props.label.id)
         await handleBack()
     }
 

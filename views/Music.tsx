@@ -11,11 +11,11 @@ import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
 import LinkIcon from '@mui/icons-material/Link'
 import { setHistory } from '../utils/history'
-import { Store } from '../utils/store'
+import { store } from '../utils/store'
 import { StylesSelector } from '../components/StylesSelector'
 import { Chips } from '../components/Chips'
 
-export function Music(props: { store: Store }) {
+export function Music() {
     const [loadingSave, loadSave] = useShortLoad()
     const [loadingDelete, loadDelete] = useShortLoad()
 
@@ -29,7 +29,7 @@ export function Music(props: { store: Store }) {
 
     async function handleBack() {
         await fade()
-        props.store.showMusic = false
+        store().showMusic = false
     }
 
     async function addSong() {
@@ -39,7 +39,7 @@ export function Music(props: { store: Store }) {
             link: '',
             styles: [],
         }
-        await updateDocTyped(props.store.db, consts.dbExtraId, { songs: props.store.extra.songs.concat(emptySong) })
+        await updateDocTyped(store().db, consts.dbExtraId, { songs: store().extra.songs.concat(emptySong) })
         setSelectedSongId(emptySong.id)
         setLocalTitle(emptySong.title)
         setLocalLink(emptySong.link)
@@ -59,7 +59,7 @@ export function Music(props: { store: Store }) {
     }
 
     function findSong(songId: string) {
-        return props.store.extra.songs.find(song => song.id === songId)
+        return store().extra.songs.find(song => song.id === songId)
     }
 
     function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -76,8 +76,8 @@ export function Music(props: { store: Store }) {
 
     async function saveEdit() {
         await loadSave()
-        await updateDocTyped(props.store.db, consts.dbExtraId, {
-            songs: props.store.extra.songs.map(song => {
+        await updateDocTyped(store().db, consts.dbExtraId, {
+            songs: store().extra.songs.map(song => {
                 if (song.id === selectedSongId) {
                     return {
                         id: song.id,
@@ -95,8 +95,8 @@ export function Music(props: { store: Store }) {
 
     async function deleteSong() {
         await loadDelete()
-        await updateDocTyped(props.store.db, consts.dbExtraId, {
-            songs: props.store.extra.songs.filter(song => song.id !== selectedSongId),
+        await updateDocTyped(store().db, consts.dbExtraId, {
+            songs: store().extra.songs.filter(song => song.id !== selectedSongId),
         })
         closeDialog()
     }
@@ -123,7 +123,7 @@ export function Music(props: { store: Store }) {
                 </Button>
             </div>
 
-            {props.store.extra.songs.map((song, index) => (
+            {store().extra.songs.map((song, index) => (
                 <div onClick={() => openDialog(song.id)} className='song' key={index}>
                     <div className='header'>
                         {song.title}
@@ -187,9 +187,7 @@ export function Music(props: { store: Store }) {
                                             closeDialog()
                                         }
 
-                                        return (
-                                            <StylesSelector store={props.store} onSelectStyle={handleStyleSelection} />
-                                        )
+                                        return <StylesSelector onSelectStyle={handleStyleSelection} />
                                     }}
                                 />
                             </div>

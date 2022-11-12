@@ -8,21 +8,17 @@ import { Label } from './Label'
 import { List } from './List'
 import { Music } from './Music'
 import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import { store2, useStore } from '../utils/store'
+import { store, useStore } from '../utils/store'
 
 export function App() {
-    const store = useStore()
-
-    if (process.browser) {
-        store2.subscribeToAll()
-    }
+    useStore()
 
     const page = (() => {
-        if (!store.password) return 'password' as const
-        if (store.error) return 'error' as const
-        if (!store.db || !store.labels || !store.extra) return 'loading' as const
-        if (store.showMusic) return 'music' as const
-        if (store.selectedLabelId) return 'label' as const
+        if (!store().password) return 'password' as const
+        if (store().error) return 'error' as const
+        if (!store().db || !store().labels || !store().extra) return 'loading' as const
+        if (store().showMusic) return 'music' as const
+        if (store().selectedLabelId) return 'label' as const
         return 'list' as const
     })()
 
@@ -49,35 +45,39 @@ export function App() {
     async function goHome() {
         if (page !== 'list') {
             await fade()
-            store.selectedLabelId = null
-            store.showMusic = false
+            store().selectedLabelId = null
+            store().showMusic = false
         }
     }
 
-    const selectedLabel = store.labels.find(l => l.id === store.selectedLabelId)
+    const selectedLabel = store().labels.find(l => l.id === store().selectedLabelId)
 
     return (
         <ThemeProvider theme={theme}>
             <div className='app'>
                 <div className='content'>
                     {page === 'password' && <EnterPassword />}
-                    {page === 'error' && <>{store.error}</>}
+                    {page === 'error' && <>{store().error}</>}
                     {page === 'loading' && <CircularProgress />}
 
-                    {page === 'label' && <Label store={store} label={selectedLabel} />}
-                    {page === 'list' && <List store={store} />}
-                    {page === 'music' && <Music store={store} />}
+                    {page === 'label' && <Label label={selectedLabel} />}
+                    {page === 'list' && <List />}
+                    {page === 'music' && <Music />}
                 </div>
 
-                <Dialog open={!!store.dialog} onClose={() => (store.dialog = null)}>
+                <Dialog open={!!store().dialog} onClose={() => (store().dialog = null)}>
                     <DialogTitle>Are you sure you want to delete?</DialogTitle>
                     <DialogActions>
-                        {store.dialog?.actions.map(action => {
+                        {store().dialog?.actions.map(action => {
                             const handleClick = () => {
                                 action.callback?.()
-                                store.dialog = null
+                                store().dialog = null
                             }
-                            return <Button onClick={handleClick}>{action.label}</Button>
+                            return (
+                                <Button onClick={handleClick} key={action.label}>
+                                    {action.label}
+                                </Button>
+                            )
                         })}
                     </DialogActions>
                 </Dialog>
