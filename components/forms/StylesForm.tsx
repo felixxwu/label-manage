@@ -27,7 +27,12 @@ export function StylesForm(props: { label: Label }) {
                     closeDialog()
                 }
 
-                return <StylesSelector onSelectStyle={handleStyleSelection} />
+                return (
+                    <StylesSelector
+                        onSelectStyle={handleStyleSelection}
+                        ignore={props.label.styles}
+                    />
+                )
             }}
         />
     )

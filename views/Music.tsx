@@ -1,4 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    TextField,
+} from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import AddIcon from '@mui/icons-material/Add'
 import { Song } from '../utils/types'
@@ -34,7 +42,9 @@ export function Music() {
             link: '',
             styles: [],
         }
-        await updateDocTyped(store().db, consts.dbExtraId, { songs: store().extra.songs.concat(emptySong) })
+        await updateDocTyped(store().db, consts.dbExtraId, {
+            songs: store().extra.songs.concat(emptySong),
+        })
         setSelectedSongId(emptySong.id)
         setLocalTitle(emptySong.title)
         setLocalLink(emptySong.link)
@@ -111,7 +121,12 @@ export function Music() {
             </div>
 
             <div className='buttons'>
-                <Button color='primary' variant='contained' onClick={addSong} startIcon={<AddIcon />}>
+                <Button
+                    color='primary'
+                    variant='contained'
+                    onClick={addSong}
+                    startIcon={<AddIcon />}
+                >
                     Add Song
                 </Button>
             </div>
@@ -178,7 +193,12 @@ export function Music() {
                                             closeDialog()
                                         }
 
-                                        return <StylesSelector onSelectStyle={handleStyleSelection} />
+                                        return (
+                                            <StylesSelector
+                                                onSelectStyle={handleStyleSelection}
+                                                ignore={findSong(selectedSongId).styles}
+                                            />
+                                        )
                                     }}
                                 />
                             </div>

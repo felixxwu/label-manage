@@ -7,7 +7,10 @@ import { updateDocTyped } from '../utils/db'
 import { store } from '../utils/store'
 import { Chips } from './Chips'
 
-export function StylesSelector(props: { onSelectStyle: (style: string) => void }) {
+export function StylesSelector(props: {
+    onSelectStyle: (style: string) => void
+    ignore: string[]
+}) {
     const [styleToAdd, setStyleToAdd] = useState('')
     const [editMode, setEditMode] = useState(false)
 
@@ -43,7 +46,7 @@ export function StylesSelector(props: { onSelectStyle: (style: string) => void }
     return (
         <Wrapper>
             <Chips
-                chips={store().extra.styles}
+                chips={store().extra.styles.filter(style => !props.ignore.includes(style))}
                 onClick={handleClick}
                 onDelete={editMode ? handleDelete : null}
                 colorful
