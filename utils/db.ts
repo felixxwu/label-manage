@@ -35,6 +35,7 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     styles: [],
     submission: '',
     songsSubmitted: [],
+    widgets: [],
 }
 
 const emptyExtra: DbExtra = {

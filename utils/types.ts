@@ -18,6 +18,7 @@ export interface Label {
     notes: string
     submission: string
     songsSubmitted: string[]
+    widgets: string[]
 }
 
 export interface Song {
