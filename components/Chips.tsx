@@ -3,11 +3,14 @@ import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { getColorHash } from '../utils/colorHash'
 import styled from '@emotion/styled'
+import { theme } from '../utils/theme'
 
 export function Chips(props: {
     chips: string[]
     colorful?: boolean
     title?: string
+    small?: boolean
+    outlined?: boolean
     onDelete?: (item: string) => Promise<void>
     onClick?: (item: string) => Promise<void>
     addDialog?: (props: { closeDialog: () => void }) => React.ReactNode
@@ -50,7 +53,12 @@ export function Chips(props: {
                             onClick={props.onClick && (() => handleClick(item))}
                             onDelete={props.onDelete && (() => openDeleteDialog(item))}
                             key={index}
-                            sx={{ backgroundColor: props.colorful ? getColorHash(item) : '' }}
+                            size={props.small ? 'small' : 'medium'}
+                            variant={props.outlined ? 'outlined' : 'filled'}
+                            sx={{
+                                color: theme.palette.primary.main,
+                                backgroundColor: props.colorful ? getColorHash(item) : '',
+                            }}
                         />
                     ))}
                 {props.addDialog && (

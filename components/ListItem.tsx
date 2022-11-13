@@ -2,14 +2,14 @@ import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label } from '../utils/types'
-import { Avatar } from '@mui/material'
+import { Avatar, Typography } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/Email'
 import { store } from '../utils/store'
-import { Chips } from './Chips'
 import { getProgress } from '../utils/progress'
 import DoneAll from '@mui/icons-material/DoneAll'
 import styled from '@emotion/styled'
+import { Chips } from './Chips'
 
 export function ListItem(props: { label: Label }) {
     async function handleClick() {
@@ -39,15 +39,17 @@ export function ListItem(props: { label: Label }) {
                     </Name>
                     <Followers>
                         {getProgress(props.label) === 100 && <DoneAll color='primary' />}
-                        {props.label.songsSubmitted.length !== 0 && (
-                            <div>({props.label.songsSubmitted.length})</div>
-                        )}
                         {props.label.followers}
                     </Followers>
                 </Header>
                 {props.label.styles.length !== 0 && !store().extra.compact && (
                     <div>
-                        <Chips chips={props.label.styles} colorful />
+                        <Chips chips={props.label.styles} small colorful />
+                    </div>
+                )}
+                {props.label.songsSubmitted.length !== 0 && !store().extra.compact && (
+                    <div>
+                        <Chips chips={props.label.songsSubmitted} small outlined />
                     </div>
                 )}
             </Wrapper>
