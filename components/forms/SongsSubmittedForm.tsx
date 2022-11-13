@@ -1,68 +1,65 @@
-import { store } from '../../utils/store'
 import { Label } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
+import { Button, IconButton } from '@mui/material'
+import Add from '@mui/icons-material/Add'
+import { CreateSubmissionPopup } from '../popups/CreateSubmissionPopup'
+import { useState } from 'react'
 
 export function SongsSubmittedForm(props: { label: Label }) {
+    const [labelForSubmission, setLabelForSubmission] = useState<Label>(null)
+
     async function handleDelete(song: string) {
-        updateDocTyped(store().db, props.label.id, {
+        updateDocTyped(props.label.id, {
             songsSubmitted: props.label.songsSubmitted.filter(item => item !== song),
         })
     }
 
-    const sortedSongs = store()
-        .extra.songs.filter(song => !props.label.songsSubmitted.includes(song.title))
-        .sort((a, b) => (a.title > b.title ? 1 : -1))
+    function close() {
+        setLabelForSubmission(null)
+    }
+
+    function createSubmission() {
+        setLabelForSubmission(props.label)
+        if (!props.label.submission.includes('@')) {
+            window.open(props.label.submission, '_blank').focus()
+        }
+    }
 
     return (
-        <>
-            <Chips
-                title='Songs Submitted:'
-                colorful
-                chips={props.label.songsSubmitted}
-                onDelete={handleDelete}
-                addDialog={({ closeDialog }) => {
-                    async function handleSelection(song: string) {
-                        if (!props.label.songsSubmitted.includes(song)) {
-                            updateDocTyped(store().db, props.label.id, {
-                                songsSubmitted: props.label.songsSubmitted.concat(song),
-                            })
-                        }
-                        closeDialog()
-                    }
+        <Wrapper>
+            <Header>
+                <div>Songs Submitted:</div>
 
-                    return (
-                        <Wrapper>
-                            {sortedSongs.map(song => (
-                                <Song onClick={() => handleSelection(song.title)} key={song.title}>
-                                    {song.title}
-                                </Song>
-                            ))}
-                            {sortedSongs.length === 0 && <Error>No songs to choose from</Error>}
-                        </Wrapper>
-                    )
-                }}
-            />
-        </>
+                <IconButton onClick={createSubmission} disabled={!props.label.submission}>
+                    <Add />
+                </IconButton>
+            </Header>
+            {props.label.songsSubmitted.length !== 0 && (
+                <Chips colorful chips={props.label.songsSubmitted} onDelete={handleDelete} />
+            )}
+            <CreateSubmissionPopup label={labelForSubmission} close={close} />
+        </Wrapper>
     )
 }
 
 const Wrapper = styled('div')`
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    width: 100%;
 `
 
-const Song = styled('div')`
-    padding: 20px;
-    min-width: 300px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
+const Header = styled('div')`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `
 
-const Error = styled('div')`
-    padding: 20px;
+const Right = styled('div')`
+    width: 100%;
+    text-align: right;
 `

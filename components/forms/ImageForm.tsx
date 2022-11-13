@@ -4,7 +4,7 @@ import { updateDocTyped } from '../../utils/db'
 import { consts } from '../../utils/consts'
 import { theme } from '../../utils/theme'
 import EditIcon from '@mui/icons-material/Edit'
-import { PasteSearchPopup } from '../PasteSearchPopup'
+import { PasteSearchPopup } from '../popups/PasteSearchPopup'
 import { useState } from 'react'
 import { store } from '../../utils/store'
 import styled from '@emotion/styled'
@@ -36,7 +36,7 @@ export function ImageForm(props: { label: Label }) {
             reader.readAsDataURL(file)
             reader.onloadend = function () {
                 const base64data = reader.result
-                updateDocTyped(store().db, props.label.id, { image: base64data.toString() })
+                updateDocTyped(props.label.id, { image: base64data.toString() })
                 setOpen(false)
             }
         } catch (e) {
@@ -51,7 +51,7 @@ export function ImageForm(props: { label: Label }) {
                 { label: 'No' },
                 {
                     label: 'Delete',
-                    callback: () => updateDocTyped(store().db, props.label.id, { image: '' }),
+                    callback: () => updateDocTyped(props.label.id, { image: '' }),
                 },
             ],
         }

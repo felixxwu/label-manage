@@ -1,4 +1,3 @@
-import { store } from '../../utils/store'
 import { Label } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { Chips } from '../Chips'
@@ -6,7 +5,7 @@ import { StylesSelector } from '../StylesSelector'
 
 export function StylesForm(props: { label: Label }) {
     async function handleDelete(style: string) {
-        updateDocTyped(store().db, props.label.id, {
+        updateDocTyped(props.label.id, {
             styles: props.label.styles.filter(item => item !== style),
         })
     }
@@ -20,7 +19,7 @@ export function StylesForm(props: { label: Label }) {
             addDialog={({ closeDialog }) => {
                 async function handleStyleSelection(style: string) {
                     if (!props.label.styles.includes(style)) {
-                        updateDocTyped(store().db, props.label.id, {
+                        updateDocTyped(props.label.id, {
                             styles: props.label.styles.concat(style),
                         })
                     }

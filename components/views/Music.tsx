@@ -12,7 +12,7 @@ import { setHistory } from '../../utils/history'
 import { store } from '../../utils/store'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
-import { SongPopup } from '../SongPopup'
+import { SongPopup } from '../popups/SongPopup'
 
 export function Music() {
     const [selectedSongId, setSelectedSongId] = useState<string>(null)
@@ -31,7 +31,7 @@ export function Music() {
             link: '',
             styles: [],
         }
-        await updateDocTyped(store().db, consts.dbExtraId, {
+        await updateDocTyped(consts.dbExtraId, {
             songs: store().extra.songs.concat(emptySong),
         })
         setSelectedSongId(emptySong.id)
@@ -111,7 +111,7 @@ const Song = styled('div')`
     gap: 10px;
 
     &:hover {
-        background-color: #ffffff11;
+        background-color: ${theme.palette.secondary.light};
     }
 `
 

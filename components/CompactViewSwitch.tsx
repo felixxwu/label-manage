@@ -5,7 +5,7 @@ import { store } from '../utils/store'
 
 export function CompactViewSwitch() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateDocTyped(store().db, consts.dbExtraId, { compact: event.target.checked })
+        updateDocTyped(consts.dbExtraId, { compact: event.target.checked })
     }
 
     return (

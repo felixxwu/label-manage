@@ -1,8 +1,7 @@
-import { Button, CircularProgress, IconButton } from '@mui/material'
+import { CircularProgress, IconButton } from '@mui/material'
 import { deleteDocTyped } from '../../utils/db'
 import { Label } from '../../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import DeleteIcon from '@mui/icons-material/Delete'
 import { fade } from '../../utils/animate'
 import { LinkForm } from '../forms/LinkForm'
 import { NameForm } from '../forms/NameForm'
@@ -17,7 +16,8 @@ import { StylesForm } from '../forms/StylesForm'
 import { NotesForm } from '../forms/NotesForm'
 import { SongsSubmittedForm } from '../forms/SongsSubmittedForm'
 import styled from '@emotion/styled'
-import { DeleteButton } from '../DeleteButton'
+import { DeleteButton } from '../buttons/DeleteButton'
+import { theme } from '../../utils/theme'
 
 export function Label(props: { label: Label }) {
     setHistory('label')
@@ -57,14 +57,13 @@ export function Label(props: { label: Label }) {
                     <Divider />
                     <SubmissionForm {...props} />
                     <Divider />
+                    <SongsSubmittedForm {...props} />
+                    <NotesForm {...props} />
                     <FollowersForm {...props} />
                     <Divider />
                     <ArtistsForm {...props} />
                     <Divider />
                     <StylesForm {...props} />
-                    <Divider />
-                    <SongsSubmittedForm {...props} />
-                    <NotesForm {...props} />
                     <div />
                 </>
             ) : (
@@ -103,5 +102,5 @@ const Header = styled('div')`
 const Divider = styled('div')`
     height: 1px;
     width: 100%;
-    background-color: #545454;
+    background-color: ${theme.palette.divider};
 `

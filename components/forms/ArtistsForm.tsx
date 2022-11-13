@@ -1,7 +1,6 @@
 import { Button, DialogActions, DialogContent, TextField } from '@mui/material'
 import { Label } from '../../utils/types'
 import React, { useState } from 'react'
-import { store } from '../../utils/store'
 import { Chips } from '../Chips'
 import { updateDocTyped } from '../../utils/db'
 
@@ -9,7 +8,7 @@ export function ArtistsForm(props: { label: Label }) {
     const [itemToAdd, setItemToAdd] = useState('')
 
     async function handleDelete(style: string) {
-        updateDocTyped(store().db, props.label.id, {
+        updateDocTyped(props.label.id, {
             artists: props.label.artists.filter(item => item !== style),
         })
     }
@@ -32,7 +31,7 @@ export function ArtistsForm(props: { label: Label }) {
                 }
 
                 async function submitItem() {
-                    await updateDocTyped(store().db, props.label.id, {
+                    await updateDocTyped( props.label.id, {
                         artists: props.label.artists.concat(itemToAdd),
                     })
                     setItemToAdd('')

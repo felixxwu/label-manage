@@ -1,11 +1,10 @@
 import { Label } from '../utils/types'
 import { updateDocTyped } from '../utils/db'
 import { theme } from '../utils/theme'
-import { EditButton } from './EditButton'
+import { EditButton } from './buttons/EditButton'
 import { useState } from 'react'
-import { ClearButton } from './ClearButton'
-import { PasteSearchPopup } from './PasteSearchPopup'
-import { store } from '../utils/store'
+import { ClearButton } from './buttons/ClearButton'
+import { PasteSearchPopup } from './popups/PasteSearchPopup'
 import styled from '@emotion/styled'
 
 type StringOnlyKeys<T extends Label> = {
@@ -28,7 +27,7 @@ export function LinkOrEmail(props: {
     async function handlePaste() {
         const clipbaord = await navigator.clipboard.readText()
         if (clipbaord.includes('@')) {
-            updateDocTyped(store().db, props.label.id, { [props.dbKey]: clipbaord })
+            updateDocTyped(props.label.id, { [props.dbKey]: clipbaord })
         } else {
             const regex =
                 /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
@@ -36,14 +35,14 @@ export function LinkOrEmail(props: {
             const results = clipbaord.match(regex)
             if (!results || results.length === 0) return
             const link = results[0].split('?')[0]
-            updateDocTyped(store().db, props.label.id, { [props.dbKey]: link })
+            updateDocTyped(props.label.id, { [props.dbKey]: link })
         }
 
         setOpen(false)
     }
 
     function handleClear() {
-        updateDocTyped(store().db, props.label.id, { [props.dbKey]: '' })
+        updateDocTyped(props.label.id, { [props.dbKey]: '' })
     }
 
     const value = props.label[props.dbKey]

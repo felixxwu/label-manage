@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'
-import { store } from '../../utils/store'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
 
@@ -10,7 +9,7 @@ export function NameForm(props: { label: Label }) {
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setName(e.target.value)
-        updateDocTyped(store().db, props.label.id, { name: e.target.value })
+        updateDocTyped(props.label.id, { name: e.target.value })
     }
 
     return (

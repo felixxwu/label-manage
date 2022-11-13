@@ -2,17 +2,16 @@ import styled from '@emotion/styled'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'
-import { store } from '../../utils/store'
 import { followerOptions, Label } from '../../utils/types'
-import { ClearButton } from '../ClearButton'
-import { EditButton } from '../EditButton'
+import { ClearButton } from '../buttons/ClearButton'
+import { EditButton } from '../buttons/EditButton'
 
 export function FollowersForm(props: { label: Label }) {
     const [followers, setFollowers] = useState(props.label.followers)
     const [editMode, setEditMode] = useState(false)
 
     function handleChange(newFollowers: typeof followerOptions[number]) {
-        updateDocTyped(store().db, props.label.id, { followers: newFollowers })
+        updateDocTyped(props.label.id, { followers: newFollowers })
         setFollowers(newFollowers)
         if (newFollowers) {
             toggleEditMode()

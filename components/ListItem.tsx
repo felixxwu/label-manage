@@ -69,7 +69,7 @@ const Wrapper = styled('div')<{ compact: boolean }>`
     gap: 10px;
 
     &:hover {
-        background-color: ${({ compact }) => (compact ? '' : '#ffffff08')};
+        background-color: ${({ compact }) => (compact ? '' : theme.palette.secondary.light)};
     }
 `
 

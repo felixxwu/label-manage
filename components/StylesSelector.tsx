@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import Add from '@mui/icons-material/Add'
 import Edit from '@mui/icons-material/Edit'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
@@ -27,14 +28,14 @@ export function StylesSelector(props: {
     async function addStyle() {
         if (store().extra.styles.includes(styleToAdd)) return
 
-        await updateDocTyped(store().db, consts.dbExtraId, {
+        await updateDocTyped(consts.dbExtraId, {
             styles: store().extra.styles.concat(styleToAdd),
         })
         setStyleToAdd('')
     }
 
     async function handleDelete(style: string) {
-        await updateDocTyped(store().db, consts.dbExtraId, {
+        await updateDocTyped(consts.dbExtraId, {
             styles: store().extra.styles.filter(s => s !== style),
         })
     }
@@ -66,12 +67,18 @@ export function StylesSelector(props: {
                         autoFocus
                         sx={{ margin: 0 }}
                     />
-                    <Button onClick={addStyle}>Add to list</Button>
+                    <Right>
+                        <Button onClick={addStyle} startIcon={<Add />}>
+                            Add to list
+                        </Button>
+                    </Right>
                 </>
             ) : (
-                <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
-                    Edit
-                </Button>
+                <Right>
+                    <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
+                        Edit
+                    </Button>
+                </Right>
             )}
         </Wrapper>
     )
@@ -83,4 +90,8 @@ const Wrapper = styled('div')`
     flex-direction: column;
     gap: 20px;
     padding: 20px;
+`
+
+const Right = styled('div')`
+    text-align: right;
 `

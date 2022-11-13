@@ -8,12 +8,19 @@ export const theme = createTheme({
         mode: 'dark',
         primary: {
             main: primary,
+            dark: '#999',
         },
         secondary: {
-            main: '#2d2d2d',
+            main: '#242529',
+            light: '#26282b',
         },
         warning: {
             main: '#933',
+            light: '#f77',
+        },
+        divider: '#545454',
+        background: {
+            default: '#202124',
         },
     },
     components: {

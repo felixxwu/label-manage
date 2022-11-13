@@ -4,5 +4,5 @@ export const getColorHash = (text: string) => {
         count += c.toLowerCase().charCodeAt(0)
     }
     const hue = Math.round(count * 69420.69) % 360
-    return `hsl(${hue}, 50%, 40%)`
+    return `hsl(${hue}, 30%, 30%)`
 }

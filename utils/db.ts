@@ -1,4 +1,13 @@
-import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    Firestore,
+    onSnapshot,
+    setDoc,
+    updateDoc,
+} from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
@@ -6,6 +15,7 @@ import { getUrlPassword } from './getPassword'
 import { DbExtra, Label } from './types'
 import { fade } from './animate'
 import { consts } from './consts'
+import { store } from './store'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDdEEWeBs77K0H7WUU1pBUYNpNKzJhfuU8',
@@ -31,6 +41,7 @@ const emptyExtra: DbExtra = {
     songs: [],
     compact: false,
     styles: [],
+    template: '',
 }
 
 export function useInitDb() {
@@ -96,12 +107,11 @@ function initExtra(db: Firestore) {
 }
 
 export async function updateDocTyped(
-    db: Firestore,
     labelID: string,
     item: Omit<Partial<Label>, 'id'> | Partial<DbExtra>
 ) {
     try {
-        return updateDoc(doc(db, getUrlPassword(), labelID), item)
+        return updateDoc(doc(store().db, getUrlPassword(), labelID), item)
     } catch (e) {
         alert(e)
     }

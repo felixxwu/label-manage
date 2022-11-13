@@ -31,4 +31,5 @@ export interface DbExtra {
     songs: Song[]
     compact: boolean
     styles: string[]
+    template: string
 }

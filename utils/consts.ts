@@ -3,7 +3,7 @@ export const consts = {
     borderRadius: 6,
     appEndSpace: '30vh',
     transition: 200,
-    dbExtraId: 'extra',
+    dbExtraId: 'extra' as const,
     urlPasswordParam: 'p',
     listAvatarSize: 25,
     labelAvatarSize: 100,

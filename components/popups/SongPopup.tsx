@@ -7,13 +7,13 @@ import {
     IconButton,
     TextField,
 } from '@mui/material'
-import { consts } from '../utils/consts'
+import { consts } from '../../utils/consts'
 import React, { useEffect, useState } from 'react'
-import { updateDocTyped } from '../utils/db'
+import { updateDocTyped } from '../../utils/db'
 import LinkIcon from '@mui/icons-material/Link'
-import { store } from '../utils/store'
-import { StylesSelector } from '../components/StylesSelector'
-import { Chips } from '../components/Chips'
+import { store } from '../../utils/store'
+import { StylesSelector } from '../StylesSelector'
+import { Chips } from '../Chips'
 import styled from '@emotion/styled'
 
 export function SongPopup(props: { selectedSongId: string; close: () => void }) {
@@ -43,7 +43,7 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
     }
 
     async function saveEdit() {
-        await updateDocTyped(store().db, consts.dbExtraId, {
+        await updateDocTyped(consts.dbExtraId, {
             songs: store().extra.songs.map(song => {
                 if (song.id === props.selectedSongId) {
                     return {
@@ -61,7 +61,7 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
 
     async function deleteSong() {
         props.close()
-        await updateDocTyped(store().db, consts.dbExtraId, {
+        await updateDocTyped(consts.dbExtraId, {
             songs: store().extra.songs.filter(song => song.id !== props.selectedSongId),
         })
     }

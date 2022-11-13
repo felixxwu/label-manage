@@ -32,7 +32,7 @@ export default function Home() {
                 body {
                     padding: 0;
                     margin: 0;
-                    background-color: ${theme.palette.grey[900]};
+                    background-color: ${theme.palette.background.default};
                 }
 
                 * {
