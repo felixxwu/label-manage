@@ -1,26 +1,26 @@
 import { createTheme } from '@mui/material/styles'
 import { consts } from './consts'
 
-const primary = '#ccc'
+const primary = 'hsl(0deg 0% 85%)'
 
 export const theme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
             main: primary,
-            dark: '#999',
+            dark: 'hsl(0, 0%,65%)',
         },
         secondary: {
-            main: '#242529',
-            light: '#26282b',
+            main: 'hsl(225, 6%, 16%)',
+            light: 'hsl(225, 6%, 18%)',
         },
         warning: {
-            main: '#933',
-            light: '#f77',
+            main: 'hsl(0, 40%, 35%)',
+            light: 'hsl(0, 90%, 70%)',
         },
-        divider: '#545454',
+        divider: 'hsl(0, 0%, 33%)',
         background: {
-            default: '#202124',
+            default: 'hsl(225, 6%, 13%)',
         },
     },
     components: {
@@ -28,6 +28,10 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: consts.borderRadius,
+
+                    '& .MuiButton-textPrimary': {
+                        color: primary,
+                    },
                 },
             },
         },
@@ -49,6 +53,29 @@ export const theme = createTheme({
                     '& .MuiDialog-paper': {
                         borderRadius: consts.borderRadius,
                     },
+                },
+            },
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    '& .MuiSvgIcon-root': {
+                        color: primary,
+                    },
+                },
+            },
+        },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    color: primary,
+                },
+            },
+        },
+        MuiFormLabel: {
+            styleOverrides: {
+                root: {
+                    color: primary,
                 },
             },
         },
