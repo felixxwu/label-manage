@@ -21,9 +21,12 @@ export function StylesForm(props: { label: Label }) {
         <Wrapper>
             <Header>
                 <div>Styles:</div>
-                <IconButton onClick={() => (state.widgetDialogOpen = true)}>
-                    <MusicNote />
-                </IconButton>
+                <Widgets>
+                    {props.label.widgets.length}
+                    <IconButton onClick={() => (state.widgetDialogOpen = true)}>
+                        <MusicNote />
+                    </IconButton>
+                </Widgets>
             </Header>
             <Chips
                 colorful
@@ -47,7 +50,6 @@ export function StylesForm(props: { label: Label }) {
                     )
                 }}
             />
-            {}
             <WidgetPopup
                 open={state.widgetDialogOpen}
                 onClose={() => (state.widgetDialogOpen = false)}
@@ -67,5 +69,10 @@ const Wrapper = styled('div')`
 const Header = styled('div')`
     display: flex;
     justify-content: space-between;
+    align-items: center;
+`
+
+const Widgets = styled('div')`
+    display: flex;
     align-items: center;
 `
