@@ -18,6 +18,7 @@ import { SongsSubmittedForm } from '../forms/SongsSubmittedForm'
 import styled from '@emotion/styled'
 import { DeleteButton } from '../buttons/DeleteButton'
 import { theme } from '../../utils/theme'
+import { InactiveForm } from '../forms/InactiveForm'
 
 export function Label(props: { label: Label }) {
     setHistory('label')
@@ -52,6 +53,7 @@ export function Label(props: { label: Label }) {
                     </Header>
                     <div />
                     <NameForm {...props} />
+                    <InactiveForm {...props} />
                     <Divider />
                     <LinkForm {...props} />
                     <Divider />

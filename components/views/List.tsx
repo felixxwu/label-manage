@@ -32,14 +32,18 @@ export function List() {
         store().showMusic = true
     }
 
-    const labels = store().labels.sort((a, b) => {
-        if (store().sort === 'follower') {
-            return followersToIndex(b.followers) - followersToIndex(a.followers)
-        }
-        if (store().sort === 'name') {
-            return a.name > b.name ? 1 : -1
-        }
-    })
+    const labels = [...store().labels]
+        .sort((a, b) => {
+            if (store().sort === 'follower') {
+                return followersToIndex(b.followers) - followersToIndex(a.followers)
+            }
+            if (store().sort === 'name') {
+                return a.name > b.name ? 1 : -1
+            }
+        })
+        .sort((a, b) => {
+            return !a.inactive && b.inactive ? -1 : 1
+        })
 
     return (
         <Wrapper>
@@ -65,7 +69,7 @@ export function List() {
 
             <ListItems compact={store().extra.compact}>
                 {labels.map((label, i) => {
-                    return <ListItem label={label} key={i} />
+                    return <ListItem label={label} index={i} key={i} />
                 })}
             </ListItems>
 

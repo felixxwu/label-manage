@@ -19,6 +19,7 @@ export interface Label {
     submission: string
     songsSubmitted: string[]
     widgets: string[]
+    inactive: boolean
 }
 
 export interface Song {

@@ -4,14 +4,14 @@ import { theme } from '../utils/theme'
 import { Label } from '../utils/types'
 import { Avatar, Typography } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
-import EmailIcon from '@mui/icons-material/Email'
+import EmailIcon from '@mui/icons-material/EmailOutlined'
 import { store } from '../utils/store'
 import { getProgress } from '../utils/progress'
 import DoneAll from '@mui/icons-material/DoneAll'
 import styled from '@emotion/styled'
 import { Chips } from './Chips'
 
-export function ListItem(props: { label: Label }) {
+export function ListItem(props: { label: Label; index: number }) {
     async function handleClick() {
         await fade()
         store().selectedLabelId = props.label.id
@@ -19,27 +19,46 @@ export function ListItem(props: { label: Label }) {
 
     return (
         <>
-            <Wrapper onClick={handleClick} compact={store().extra.compact}>
+            <Wrapper
+                onClick={handleClick}
+                compact={store().extra.compact}
+                index={props.index}
+                inactive={props.label.inactive}
+            >
                 <Header>
                     <Name>
                         {!store().extra.compact && (
                             <Avatar
                                 src={props.label.image}
-                                sx={{ width: consts.listAvatarSize, height: consts.listAvatarSize }}
+                                sx={{
+                                    width: consts.listAvatarSize,
+                                    height: consts.listAvatarSize,
+                                }}
                             />
                         )}
 
                         {props.label.name}
-                        {props.label.submission && !props.label.submission.includes('@') && (
-                            <LinkIcon color='primary' sx={{ opacity: 0.5 }} />
-                        )}
-                        {props.label.submission && props.label.submission.includes('@') && (
-                            <EmailIcon color='primary' sx={{ opacity: 0.5 }} />
-                        )}
                     </Name>
                     <Followers>
-                        {getProgress(props.label) === 100 && <DoneAll color='primary' />}
+                        {getProgress(props.label) === 100 && (
+                            <DoneAll
+                                color='primary'
+                                fontSize={store().extra.compact ? 'small' : 'medium'}
+                            />
+                        )}
                         {props.label.followers}
+                        {props.label.submission && !props.label.submission.includes('@') && (
+                            <LinkIcon
+                                color='primary'
+                                fontSize={store().extra.compact ? 'small' : 'medium'}
+                            />
+                        )}
+                        {props.label.submission && props.label.submission.includes('@') && (
+                            <EmailIcon
+                                color='primary'
+                                fontSize={store().extra.compact ? 'small' : 'medium'}
+                            />
+                        )}
                     </Followers>
                 </Header>
                 {props.label.styles.length !== 0 && !store().extra.compact && (
@@ -57,18 +76,21 @@ export function ListItem(props: { label: Label }) {
     )
 }
 
-const Wrapper = styled('div')<{ compact: boolean }>`
+const Wrapper = styled('div')<{ compact: boolean; index: number; inactive: boolean }>`
     width: 100%;
     max-width: ${consts.maxAppWidth}px;
     color: ${theme.palette.primary.main};
-    background-color: ${({ compact }) => (compact ? '' : theme.palette.secondary.main)};
+    background-color: ${({ compact, index }) =>
+        compact && index % 2 === 0 ? '' : theme.palette.secondary.main};
     padding: ${({ compact }) => (compact ? '' : '20px')};
-    border-radius: ${consts.borderRadius}px;
+    border-radius: ${({ compact }) => (compact ? 0 : consts.borderRadius)}px;
     cursor: pointer;
     text-align: left;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    opacity: ${({ inactive }) => (inactive ? 0.5 : 1)};
+    transition: 100ms;
 
     &:hover {
         background-color: ${({ compact }) => (compact ? '' : theme.palette.secondary.light)};

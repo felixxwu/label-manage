@@ -1,13 +1,15 @@
 import { emptyLabel } from './db'
 import { Label } from './types'
 
+const fieldsToIgnore: (keyof Label)[] = ['songsSubmitted', 'notes', 'inactive']
+
 export function getProgress(label: Label) {
     const fields: (keyof Label)[] = (Object.keys(emptyLabel) as (keyof typeof emptyLabel)[]).filter(
-        field => field !== 'songsSubmitted' && field !== 'notes'
+        field => !fieldsToIgnore.includes(field)
     )
     const filledOut = fields.filter(field => {
         if (Array.isArray(label[field])) {
-            return label[field].length !== 0
+            return (label[field] as any[]).length !== 0
         } else {
             return !!label[field]
         }
