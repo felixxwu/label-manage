@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 
 export function PasteSearchPopup(props: {
     open: boolean
+    prompt: string
     setOpen: (state: boolean) => void
     handlePaste: () => void
     handleSearch: () => void
@@ -21,6 +22,7 @@ export function PasteSearchPopup(props: {
 
     return (
         <Dialog open={props.open} onClose={() => props.setOpen(false)}>
+            <Header>{props.prompt}</Header>
             <Choices>
                 <Choice onClick={handlePaste}>
                     <ContentPasteIcon color='primary' />
@@ -41,6 +43,11 @@ export function PasteSearchPopup(props: {
 
 const Choices = styled('div')`
     display: flex;
+`
+
+const Header = styled('div')`
+    padding: 20px;
+    text-align: center;
 `
 
 const Choice = styled('div')`

@@ -87,7 +87,14 @@ export function ImageForm(props: { label: Label }) {
             )}
 
             <PasteSearchPopup
-                {...{ open, setOpen, handlePaste, handleSearch, useGoogleIcon: true }}
+                {...{
+                    open,
+                    prompt: 'Avatar Image:',
+                    setOpen,
+                    handlePaste,
+                    handleSearch,
+                    useGoogleIcon: true,
+                }}
             />
         </Wrapper>
     )

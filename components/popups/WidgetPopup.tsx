@@ -100,6 +100,7 @@ const Widgets = styled('div')`
 
 const Widget = styled('div')`
     margin-top: 4px;
+    width: -webkit-fill-available;
 `
 
 const Row = styled('div')`
@@ -107,6 +108,7 @@ const Row = styled('div')`
     gap: 5px;
     align-items: center;
     max-width: 100%;
+    justify-content: space-between;
 `
 
 const Right = styled('div')`

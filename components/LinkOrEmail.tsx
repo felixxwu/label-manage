@@ -72,6 +72,7 @@ export function LinkOrEmail(props: {
             <PasteSearchPopup
                 {...{
                     open,
+                    prompt: props.prompt,
                     setOpen,
                     handlePaste,
                     handleSearch,
