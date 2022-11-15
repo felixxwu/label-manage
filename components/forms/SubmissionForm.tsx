@@ -2,14 +2,15 @@ import { Label } from '../../utils/types'
 import { LinkOrEmail } from '../LinkOrEmail'
 
 export function SubmissionForm(props: { label: Label }) {
-    const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(props.label.name + ' demo')
-    const search = props.label.link ? props.label.link : googleUrl
+    const search =
+        'https://www.google.com/search?q=' +
+        encodeURIComponent(props.label.name + ' demo submission')
     return (
         <LinkOrEmail
             label={props.label}
             prompt='Submission:'
             dbKey='submission'
-            useGoogleIcon={!props.label.link}
+            useGoogleIcon={true}
             searchUrl={search}
         />
     )
