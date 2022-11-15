@@ -2,8 +2,8 @@ import { Label } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
-import { Button, IconButton } from '@mui/material'
-import Add from '@mui/icons-material/Add'
+import { IconButton } from '@mui/material'
+import Send from '@mui/icons-material/Send'
 import { CreateSubmissionPopup } from '../popups/CreateSubmissionPopup'
 import { useState } from 'react'
 import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
@@ -40,7 +40,7 @@ export function SongsSubmittedForm(props: { label: Label }) {
                     </IconButton>
                 ) : (
                     <IconButton onClick={createSubmission} disabled={!props.label.submission}>
-                        <Add />
+                        <Send />
                     </IconButton>
                 )}
             </Header>

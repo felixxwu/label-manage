@@ -125,6 +125,7 @@ const TextArea = styled(TextareaAutosize)`
     resize: none;
     color: ${theme.palette.primary.main};
     width: 100%;
+    padding: 0;
 `
 
 const Right = styled('div')`

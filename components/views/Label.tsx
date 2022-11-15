@@ -65,7 +65,9 @@ export function Label(props: { label: Label }) {
                     <ArtistsForm {...props} />
                     <Divider />
                     <StylesForm {...props} />
+                    <Divider />
                     <NotesForm {...props} />
+                    <Divider />
                     <SongsSubmittedForm {...props} />
                     <Divider />
                     <SongsSkippedForm {...props} />

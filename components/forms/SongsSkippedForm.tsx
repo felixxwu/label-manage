@@ -2,8 +2,8 @@ import { Label, Song } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
-import { Button, Dialog, IconButton } from '@mui/material'
-import Add from '@mui/icons-material/Add'
+import { Dialog, IconButton } from '@mui/material'
+import Send from '@mui/icons-material/Send'
 import { useStates } from '../../utils/useStateObject'
 import { SongChoice } from '../SongChoice'
 import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
@@ -40,7 +40,7 @@ export function SongsSkippedForm(props: { label: Label }) {
                         onClick={() => (state.dialogOpen = true)}
                         disabled={!props.label.submission}
                     >
-                        <Add />
+                        <Send />
                     </IconButton>
                 )}
             </Header>
