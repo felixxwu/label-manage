@@ -1,7 +1,6 @@
 import { Button, debounce, Fab } from '@mui/material'
 import { ListItem } from '../ListItem'
-import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
-import { Input } from '../Input'
+import LibraryMusicIcon from '@mui/icons-material/QueueMusic'
 import { fade } from '../../utils/animate'
 import { setHistory } from '../../utils/history'
 import { CompactViewSwitch } from '../CompactViewSwitch'
@@ -12,10 +11,9 @@ import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
 import { ExportDataButton } from '../buttons/ExportDataButton'
+import { addDocTyped } from '../../utils/db'
 
 export function List() {
-    const [showInput, setShowInput] = useState(false)
-
     setHistory('')
 
     useEffect(() => {
@@ -31,6 +29,27 @@ export function List() {
     async function showMusic() {
         await fade()
         store().showMusic = true
+    }
+
+    function handleAddLabel() {
+        store().dialog = {
+            message: 'New label',
+            input: 'Label name',
+            actions: [
+                { label: 'Cancel' },
+                {
+                    label: 'OK',
+                    callback: async name => {
+                        if (name) {
+                            const doc = await addDocTyped(store().db, name)
+                            await fade()
+                            store().selectedLabelId = doc.id
+                        }
+                    },
+                    callOnEnter: true,
+                },
+            ],
+        }
     }
 
     const labels = [...store().labels]
@@ -50,18 +69,9 @@ export function List() {
         <Wrapper>
             <h1>Label List</h1>
 
-            {showInput ? (
-                <Input />
-            ) : (
-                <Button
-                    variant='contained'
-                    onClick={() => setShowInput(true)}
-                    startIcon={<Add />}
-                    color='primary'
-                >
-                    Add Label
-                </Button>
-            )}
+            <Button onClick={showMusic} startIcon={<LibraryMusicIcon />}>
+                Open Music Library
+            </Button>
 
             <Options>
                 <CompactViewSwitch />
@@ -77,12 +87,12 @@ export function List() {
             <ExportDataButton />
 
             <Fab
-                onClick={showMusic}
+                onClick={handleAddLabel}
                 color='secondary'
                 sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
                 size='large'
             >
-                <LibraryMusicIcon color='primary' />
+                <Add color='primary' />
             </Fab>
         </Wrapper>
     )

@@ -1,6 +1,5 @@
-import { Button, IconButton } from '@mui/material'
+import { Fab, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import AddIcon from '@mui/icons-material/Add'
 import { Song } from '../../utils/types'
 import { consts } from '../../utils/consts'
 import { fade } from '../../utils/animate'
@@ -13,6 +12,7 @@ import { store } from '../../utils/store'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
 import { SongPopup } from '../popups/SongPopup'
+import Add from '@mui/icons-material/Add'
 
 export function Music() {
     const [selectedSongId, setSelectedSongId] = useState<string>(null)
@@ -57,17 +57,6 @@ export function Music() {
                 </IconButton>
             </Header>
 
-            <Buttons>
-                <Button
-                    color='primary'
-                    variant='contained'
-                    onClick={addSong}
-                    startIcon={<AddIcon />}
-                >
-                    Add Song
-                </Button>
-            </Buttons>
-
             {store().extra.songs.map((song, index) => (
                 <Song onClick={() => openDialog(song.id)} key={index}>
                     <Header>
@@ -77,6 +66,15 @@ export function Music() {
                     <Chips chips={song.styles} colorful />
                 </Song>
             ))}
+
+            <Fab
+                onClick={addSong}
+                color='secondary'
+                sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
+                size='large'
+            >
+                <Add color='primary' />
+            </Fab>
 
             {selectedSongId && <SongPopup selectedSongId={selectedSongId} close={closeDialog} />}
         </Wrapper>

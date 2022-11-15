@@ -7,12 +7,23 @@ import { EnterPassword } from '../EnterPassword'
 import { Label } from './Label'
 import { List } from './List'
 import { Music } from './Music'
-import { Button, CircularProgress, Dialog, DialogActions, DialogTitle } from '@mui/material'
-import { store, useStore } from '../../utils/store'
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField,
+} from '@mui/material'
+import { DialogOptions, store, useStore } from '../../utils/store'
 import styled from '@emotion/styled'
+import { useStates } from '../../utils/useStateObject'
 
 export function App() {
     useStore()
+
+    const state = useStates({ dialogInput: '' })
 
     const page = (() => {
         if (!store().password) return 'password' as const
@@ -53,6 +64,18 @@ export function App() {
 
     const selectedLabel = store().labels.find(l => l.id === store().selectedLabelId)
 
+    function handleDialogKeyUp(e: React.KeyboardEvent) {
+        if (e.key === 'Enter') {
+            submitDialog(store().dialog.actions.find(action => action.callOnEnter))
+        }
+    }
+
+    function submitDialog(action: DialogOptions['actions'][number]) {
+        action.callback?.(state.dialogInput)
+        store().dialog = null
+        state.dialogInput = ''
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Wrapper>
@@ -67,15 +90,29 @@ export function App() {
                 </Content>
 
                 <Dialog open={!!store().dialog} onClose={() => (store().dialog = null)}>
-                    <DialogTitle>Are you sure you want to delete?</DialogTitle>
+                    <DialogTitle>{store().dialog?.message}</DialogTitle>
+                    {store().dialog?.input && (
+                        <DialogContent>
+                            <TextField
+                                autoFocus
+                                margin='normal'
+                                label={store().dialog?.input}
+                                fullWidth
+                                variant='standard'
+                                onChange={e => {
+                                    state.dialogInput = e.target.value
+                                }}
+                                onKeyUp={handleDialogKeyUp}
+                                value={state.dialogInput}
+                                autoComplete='off'
+                                autoCorrect='off'
+                            />
+                        </DialogContent>
+                    )}
                     <DialogActions>
                         {store().dialog?.actions.map(action => {
-                            const handleClick = () => {
-                                action.callback?.()
-                                store().dialog = null
-                            }
                             return (
-                                <Button onClick={handleClick} key={action.label}>
+                                <Button onClick={() => submitDialog(action)} key={action.label}>
                                     {action.label}
                                 </Button>
                             )

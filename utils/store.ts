@@ -3,9 +3,10 @@ import { useDb, useInitDb } from './db'
 import { usePassword } from './getPassword'
 import { SortType } from './types'
 
-interface DialogOptions {
+export interface DialogOptions {
     message: string
-    actions: { label: string; callback?: () => void }[]
+    actions: { label: string; callback?: (input?: string) => void; callOnEnter?: boolean }[]
+    input?: string
 }
 
 export type Store = ReturnType<typeof useStore>
