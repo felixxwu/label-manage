@@ -8,6 +8,7 @@ import { useStates } from '../../utils/useStateObject'
 import { SongChoice } from '../SongChoice'
 import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
 import DoneAll from '@mui/icons-material/Done'
+import { store } from '../../utils/store'
 
 export function SongsSkippedForm(props: { label: Label }) {
     const state = useStates({ dialogOpen: false })
@@ -19,12 +20,17 @@ export function SongsSkippedForm(props: { label: Label }) {
     }
 
     function handleChooseSongs(songs: Song[]) {
-        console.log('songs', songs)
         updateDocTyped(props.label.id, {
             songsSkipped: props.label.songsSkipped.concat(...songs.map(song => song.title)),
         })
         state.dialogOpen = false
     }
+
+    const songs = props.label.songsSkipped.filter(song =>
+        store()
+            .extra.songs.map(s => s.title)
+            .includes(song)
+    )
 
     return (
         <Wrapper>
@@ -44,9 +50,7 @@ export function SongsSkippedForm(props: { label: Label }) {
                     </IconButton>
                 )}
             </Header>
-            {props.label.songsSkipped.length !== 0 && (
-                <Chips colorful chips={props.label.songsSkipped} onDelete={handleDelete} />
-            )}
+            {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
             <Dialog open={state.dialogOpen} onClose={() => (state.dialogOpen = false)}>
                 <SongChoice label={props.label} onNext={handleChooseSongs} />
             </Dialog>

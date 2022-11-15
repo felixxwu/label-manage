@@ -8,6 +8,7 @@ import { CreateSubmissionPopup } from '../popups/CreateSubmissionPopup'
 import { useState } from 'react'
 import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
 import DoneAll from '@mui/icons-material/Done'
+import { store } from '../../utils/store'
 
 export function SongsSubmittedForm(props: { label: Label }) {
     const [labelForSubmission, setLabelForSubmission] = useState<Label>(null)
@@ -29,6 +30,12 @@ export function SongsSubmittedForm(props: { label: Label }) {
         }
     }
 
+    const songs = props.label.songsSubmitted.filter(song =>
+        store()
+            .extra.songs.map(s => s.title)
+            .includes(song)
+    )
+
     return (
         <Wrapper>
             <Header>
@@ -44,9 +51,7 @@ export function SongsSubmittedForm(props: { label: Label }) {
                     </IconButton>
                 )}
             </Header>
-            {props.label.songsSubmitted.length !== 0 && (
-                <Chips colorful chips={props.label.songsSubmitted} onDelete={handleDelete} />
-            )}
+            {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
             <CreateSubmissionPopup label={labelForSubmission} close={close} />
         </Wrapper>
     )

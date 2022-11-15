@@ -63,7 +63,7 @@ export function Music() {
                         {song.title}
                         {song.link && <LinkIcon color='primary' />}
                     </Header>
-                    <Chips chips={song.styles} colorful />
+                    {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
                 </Song>
             ))}
 
