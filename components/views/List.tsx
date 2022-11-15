@@ -11,6 +11,7 @@ import { followersToIndex } from '../../utils/types'
 import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
+import { ExportDataButton } from '../buttons/ExportDataButton'
 
 export function List() {
     const [showInput, setShowInput] = useState(false)
@@ -72,6 +73,8 @@ export function List() {
                     return <ListItem label={label} index={i} key={i} />
                 })}
             </ListItems>
+
+            <ExportDataButton />
 
             <Fab
                 onClick={showMusic}
