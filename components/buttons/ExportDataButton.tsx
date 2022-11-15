@@ -5,7 +5,7 @@ import { store } from '../../utils/store'
 export function ExportDataButton() {
     function handleExport() {
         const filename = 'data.json'
-        const jsonStr = JSON.stringify(store().labels.map(label => ({ ...label, image: '' })))
+        const jsonStr = JSON.stringify(store())
 
         let element = document.createElement('a')
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr))

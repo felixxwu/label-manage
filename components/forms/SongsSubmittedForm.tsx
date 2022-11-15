@@ -6,6 +6,8 @@ import { Button, IconButton } from '@mui/material'
 import Add from '@mui/icons-material/Add'
 import { CreateSubmissionPopup } from '../popups/CreateSubmissionPopup'
 import { useState } from 'react'
+import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
+import DoneAll from '@mui/icons-material/Done'
 
 export function SongsSubmittedForm(props: { label: Label }) {
     const [labelForSubmission, setLabelForSubmission] = useState<Label>(null)
@@ -32,9 +34,15 @@ export function SongsSubmittedForm(props: { label: Label }) {
             <Header>
                 <div>Songs Submitted:</div>
 
-                <IconButton onClick={createSubmission} disabled={!props.label.submission}>
-                    <Add />
-                </IconButton>
+                {areAllSongsDealtWith(props.label) ? (
+                    <IconButton>
+                        <DoneAll />
+                    </IconButton>
+                ) : (
+                    <IconButton onClick={createSubmission} disabled={!props.label.submission}>
+                        <Add />
+                    </IconButton>
+                )}
             </Header>
             {props.label.songsSubmitted.length !== 0 && (
                 <Chips colorful chips={props.label.songsSubmitted} onDelete={handleDelete} />

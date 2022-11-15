@@ -1,7 +1,5 @@
-import styled from '@emotion/styled'
 import { Dialog } from '@mui/material'
 import { useState } from 'react'
-import { consts } from '../../utils/consts'
 import { Label, Song } from '../../utils/types'
 import { SongChoice } from '../SongChoice'
 import { SubmissionTemplate } from '../SubmissionTemplate'
@@ -34,22 +32,3 @@ export function CreateSubmissionPopup(props: { label: Label; close: () => void }
         </Dialog>
     )
 }
-
-const Wrapper = styled('div')`
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    max-width: 100%;
-    width: ${consts.maxAppWidth}px;
-`
-
-const Label = styled('div')`
-    display: flex;
-    flex-direction: column;
-`
-
-const Captions = styled('div')`
-    display: flex;
-    flex-direction: column;
-`

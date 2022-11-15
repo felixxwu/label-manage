@@ -74,8 +74,12 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
             <TextArea
                 value={localTemplate}
                 onChange={handleTextChange}
-                placeholder='Email Template'
+                placeholder='Type email template here...'
             />
+            <Typography variant='caption' sx={{ color: theme.palette.primary.dark }}>
+                Use &lt;label&gt; to insert the label's name and &lt;songs&gt; to insert links to
+                the songs
+            </Typography>
             <Right>
                 <Button
                     onClick={handleOverwriteTemplate}
