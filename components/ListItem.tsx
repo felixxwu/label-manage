@@ -7,9 +7,10 @@ import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/EmailOutlined'
 import { store } from '../utils/store'
 import { getProgress } from '../utils/progress'
-import DoneAll from '@mui/icons-material/DoneAll'
 import styled from '@emotion/styled'
 import { Chips } from './Chips'
+import QuestionMarkIcon from '@mui/icons-material/HelpOutline'
+import MusicNoteIcon from '@mui/icons-material/MusicNote'
 
 export function ListItem(props: { label: Label; index: number }) {
     async function handleClick() {
@@ -40,21 +41,27 @@ export function ListItem(props: { label: Label; index: number }) {
                         {props.label.name}
                     </Name>
                     <Followers>
-                        {getProgress(props.label) === 100 && (
-                            <DoneAll
-                                color='primary'
-                                fontSize={store().extra.compact ? 'small' : 'medium'}
-                            />
+                        {!!props.label.songsSubmitted.length && (
+                            <SongCount>
+                                {props.label.songsSubmitted.length}
+                                <MusicNoteIcon color='primary' fontSize='small' />
+                            </SongCount>
                         )}
-                        {props.label.followers}
-                        {props.label.submission && !props.label.submission.includes('@') && (
-                            <LinkIcon
-                                color='primary'
-                                fontSize={store().extra.compact ? 'small' : 'medium'}
-                            />
-                        )}
-                        {props.label.submission && props.label.submission.includes('@') && (
-                            <EmailIcon
+                        <span>{props.label.followers}</span>
+                        {props.label.submission &&
+                            (props.label.submission.includes('@') ? (
+                                <EmailIcon
+                                    color='primary'
+                                    fontSize={store().extra.compact ? 'small' : 'medium'}
+                                />
+                            ) : (
+                                <LinkIcon
+                                    color='primary'
+                                    fontSize={store().extra.compact ? 'small' : 'medium'}
+                                />
+                            ))}
+                        {getProgress(props.label) !== 100 && (
+                            <QuestionMarkIcon
                                 color='primary'
                                 fontSize={store().extra.compact ? 'small' : 'medium'}
                             />
@@ -90,7 +97,7 @@ const Wrapper = styled('div')<{ compact: boolean; index: number; inactive: boole
     flex-direction: column;
     gap: 10px;
     opacity: ${({ inactive }) => (inactive ? 0.5 : 1)};
-    transition: 100ms;
+    transition: 300ms;
 
     &:hover {
         background-color: ${({ compact }) => (compact ? '' : theme.palette.secondary.light)};
@@ -115,4 +122,9 @@ const Followers = styled('div')`
     align-items: center;
     gap: 10px;
     opacity: 0.5;
+`
+
+const SongCount = styled('div')`
+    display: flex;
+    align-items: center;
 `
