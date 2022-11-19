@@ -11,11 +11,11 @@ export function FollowersForm(props: { label: Label }) {
     const [editMode, setEditMode] = useState(false)
 
     function handleChange(newFollowers: typeof followerOptions[number]) {
-        updateDocTyped(props.label.id, { followers: newFollowers })
-        setFollowers(newFollowers)
-        if (newFollowers) {
-            toggleEditMode()
-        }
+        // updateDocTyped(props.label.id, { followers: newFollowers })
+        // setFollowers(newFollowers)
+        // if (newFollowers) {
+        //     toggleEditMode()
+        // }
     }
 
     function toggleEditMode() {
