@@ -1,13 +1,8 @@
 import { useState } from 'react'
+import { DialogOptions } from '../components/popups/GeneralDialog'
 import { useDb, useInitDb } from './db'
 import { usePassword } from './getPassword'
 import { SortType } from './types'
-
-export interface DialogOptions {
-    message: string
-    actions: { label: string; callback?: (input?: string) => void; callOnEnter?: boolean }[]
-    input?: string
-}
 
 export type Store = ReturnType<typeof useStore>
 
@@ -29,6 +24,7 @@ export function useStore() {
             sort: <SortType>'follower',
             dialog: <DialogOptions>null,
             listScrollPos: 0,
+            loading: false
         }
     )
 

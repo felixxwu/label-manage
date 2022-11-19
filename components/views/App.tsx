@@ -7,23 +7,13 @@ import { EnterPassword } from '../EnterPassword'
 import { Label } from './Label'
 import { List } from './List'
 import { Music } from './Music'
-import {
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    TextField,
-} from '@mui/material'
-import { DialogOptions, store, useStore } from '../../utils/store'
+import { Backdrop, CircularProgress } from '@mui/material'
+import { store, useStore } from '../../utils/store'
 import styled from '@emotion/styled'
-import { useStates } from '../../utils/useStateObject'
+import { GeneralDialog } from '../popups/GeneralDialog'
 
 export function App() {
     useStore()
-
-    const state = useStates({ dialogInput: '' })
 
     const page = (() => {
         if (!store().password) return 'password' as const
@@ -64,18 +54,6 @@ export function App() {
 
     const selectedLabel = store().labels.find(l => l.id === store().selectedLabelId)
 
-    function handleDialogKeyUp(e: React.KeyboardEvent) {
-        if (e.key === 'Enter') {
-            submitDialog(store().dialog.actions.find(action => action.callOnEnter))
-        }
-    }
-
-    function submitDialog(action: DialogOptions['actions'][number]) {
-        action.callback?.(state.dialogInput)
-        store().dialog = null
-        state.dialogInput = ''
-    }
-
     return (
         <ThemeProvider theme={theme}>
             <Wrapper>
@@ -88,38 +66,12 @@ export function App() {
                     {page === 'list' && <List />}
                     {page === 'music' && <Music />}
                 </Content>
-
-                <Dialog open={!!store().dialog} onClose={() => (store().dialog = null)}>
-                    <DialogTitle>{store().dialog?.message}</DialogTitle>
-                    {store().dialog?.input && (
-                        <DialogContent>
-                            <TextField
-                                autoFocus
-                                margin='normal'
-                                label={store().dialog?.input}
-                                fullWidth
-                                variant='standard'
-                                onChange={e => {
-                                    state.dialogInput = e.target.value
-                                }}
-                                onKeyUp={handleDialogKeyUp}
-                                value={state.dialogInput}
-                                autoComplete='off'
-                                autoCorrect='off'
-                            />
-                        </DialogContent>
-                    )}
-                    <DialogActions>
-                        {store().dialog?.actions.map(action => {
-                            return (
-                                <Button onClick={() => submitDialog(action)} key={action.label}>
-                                    {action.label}
-                                </Button>
-                            )
-                        })}
-                    </DialogActions>
-                </Dialog>
             </Wrapper>
+
+            <GeneralDialog />
+            <Backdrop open={store().loading}>
+                <CircularProgress />
+            </Backdrop>
         </ThemeProvider>
     )
 }
