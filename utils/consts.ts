@@ -7,4 +7,5 @@ export const consts = {
     urlPasswordParam: 'p',
     listAvatarSize: 25,
     labelAvatarSize: 100,
+    uploadWarning: 60,
 }

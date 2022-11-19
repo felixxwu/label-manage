@@ -29,7 +29,7 @@ const firebaseConfig = {
 export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     image: '',
     artists: [],
-    followers: '',
+    followers: null,
     link: '',
     notes: '',
     styles: [],
@@ -38,6 +38,7 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     songsSkipped: [],
     widgets: [],
     inactive: false,
+    lastUploaded: '',
 }
 
 const emptyExtra: DbExtra = {

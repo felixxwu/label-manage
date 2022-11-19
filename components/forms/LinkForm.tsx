@@ -1,13 +1,12 @@
 import styled from '@emotion/styled'
 import { updateDocTyped } from '../../utils/db'
 import { load } from '../../utils/load'
-import { scrape } from '../../utils/scrape'
+import { scrapeSoundCloudProfile, searchSoundCloudLinks } from '../../utils/scrape'
 import { store } from '../../utils/store'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
 import { ClearButton } from '../buttons/ClearButton'
 import { EditButton } from '../buttons/EditButton'
-import { LinkOrEmail } from '../LinkOrEmail'
 
 export function LinkForm(props: { label: Label }) {
     function handleClear() {
@@ -15,30 +14,32 @@ export function LinkForm(props: { label: Label }) {
     }
 
     async function handleSearch() {
-        const result = await load(
-            scrape,
-            `https://www.google.com/search?q=` +
-                encodeURIComponent('site:soundcloud.com ' + props.label.name)
-        )
-        const links = Array.from(result.querySelector('#main').querySelectorAll('a'))
-            .map(a => a.href)
-            .filter(href => href.includes('https://soundcloud.com/'))
-            .map(
-                url =>
-                    'https://soundcloud.com/' +
-                    decodeURIComponent(url).split('https://soundcloud.com/')[1].split('&')[0]
-            )
+        const links = await searchSoundCloudLinks(props.label.name)
 
         store().dialog = {
             actions: [{ label: 'Close' }],
             message: 'Choose SoundCloud Link',
             multiselect: {
                 choices: links,
-                onChoose: choice => {
-                    load(updateDocTyped, props.label.id, { link: choice })
-                },
+                onChoose: setLink,
             },
         }
+    }
+
+    async function setLink(link: string) {
+        const res = await scrapeSoundCloudProfile(link)
+        await load(updateDocTyped, props.label.id, {
+            link,
+            ...(res.profile ? { image: res.profile.image } : {}),
+            ...(res.profile ? { followers: res.profile.followers } : {}),
+            ...(res.tracks.recent
+                ? {
+                      lastUploaded: res.tracks.recent.reduce((prev, curr) =>
+                          new Date(prev.published) > new Date(curr.published) ? prev : curr
+                      ).published,
+                  }
+                : {}),
+        })
     }
 
     return (

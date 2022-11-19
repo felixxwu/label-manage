@@ -6,7 +6,6 @@ import { setHistory } from '../../utils/history'
 import { CompactViewSwitch } from '../CompactViewSwitch'
 import { Sort } from '../Sort'
 import { store } from '../../utils/store'
-import { followersToIndex } from '../../utils/types'
 import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
@@ -55,7 +54,7 @@ export function List() {
     const labels = [...store().labels]
         .sort((a, b) => {
             if (store().sort === 'follower') {
-                return followersToIndex(b.followers) - followersToIndex(a.followers)
+                return b.followers - a.followers
             }
             if (store().sort === 'name') {
                 return a.name > b.name ? 1 : -1

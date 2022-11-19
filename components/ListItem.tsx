@@ -12,6 +12,7 @@ import { Chips } from './Chips'
 import QuestionMarkIcon from '@mui/icons-material/HelpOutline'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import { areAllSongsDealtWith } from '../utils/allSongsDealtWith'
+import { nFormatter } from '../utils/nFormatter'
 
 export function ListItem(props: { label: Label; index: number }) {
     async function handleClick() {
@@ -45,7 +46,6 @@ export function ListItem(props: { label: Label; index: number }) {
                         {areAllSongsDealtWith(props.label) && (
                             <MusicNoteIcon color='primary' fontSize='small' />
                         )}
-                        <span>{props.label.followers}</span>
                         {props.label.submission &&
                             (props.label.submission.includes('@') ? (
                                 <EmailIcon
@@ -64,6 +64,7 @@ export function ListItem(props: { label: Label; index: number }) {
                                 fontSize={store().extra.compact ? 'small' : 'medium'}
                             />
                         )}
+                        <span>{nFormatter(props.label.followers, 0)}</span>
                     </Followers>
                 </Header>
                 {props.label.styles.length !== 0 && !store().extra.compact && (

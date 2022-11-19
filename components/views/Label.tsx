@@ -58,8 +58,6 @@ export function Label(props: { label: Label }) {
                     <Divider />
                     <LinkForm {...props} />
                     <Divider />
-                    <FollowersForm {...props} />
-                    <Divider />
                     <SubmissionForm {...props} />
                     <Divider />
                     <ArtistsForm {...props} />

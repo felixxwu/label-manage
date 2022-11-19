@@ -57,8 +57,8 @@ export function GeneralDialog() {
             )}
             {store().dialog?.multiselect && (
                 <DialogContent>
-                    {store().dialog.multiselect.choices.map(choice => (
-                        <Choice key={choice} onClick={() => handleCloice(choice)}>
+                    {store().dialog.multiselect.choices.map((choice, i) => (
+                        <Choice key={i} onClick={() => handleCloice(choice)}>
                             {choice}
                         </Choice>
                     ))}
@@ -83,6 +83,7 @@ const Choice = styled('div')`
     padding: 20px 0;
     width: 100%;
     cursor: pointer;
+    word-wrap: break-word;
 
     &:hover {
         text-decoration: underline;
