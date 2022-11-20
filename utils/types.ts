@@ -21,7 +21,6 @@ export interface Label {
     submission: string
     songsSubmitted: string[]
     songsSkipped: string[]
-    widgets: string[]
     inactive: boolean
     lastUploaded: string
     lastScraped: number

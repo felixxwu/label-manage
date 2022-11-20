@@ -37,7 +37,6 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     submission: '',
     songsSubmitted: [],
     songsSkipped: [],
-    widgets: [],
     inactive: false,
     lastUploaded: '',
     lastScraped: 0,

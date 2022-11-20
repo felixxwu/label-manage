@@ -15,7 +15,7 @@ export function TrackWidget(props: { track: Track }) {
                 allow='autoplay'
                 src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(
                     props.track.url
-                )}&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}
+                )}&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false`}
             ></iframe>
         )
     } else {
@@ -27,4 +27,7 @@ const Title = styled('div')`
     cursor: pointer;
     color: ${theme.palette.secondary.light};
     min-height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
