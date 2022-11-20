@@ -5,12 +5,9 @@ import { StylesSelector } from '../StylesSelector'
 import styled from '@emotion/styled'
 import { IconButton } from '@mui/material'
 import MusicNote from '@mui/icons-material/MusicNote'
-import { WidgetPopup } from '../popups/WidgetPopup'
-import { useStates } from '../../utils/useStateObject'
+import { store } from '../../utils/store'
 
 export function StylesForm(props: { label: Label }) {
-    const state = useStates({ widgetDialogOpen: false })
-
     async function handleDelete(style: string) {
         updateDocTyped(props.label.id, {
             styles: props.label.styles.filter(item => item !== style),
@@ -25,7 +22,7 @@ export function StylesForm(props: { label: Label }) {
                     {props.label.tracks.popular.length +
                         props.label.tracks.recent.length +
                         props.label.tracks.reposts.length}
-                    <IconButton onClick={() => (state.widgetDialogOpen = true)}>
+                    <IconButton onClick={() => (store().showWidgets = true)}>
                         <MusicNote />
                     </IconButton>
                 </Widgets>
@@ -51,11 +48,6 @@ export function StylesForm(props: { label: Label }) {
                         />
                     )
                 }}
-            />
-            <WidgetPopup
-                open={state.widgetDialogOpen}
-                onClose={() => (state.widgetDialogOpen = false)}
-                label={props.label}
             />
         </Wrapper>
     )
