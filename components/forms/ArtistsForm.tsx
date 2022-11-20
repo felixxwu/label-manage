@@ -80,7 +80,6 @@ export function ArtistsForm(props: { label: Label }) {
                                 />
                             </Suggestions>
                             <TextField
-                                autoFocus
                                 margin='normal'
                                 label='Artist Name'
                                 fullWidth
