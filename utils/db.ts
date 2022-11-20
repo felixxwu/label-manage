@@ -40,6 +40,12 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     widgets: [],
     inactive: false,
     lastUploaded: '',
+    lastScraped: 0,
+    tracks: {
+        recent: [],
+        reposts: [],
+        popular: [],
+    },
 }
 
 const emptyExtra: DbExtra = {

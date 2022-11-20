@@ -90,7 +90,7 @@ const Wrapper = styled('div')<{ compact: boolean; index: number; inactive: boole
     color: ${theme.palette.primary.main};
     background-color: ${({ compact, index }) =>
         compact && index % 2 === 0 ? '' : theme.palette.secondary.main};
-    padding: ${({ compact }) => (compact ? '' : '20px')};
+    padding: ${({ compact }) => (compact ? '2px' : '20px')};
     border-radius: ${({ compact }) => (compact ? 0 : consts.borderRadius)}px;
     cursor: pointer;
     text-align: left;

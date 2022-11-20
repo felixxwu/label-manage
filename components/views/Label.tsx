@@ -1,4 +1,4 @@
-import { CircularProgress, IconButton } from '@mui/material'
+import { Button, CircularProgress, IconButton, Typography } from '@mui/material'
 import { deleteDocTyped } from '../../utils/db'
 import { Label } from '../../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -19,6 +19,9 @@ import { DeleteButton } from '../buttons/DeleteButton'
 import { theme } from '../../utils/theme'
 import { InactiveForm } from '../forms/InactiveForm'
 import { SongsSkippedForm } from '../forms/SongsSkippedForm'
+import SmartToy from '@mui/icons-material/SmartToy'
+import { updateProfile } from '../../utils/scrape'
+import { getDaysAgoScraped } from '../../utils/getDaysAgo'
 
 export function Label(props: { label: Label }) {
     setHistory('label')
@@ -42,6 +45,12 @@ export function Label(props: { label: Label }) {
         await handleBack()
     }
 
+    async function scrapeData() {
+        store().snackbar = 'Getting profile data...'
+        await updateProfile(props.label)
+        store().snackbar = 'Auto-filled some fields.'
+    }
+
     return (
         <Wrapper>
             {props.label ? (
@@ -61,11 +70,11 @@ export function Label(props: { label: Label }) {
                     <Divider />
                     <SubmissionForm {...props} />
                     <Divider />
+                    <NotesForm {...props} />
+                    <Divider />
                     <ArtistsForm {...props} />
                     <Divider />
                     <StylesForm {...props} />
-                    <Divider />
-                    <NotesForm {...props} />
                     <Divider />
                     <SongsSubmittedForm {...props} />
                     <Divider />
@@ -76,7 +85,15 @@ export function Label(props: { label: Label }) {
                 <CircularProgress />
             )}
 
-            <Buttons>{props.label && <DeleteButton onClick={openConfirmDelete} />}</Buttons>
+            <Buttons>
+                <Button onClick={scrapeData} startIcon={<SmartToy />}>
+                    Re-scrape data
+                </Button>
+                <Typography variant='caption'>
+                    Last scraped: {getDaysAgoScraped(props.label)} days ago
+                </Typography>
+                {props.label && <DeleteButton onClick={openConfirmDelete} />}
+            </Buttons>
         </Wrapper>
     )
 }
@@ -94,7 +111,9 @@ const Wrapper = styled('div')`
 const Buttons = styled('div')`
     width: 100%;
     display: flex;
-    gap: 20px;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
     justify-content: center;
 `
 

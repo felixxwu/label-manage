@@ -22,7 +22,9 @@ export function StylesForm(props: { label: Label }) {
             <Header>
                 <div>Styles:</div>
                 <Widgets>
-                    {props.label.widgets.length}
+                    {props.label.tracks.popular.length +
+                        props.label.tracks.recent.length +
+                        props.label.tracks.reposts.length}
                     <IconButton onClick={() => (state.widgetDialogOpen = true)}>
                         <MusicNote />
                     </IconButton>

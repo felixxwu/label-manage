@@ -3,6 +3,12 @@ export const followerOptions = ['2k', '5k', '10k', '20k', '50k', '100k', '200k']
 export const sortTypes = ['follower', 'name'] as const
 export type SortType = typeof sortTypes[number]
 
+export interface Track {
+    url: string | null
+    title: string | null
+    published: string | null
+}
+
 export interface Label {
     id: string
     name: string
@@ -18,6 +24,12 @@ export interface Label {
     widgets: string[]
     inactive: boolean
     lastUploaded: string
+    lastScraped: number
+    tracks: {
+        popular: Track[]
+        recent: Track[]
+        reposts: Track[]
+    }
 }
 
 export interface Song {

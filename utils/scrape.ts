@@ -23,17 +23,9 @@ export async function searchSoundCloudLinks(labelName: string) {
         scrape,
         `https://soundcloud.com/search/people?q=` + encodeURIComponent(labelName)
     )
-    const firstValidNoscript: HTMLHtmlElement | undefined = Array.from(
-        result.querySelectorAll('#app noscript')
-    )
-        .map(noscript => {
-            const el = document.createElement('html')
-            el.innerHTML = noscript.innerHTML
-            return el
-        })
-        .filter(el => el.querySelectorAll('h2 > a').length)[0]
-    if (!firstValidNoscript) return snackErrorReturn('Could not find tracks in the html', [])
-    return Array.from(firstValidNoscript.querySelectorAll('h2 > a')).map(
+    const noscript = noscriptContent(result)
+    if (!noscript) return snackErrorReturn('Could not find tracks in the html', [])
+    return Array.from(noscript.querySelectorAll('h2 > a')).map(
         (article: HTMLAnchorElement) => article.getAttribute('href') ?? ''
     )
 }
@@ -50,6 +42,7 @@ export async function scrapeSoundCloudProfile(url: string) {
         tracks: {
             popular: popularTracks,
             recent: recentTracks,
+            reposts: reposts,
             lastUpload:
                 allTracks.length === 0
                     ? null
@@ -63,19 +56,15 @@ export async function scrapeSoundCloudProfile(url: string) {
 }
 
 export async function reScrapeData() {
-    let failed = 0
     let i = 0
     for (const label of store().labels) {
-        try {
-            i++
-            store().dialog = {
-                actions: [],
-                message: i + '/' + store().labels.length + ' succeeded: ' + (i - failed),
-            }
-            await updateProfile(label)
-        } catch (_) {
-            failed++
+        if (store().dialog === null && i > 0) return
+        i++
+        store().dialog = {
+            actions: [],
+            message: i + '/' + store().labels.length,
         }
+        await updateProfile(label)
     }
     store().dialog = null
 }
@@ -86,36 +75,53 @@ export async function updateProfile(label: Label) {
         ...(res.profile.image ? { image: res.profile.image } : {}),
         ...(res.profile.followers ? { followers: res.profile.followers } : {}),
         ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
+        lastScraped: new Date().getTime(),
+        tracks: {
+            popular: res.tracks.popular,
+            recent: res.tracks.recent,
+            reposts: res.tracks.reposts,
+        },
     })
 }
 
+function noscriptContent(el: HTMLHtmlElement): HTMLHtmlElement | undefined {
+    return Array.from(el.querySelectorAll('#app noscript'))
+        .map(noscript => {
+            const el = document.createElement('html')
+            el.innerHTML = noscript.innerHTML
+            return el
+        })
+        .filter(el => el.querySelectorAll('article.audible').length)[0]
+}
+
+function htmlDecode(input: string) {
+    const doc = new DOMParser().parseFromString(input, 'text/html')
+    return doc.documentElement.textContent
+}
+
 function parseSCTracks(el: HTMLHtmlElement) {
-    return Array.from(
-        Array.from(el.querySelectorAll('#app noscript'))
-            .map(noscript => {
-                const el = document.createElement('html')
-                el.innerHTML = noscript.innerHTML
-                return el
-            })
-            .filter(el => el.querySelectorAll('article.audible').length)[0]
-            .querySelectorAll('article.audible')
-    ).map((article: HTMLAnchorElement) => ({
-        title: (() => {
-            const anchor = article.querySelector('a[itemprop="url"]')
-            if (!anchor) return snackErrorReturn('Could not find title tag', null)
-            return anchor.innerHTML
-        })(),
-        url: (() => {
-            const anchor = article.querySelector('a[itemprop="url"]')
-            if (!anchor) return snackErrorReturn('Could not find url tag', null)
-            return 'https://soundcloud.com' + anchor.getAttribute('href')
-        })(),
-        published: (() => {
-            const time = article.querySelector('time')
-            if (!time) return snackErrorReturn('Could not find time tag', null)
-            return time.innerHTML
-        })(),
-    }))
+    const noscript = noscriptContent(el)
+    if (!noscript) return snackErrorReturn('Could not find tracks', [])
+
+    return Array.from(noscript.querySelectorAll('article.audible')).map(
+        (article: HTMLAnchorElement) => ({
+            title: (() => {
+                const anchor = article.querySelector('a[itemprop="url"]')
+                if (!anchor) return snackErrorReturn('Could not find title tag', null)
+                return htmlDecode(anchor.innerHTML)
+            })(),
+            url: (() => {
+                const anchor = article.querySelector('a[itemprop="url"]')
+                if (!anchor) return snackErrorReturn('Could not find url tag', null)
+                return 'https://soundcloud.com' + anchor.getAttribute('href')
+            })(),
+            published: (() => {
+                const time = article.querySelector('time')
+                if (!time) return snackErrorReturn('Could not find time tag', null)
+                return time.innerHTML
+            })(),
+        })
+    )
 }
 
 function parseSCProfile(el: HTMLHtmlElement) {
