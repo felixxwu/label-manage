@@ -20,7 +20,7 @@ export default function Home() {
                 />
                 <link rel='shortcut icon' href='/favicon.svg' />
                 <link rel='manifest' href='manifest.json' />
-                <title>Label Manager</title>
+                <title>SoundCloud Label Manager</title>
             </Head>
 
             <main>
