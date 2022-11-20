@@ -1,4 +1,4 @@
-import { Button, debounce, Fab } from '@mui/material'
+import { Button, CircularProgress, debounce, Fab } from '@mui/material'
 import { ListItem } from '../ListItem'
 import LibraryMusicIcon from '@mui/icons-material/QueueMusic'
 import { fade } from '../../utils/animate'
@@ -72,6 +72,10 @@ export function List() {
         .sort((a, b) => {
             return !a.inactive && b.inactive ? -1 : 1
         })
+
+    if (labels.length === 0) {
+        return <CircularProgress />
+    }
 
     return (
         <Wrapper>
