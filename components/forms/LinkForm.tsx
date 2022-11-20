@@ -18,7 +18,7 @@ export function LinkForm(props: { label: Label }) {
 
         store().dialog = {
             actions: [{ label: 'Close' }],
-            message: 'Choose SoundCloud Link',
+            message: 'https://soundcloud.com...',
             multiselect: {
                 choices: links,
                 onChoose: setLink,
@@ -26,19 +26,14 @@ export function LinkForm(props: { label: Label }) {
         }
     }
 
-    async function setLink(link: string) {
+    async function setLink(partialLink: string) {
+        const link = 'https://soundcloud.com' + partialLink
         const res = await scrapeSoundCloudProfile(link)
         await load(updateDocTyped, props.label.id, {
             link,
             ...(res.profile ? { image: res.profile.image } : {}),
             ...(res.profile ? { followers: res.profile.followers } : {}),
-            ...(res.tracks.recent
-                ? {
-                      lastUploaded: res.tracks.recent.reduce((prev, curr) =>
-                          new Date(prev.published) > new Date(curr.published) ? prev : curr
-                      ).published,
-                  }
-                : {}),
+            ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
         })
     }
 

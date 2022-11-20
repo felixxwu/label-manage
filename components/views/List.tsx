@@ -51,10 +51,13 @@ export function List() {
         }
     }
 
-    const labels = [...store().labels]
+    const labels = store()
+        .labels.slice()
         .sort((a, b) => {
             if (store().sort === 'follower') {
-                return b.followers - a.followers
+                return (
+                    (isNaN(b.followers) ? 0 : b.followers) - (isNaN(a.followers) ? 0 : a.followers)
+                )
             }
             if (store().sort === 'name') {
                 return a.name > b.name ? 1 : -1

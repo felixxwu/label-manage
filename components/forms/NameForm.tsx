@@ -3,6 +3,7 @@ import { Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { consts } from '../../utils/consts'
 import { updateDocTyped } from '../../utils/db'
+import { getDaysAgo } from '../../utils/getDaysAgo'
 import { nFormatter } from '../../utils/nFormatter'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
@@ -13,11 +14,6 @@ export function NameForm(props: { label: Label }) {
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setName(e.target.value)
         updateDocTyped(props.label.id, { name: e.target.value })
-    }
-
-    function lastUpload() {
-        const seconds = new Date().getTime() - new Date(props.label.lastUploaded).getTime()
-        return Math.floor(seconds / (1000 * 60 * 60 * 24))
     }
 
     return (
@@ -37,12 +33,12 @@ export function NameForm(props: { label: Label }) {
                 <Typography
                     variant='caption'
                     color={
-                        lastUpload() > consts.uploadWarning
+                        getDaysAgo(props.label) > consts.uploadWarning
                             ? theme.palette.warning.light
                             : theme.palette.primary.dark
                     }
                 >
-                    Last Upload: {lastUpload()} days
+                    Last Upload: {getDaysAgo(props.label)} days
                 </Typography>
             </InfoBar>
         </Wrapper>

@@ -81,7 +81,7 @@ export function GeneralDialog() {
 
 const Choice = styled('div')`
     padding: 20px 0;
-    width: 100%;
+    width: 100vw;
     cursor: pointer;
     word-wrap: break-word;
 

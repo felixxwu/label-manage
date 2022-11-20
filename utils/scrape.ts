@@ -18,19 +18,18 @@ export async function searchSoundCloudLinks(labelName: string) {
     try {
         const result = await load(
             scrape,
-            `https://www.google.com/search?q=` +
-                encodeURIComponent('site:soundcloud.com ' + labelName)
+            `https://soundcloud.com/search/people?q=` + encodeURIComponent(labelName)
         )
-        const main = result.querySelector('#main')
-        if (main === null) return null
-        return Array.from(main.querySelectorAll('a'))
-            .map(a => a.href)
-            .filter(href => href.includes('https://soundcloud.com/'))
-            .map(
-                url =>
-                    'https://soundcloud.com/' +
-                    decodeURIComponent(url).split('https://soundcloud.com/')[1].split('&')[0]
-            )
+        return Array.from(
+            Array.from(result.querySelectorAll('#app noscript'))
+                .map(noscript => {
+                    const el = document.createElement('html')
+                    el.innerHTML = noscript.innerHTML
+                    return el
+                })
+                .filter(el => el.querySelectorAll('h2 > a').length)[0]
+                .querySelectorAll('h2 > a')
+        ).map((article: HTMLAnchorElement) => article.getAttribute('href'))
     } catch (error) {
         alert(error)
         return []
@@ -38,16 +37,20 @@ export async function searchSoundCloudLinks(labelName: string) {
 }
 
 export async function scrapeSoundCloudProfile(url: string) {
-    const popularTracksScrape = await load(scrape, url + '/popular-tracks')
-    const recentTracksScrape = await load(scrape, url + '/tracks')
-    const popularTracks = parseSCTracks(popularTracksScrape)
-    const recentTracks = parseSCTracks(recentTracksScrape)
-    const profile = parseSCProfile(popularTracksScrape)
+    const repostScrape = await load(scrape, url + '/reposts')
+    const popularTracks = parseSCTracks(await load(scrape, url + '/popular-tracks'))
+    const recentTracks = parseSCTracks(await load(scrape, url + '/tracks'))
+    const reposts = parseSCTracks(repostScrape)
+    const profile = parseSCProfile(repostScrape)
+    const allTracks = (popularTracks ?? []).concat(recentTracks ?? []).concat(reposts ?? [])
     return {
         profile,
         tracks: {
             popular: popularTracks,
             recent: recentTracks,
+            lastUpload: allTracks.reduce((prev, curr) =>
+                new Date(prev.published) > new Date(curr.published) ? prev : curr
+            ).published,
         },
     }
 }

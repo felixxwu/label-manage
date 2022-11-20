@@ -13,6 +13,8 @@ import QuestionMarkIcon from '@mui/icons-material/HelpOutline'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import { areAllSongsDealtWith } from '../utils/allSongsDealtWith'
 import { nFormatter } from '../utils/nFormatter'
+import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled'
+import { getDaysAgo } from '../utils/getDaysAgo'
 
 export function ListItem(props: { label: Label; index: number }) {
     async function handleClick() {
@@ -41,31 +43,36 @@ export function ListItem(props: { label: Label; index: number }) {
                         )}
 
                         {props.label.name}
-                    </Name>
-                    <Followers>
-                        {areAllSongsDealtWith(props.label) && (
-                            <MusicNoteIcon color='primary' fontSize='small' />
-                        )}
+
                         {props.label.submission &&
                             (props.label.submission.includes('@') ? (
                                 <EmailIcon
-                                    color='primary'
                                     fontSize={store().extra.compact ? 'small' : 'medium'}
+                                    opacity={0.5}
                                 />
                             ) : (
                                 <LinkIcon
-                                    color='primary'
                                     fontSize={store().extra.compact ? 'small' : 'medium'}
+                                    opacity={0.5}
                                 />
                             ))}
-                        {getProgress(props.label) !== 100 && (
-                            <QuestionMarkIcon
-                                color='primary'
+                    </Name>
+                    <Icons>
+                        {areAllSongsDealtWith(props.label) && (
+                            <MusicNoteIcon color='primary' fontSize='small' />
+                        )}
+                        {getDaysAgo(props.label) > consts.uploadWarning && (
+                            <HourglassDisabledIcon
                                 fontSize={store().extra.compact ? 'small' : 'medium'}
                             />
                         )}
-                        <span>{nFormatter(props.label.followers, 0)}</span>
-                    </Followers>
+                        {getProgress(props.label) !== 100 && (
+                            <QuestionMarkIcon
+                                fontSize={store().extra.compact ? 'small' : 'medium'}
+                            />
+                        )}
+                        <Followers>{nFormatter(props.label.followers, 0)}</Followers>
+                    </Icons>
                 </Header>
                 {props.label.styles.length !== 0 && !store().extra.compact && (
                     <div>
@@ -111,14 +118,14 @@ const Name = styled('div')`
     gap: 10px;
 `
 
-const Followers = styled('div')`
+const Icons = styled('div')`
     display: flex;
     align-items: center;
     gap: 10px;
     opacity: 0.5;
 `
 
-const SongCount = styled('div')`
-    display: flex;
-    align-items: center;
+const Followers = styled('div')`
+    min-width: 36px;
+    text-align: right;
 `
