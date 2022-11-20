@@ -32,13 +32,13 @@ export function Chips(props: {
     }
 
     async function deleteItem() {
-        if (itemToDelete === '') return
+        if (itemToDelete === '' || !props.onDelete) return
         await props.onDelete(itemToDelete)
         closeDialog()
     }
 
     function handleClick(item: string) {
-        props.onClick(item)
+        if (props.onClick) props.onClick(item)
     }
 
     return (

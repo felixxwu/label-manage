@@ -11,6 +11,7 @@ import { Backdrop, CircularProgress } from '@mui/material'
 import { store, useStore } from '../../utils/store'
 import styled from '@emotion/styled'
 import { GeneralDialog } from '../popups/GeneralDialog'
+import { SnackbarPopup } from '../popups/SnackbarPopup'
 
 export function App() {
     useStore()
@@ -62,13 +63,14 @@ export function App() {
                     {page === 'error' && <>{store().error}</>}
                     {page === 'loading' && <CircularProgress />}
 
-                    {page === 'label' && <Label label={selectedLabel} />}
+                    {page === 'label' && selectedLabel && <Label label={selectedLabel} />}
                     {page === 'list' && <List />}
                     {page === 'music' && <Music />}
                 </Content>
             </Wrapper>
 
             <GeneralDialog />
+            <SnackbarPopup />
             <Backdrop open={store().loading}>
                 <CircularProgress />
             </Backdrop>

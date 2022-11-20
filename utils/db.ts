@@ -16,6 +16,7 @@ import { DbExtra, Label } from './types'
 import { fade } from './animate'
 import { consts } from './consts'
 import { store } from './store'
+import { snackError } from './snackError'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDdEEWeBs77K0H7WUU1pBUYNpNKzJhfuU8',
@@ -29,7 +30,7 @@ const firebaseConfig = {
 export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     image: '',
     artists: [],
-    followers: null,
+    followers: 0,
     link: '',
     notes: '',
     styles: [],
@@ -49,8 +50,8 @@ const emptyExtra: DbExtra = {
 }
 
 export function useInitDb() {
-    const [db, setDb] = useState<Firestore>(null)
-    const [error, setError] = useState<string>(null)
+    const [db, setDb] = useState<Firestore | null>(null)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         ;(async () => {
@@ -68,9 +69,9 @@ export function useInitDb() {
     return { db, error }
 }
 
-export function useDb(db: Firestore) {
+export function useDb(db: Firestore | null) {
     const [labels, setLabels] = useState<Label[]>([])
-    const [extra, setExtra] = useState<DbExtra>(undefined)
+    const [extra, setExtra] = useState(emptyExtra)
 
     useEffect(() => {
         if (!db) return
@@ -96,42 +97,57 @@ export async function addDocTyped(db: Firestore, name: string) {
         ...emptyLabel,
     }
     try {
-        return addDoc(collection(db, getUrlPassword()), emptyDoc)
+        const password = getUrlPassword()
+        if (password !== null) {
+            return addDoc(collection(db, password), emptyDoc)
+        }
     } catch (e) {
-        alert(e)
+        snackError('Could not add document. ' + e)
     }
 }
 
 function initExtra(db: Firestore) {
     try {
-        return setDoc(doc(db, getUrlPassword(), consts.dbExtraId), emptyExtra)
+        const password = getUrlPassword()
+        if (password !== null) {
+            return setDoc(doc(db, password, consts.dbExtraId), emptyExtra)
+        }
     } catch (e) {
-        alert(e)
+        snackError('Could not initialise extras document. ' + e)
     }
 }
 
 export async function updateDocTyped(
     labelID: string,
-    item: Omit<Partial<Label>, 'id'> | Partial<DbExtra>
+    item: Partial<Omit<Label, 'id'>> | Partial<DbExtra>
 ) {
     try {
-        return updateDoc(doc(store().db, getUrlPassword(), labelID), item)
+        const password = getUrlPassword()
+        if (password === null) return snackError('No password')
+        const db = store().db
+        if (db === null) return snackError('No db set')
+        return updateDoc(doc(db, password, labelID), item)
     } catch (e) {
-        alert(e)
+        snackError('Could not update document. ' + e)
     }
 }
 
 export async function deleteDocTyped(db: Firestore, id: string) {
     try {
-        return deleteDoc(doc(db, getUrlPassword(), id))
+        const password = getUrlPassword()
+        if (password !== null) {
+            return deleteDoc(doc(db, password, id))
+        }
     } catch (e) {
-        alert(e)
+        snackError('Could not delete document. ' + e)
     }
 }
 
 export function onSnapshotTyped(db: Firestore, callback: (items: Label[], extra: DbExtra) => void) {
     try {
-        onSnapshot(collection(db, getUrlPassword()), snapshot => {
+        const password = getUrlPassword()
+        if (password === null) return
+        onSnapshot(collection(db, password), snapshot => {
             const items = snapshot.docs
                 .filter(doc => doc.id !== consts.dbExtraId)
                 .map(doc => {

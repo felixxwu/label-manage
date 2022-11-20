@@ -8,6 +8,7 @@ import { PasteSearchPopup } from '../popups/PasteSearchPopup'
 import { useState } from 'react'
 import { store } from '../../utils/store'
 import styled from '@emotion/styled'
+import { snackError } from '../../utils/snackError'
 
 export function ImageForm(props: { label: Label }) {
     const [open, setOpen] = useState(false)
@@ -16,7 +17,7 @@ export function ImageForm(props: { label: Label }) {
         const link =
             'https://www.google.com/search?tbm=isch&q=' +
             encodeURIComponent(props.label.name + ' logo')
-        window.open(link, '_blank').focus()
+        window.open(link, '_blank')?.focus()
     }
 
     async function handlePaste() {
@@ -32,10 +33,13 @@ export function ImageForm(props: { label: Label }) {
                 })
             )
             const file = item && (await item.getType(image_type))
+            if (file === undefined) return snackError('No image found in clipboard')
             const reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onloadend = function () {
                 const base64data = reader.result
+                if (base64data === null)
+                    return snackError('Something went wrong trying to create a base64 image')
                 updateDocTyped(props.label.id, { image: base64data.toString() })
                 setOpen(false)
             }

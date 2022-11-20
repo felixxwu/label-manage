@@ -15,10 +15,14 @@ export interface DialogOptions {
 
 export function GeneralDialog() {
     const state = useStates({ dialogInput: '' })
+    const { dialog } = store()
 
     function handleDialogKeyUp(e: React.KeyboardEvent) {
-        if (e.key === 'Enter') {
-            submitDialog(store().dialog.actions.find(action => action.callOnEnter))
+        if (e.key === 'Enter' && dialog !== null) {
+            const defaultAction = dialog.actions.find(action => action.callOnEnter)
+            if (defaultAction) {
+                submitDialog(defaultAction)
+            }
         }
     }
 
@@ -28,8 +32,8 @@ export function GeneralDialog() {
         state.dialogInput = ''
     }
 
-    function handleCloice(choice: string) {
-        store().dialog.multiselect.onChoose(choice)
+    function handleChoice(choice: string) {
+        dialog?.multiselect?.onChoose?.(choice)
         store().dialog = null
         state.dialogInput = ''
     }
@@ -37,7 +41,7 @@ export function GeneralDialog() {
     return (
         <Dialog open={!!store().dialog} onClose={() => (store().dialog = null)}>
             <DialogTitle>{store().dialog?.message}</DialogTitle>
-            {store().dialog?.input && (
+            {dialog?.input && (
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -55,16 +59,16 @@ export function GeneralDialog() {
                     />
                 </DialogContent>
             )}
-            {store().dialog?.multiselect && (
+            {dialog?.multiselect && (
                 <DialogContent>
-                    {store().dialog.multiselect.choices.map((choice, i) => (
-                        <Choice key={i} onClick={() => handleCloice(choice)}>
+                    {dialog.multiselect.choices.map((choice, i) => (
+                        <Choice key={i} onClick={() => handleChoice(choice)}>
                             {choice}
                         </Choice>
                     ))}
                 </DialogContent>
             )}
-            {store().dialog?.actions.length !== 0 && (
+            {dialog?.actions.length !== 0 && (
                 <DialogActions>
                     {store().dialog?.actions.map(action => {
                         return (

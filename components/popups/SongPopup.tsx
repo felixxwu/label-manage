@@ -18,9 +18,9 @@ import styled from '@emotion/styled'
 
 export function SongPopup(props: { selectedSongId: string; close: () => void }) {
     const [deleteDialog, setDeleteDialog] = useState(false)
-    const [localTitle, setLocalTitle] = useState(getSong().title)
-    const [localLink, setLocalLink] = useState(getSong().link)
-    const [localStyles, setLocalStyles] = useState(getSong().styles)
+    const [localTitle, setLocalTitle] = useState(getSong()?.title ?? '')
+    const [localLink, setLocalLink] = useState(getSong()?.link ?? '')
+    const [localStyles, setLocalStyles] = useState(getSong()?.styles ?? [])
 
     useEffect(() => {
         saveEdit()
@@ -67,7 +67,7 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
     }
 
     function openLink(link: string) {
-        window.open(link, '_blank').focus()
+        window.open(link, '_blank')?.focus()
     }
 
     return (
@@ -127,7 +127,7 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
                                     return (
                                         <StylesSelector
                                             onSelectStyle={handleStyleSelection}
-                                            ignore={getSong().styles}
+                                            ignore={getSong()?.styles ?? []}
                                         />
                                     )
                                 }}

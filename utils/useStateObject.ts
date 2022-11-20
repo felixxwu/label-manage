@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function useStates<Config>(config: Config) {
+export function useStates<Config extends {}>(config: Config) {
     const store = {}
     for (const key of Object.keys(config) as (keyof Config)[]) {
         const [value, setValue] = useState(config[key])

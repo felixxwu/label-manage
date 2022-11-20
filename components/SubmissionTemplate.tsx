@@ -2,29 +2,24 @@ import styled from '@emotion/styled'
 import DoneAll from '@mui/icons-material/DoneAll'
 import Email from '@mui/icons-material/Email'
 import Save from '@mui/icons-material/Save'
-import { Button, Snackbar, TextareaAutosize, Typography } from '@mui/material'
+import { Button, TextareaAutosize, Typography } from '@mui/material'
 import { useState } from 'react'
 import { consts } from '../utils/consts'
 import { updateDocTyped } from '../utils/db'
+import { snackError } from '../utils/snackError'
 import { store } from '../utils/store'
 import { theme } from '../utils/theme'
 import { Label, Song } from '../utils/types'
 
 export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose: () => void }) {
     const [localTemplate, setLocalTemplate] = useState(store().extra.template)
-    const [snackbarOpen, setSnackbarOpen] = useState(false)
-
-    const handleSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') return
-        setSnackbarOpen(false)
-    }
 
     function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
         setLocalTemplate(e.target.value)
     }
 
     function handleOverwriteTemplate() {
-        setSnackbarOpen(true)
+        snackError('Template saved')
         updateDocTyped(consts.dbExtraId, { template: localTemplate })
     }
 
@@ -99,12 +94,6 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
                     Finish up
                 </Button>
             </Right>
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={5000}
-                onClose={handleSnackbarClose}
-                message='Tempalte saved'
-            />
         </Wrapper>
     )
 }

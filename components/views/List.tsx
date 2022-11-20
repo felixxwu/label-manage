@@ -6,7 +6,7 @@ import { setHistory } from '../../utils/history'
 import { CompactViewSwitch } from '../CompactViewSwitch'
 import { Sort } from '../Sort'
 import { store } from '../../utils/store'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
 import { ExportDataButton } from '../buttons/ExportDataButton'
@@ -16,6 +16,8 @@ import { reScrapeData } from '../../utils/scrape'
 
 export function List() {
     setHistory('')
+
+    const { db } = store()
 
     useEffect(() => {
         window.scrollTo(0, store().listScrollPos)
@@ -41,8 +43,9 @@ export function List() {
                 {
                     label: 'OK',
                     callback: async name => {
-                        if (name) {
-                            const doc = await addDocTyped(store().db, name)
+                        if (name && db) {
+                            const doc = await addDocTyped(db, name)
+                            if (!doc) return
                             await fade()
                             store().selectedLabelId = doc.id
                         }
@@ -64,6 +67,7 @@ export function List() {
             if (store().sort === 'name') {
                 return a.name > b.name ? 1 : -1
             }
+            return 0
         })
         .sort((a, b) => {
             return !a.inactive && b.inactive ? -1 : 1

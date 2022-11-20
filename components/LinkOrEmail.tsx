@@ -21,7 +21,7 @@ export function LinkOrEmail(props: {
     const [open, setOpen] = useState(false)
 
     async function handleSearch() {
-        window.open(props.searchUrl, '_blank').focus()
+        window.open(props.searchUrl, '_blank')?.focus()
     }
 
     async function handlePaste() {

@@ -1,5 +1,6 @@
 import { updateDocTyped } from './db'
 import { load } from './load'
+import { snackErrorReturn } from './snackError'
 import { store } from './store'
 import { Label } from './types'
 
@@ -18,25 +19,23 @@ export async function scrape(url: string) {
 }
 
 export async function searchSoundCloudLinks(labelName: string) {
-    try {
-        const result = await load(
-            scrape,
-            `https://soundcloud.com/search/people?q=` + encodeURIComponent(labelName)
-        )
-        return Array.from(
-            Array.from(result.querySelectorAll('#app noscript'))
-                .map(noscript => {
-                    const el = document.createElement('html')
-                    el.innerHTML = noscript.innerHTML
-                    return el
-                })
-                .filter(el => el.querySelectorAll('h2 > a').length)[0]
-                .querySelectorAll('h2 > a')
-        ).map((article: HTMLAnchorElement) => article.getAttribute('href'))
-    } catch (error) {
-        // alert(error)
-        return []
-    }
+    const result = await load(
+        scrape,
+        `https://soundcloud.com/search/people?q=` + encodeURIComponent(labelName)
+    )
+    const firstValidNoscript: HTMLHtmlElement | undefined = Array.from(
+        result.querySelectorAll('#app noscript')
+    )
+        .map(noscript => {
+            const el = document.createElement('html')
+            el.innerHTML = noscript.innerHTML
+            return el
+        })
+        .filter(el => el.querySelectorAll('h2 > a').length)[0]
+    if (!firstValidNoscript) return snackErrorReturn('Could not find tracks in the html', [])
+    return Array.from(firstValidNoscript.querySelectorAll('h2 > a')).map(
+        (article: HTMLAnchorElement) => article.getAttribute('href') ?? ''
+    )
 }
 
 export async function scrapeSoundCloudProfile(url: string) {
@@ -53,9 +52,11 @@ export async function scrapeSoundCloudProfile(url: string) {
             recent: recentTracks,
             lastUpload:
                 allTracks.length === 0
-                    ? undefined
+                    ? null
                     : allTracks.reduce((prev, curr) =>
-                          new Date(prev.published) > new Date(curr.published) ? prev : curr
+                          new Date(prev.published ?? 0) > new Date(curr.published ?? 0)
+                              ? prev
+                              : curr
                       ).published,
         },
     }
@@ -82,48 +83,52 @@ export async function reScrapeData() {
 export async function updateProfile(label: Label) {
     const res = await scrapeSoundCloudProfile(label.link)
     await load(updateDocTyped, label.id, {
-        ...(res.profile ? { image: res.profile.image } : {}),
-        ...(res.profile ? { followers: res.profile.followers } : {}),
+        ...(res.profile.image ? { image: res.profile.image } : {}),
+        ...(res.profile.followers ? { followers: res.profile.followers } : {}),
         ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
     })
 }
 
 function parseSCTracks(el: HTMLHtmlElement) {
-    try {
-        return Array.from(
-            Array.from(el.querySelectorAll('#app noscript'))
-                .map(noscript => {
-                    const el = document.createElement('html')
-                    el.innerHTML = noscript.innerHTML
-                    return el
-                })
-                .filter(el => el.querySelectorAll('article.audible').length)[0]
-                .querySelectorAll('article.audible')
-        ).map((article: HTMLAnchorElement) => ({
-            title: article.querySelector('a[itemprop="url"]').innerHTML,
-            url:
-                'https://soundcloud.com' +
-                article.querySelector('a[itemprop="url"]').getAttribute('href'),
-            published: article.querySelector('time').innerHTML,
-        }))
-    } catch (error) {
-        // alert(error)
-        return null
-    }
+    return Array.from(
+        Array.from(el.querySelectorAll('#app noscript'))
+            .map(noscript => {
+                const el = document.createElement('html')
+                el.innerHTML = noscript.innerHTML
+                return el
+            })
+            .filter(el => el.querySelectorAll('article.audible').length)[0]
+            .querySelectorAll('article.audible')
+    ).map((article: HTMLAnchorElement) => ({
+        title: (() => {
+            const anchor = article.querySelector('a[itemprop="url"]')
+            if (!anchor) return snackErrorReturn('Could not find title tag', null)
+            return anchor.innerHTML
+        })(),
+        url: (() => {
+            const anchor = article.querySelector('a[itemprop="url"]')
+            if (!anchor) return snackErrorReturn('Could not find url tag', null)
+            return 'https://soundcloud.com' + anchor.getAttribute('href')
+        })(),
+        published: (() => {
+            const time = article.querySelector('time')
+            if (!time) return snackErrorReturn('Could not find time tag', null)
+            return time.innerHTML
+        })(),
+    }))
 }
 
 function parseSCProfile(el: HTMLHtmlElement) {
-    try {
-        return {
-            followers: parseInt(
-                el
-                    .querySelector('meta[property="soundcloud:follower_count"]')
-                    .getAttribute('content')
-            ),
-            image: el.querySelector('meta[property="og:image"]').getAttribute('content'),
-        }
-    } catch (error) {
-        // alert(error)
-        return null
+    return {
+        followers: (() => {
+            const followerMeta = el.querySelector('meta[property="soundcloud:follower_count"]')
+            if (!followerMeta) return snackErrorReturn('Could not find a follower meta tag', null)
+            return parseInt(followerMeta.getAttribute('content') ?? '0')
+        })(),
+        image: (() => {
+            const imageMeta = el.querySelector('meta[property="og:image"]')
+            if (!imageMeta) return snackErrorReturn('Could not find image meta tag', null)
+            return imageMeta.getAttribute('content')
+        })(),
     }
 }

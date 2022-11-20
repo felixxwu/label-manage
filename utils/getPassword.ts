@@ -11,8 +11,9 @@ export function usePassword() {
     const [password, setPassword] = useState('')
 
     useEffect(() => {
-        if (getUrlPassword()) {
-            setPassword(getUrlPassword())
+        const password = getUrlPassword()
+        if (password) {
+            setPassword(password)
         }
     }, [])
 

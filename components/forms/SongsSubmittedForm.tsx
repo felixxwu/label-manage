@@ -11,7 +11,7 @@ import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
 export function SongsSubmittedForm(props: { label: Label }) {
-    const [labelForSubmission, setLabelForSubmission] = useState<Label>(null)
+    const [labelForSubmission, setLabelForSubmission] = useState<Label | null>(null)
 
     async function handleDelete(song: string) {
         updateDocTyped(props.label.id, {
@@ -26,7 +26,7 @@ export function SongsSubmittedForm(props: { label: Label }) {
     function createSubmission() {
         setLabelForSubmission(props.label)
         if (!props.label.submission.includes('@')) {
-            window.open(props.label.submission, '_blank').focus()
+            window.open(props.label.submission, '_blank')?.focus()
         }
     }
 
@@ -52,7 +52,9 @@ export function SongsSubmittedForm(props: { label: Label }) {
                 )}
             </Header>
             {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
-            <CreateSubmissionPopup label={labelForSubmission} close={close} />
+            {labelForSubmission && (
+                <CreateSubmissionPopup label={labelForSubmission} close={close} />
+            )}
         </Wrapper>
     )
 }

@@ -19,12 +19,13 @@ export function useStore() {
     const store = makeStore(
         { db, error, labels, extra, password },
         {
-            selectedLabelId: <string>null,
+            selectedLabelId: <string | null>null,
             showMusic: false,
             sort: <SortType>'follower',
-            dialog: <DialogOptions>null,
+            dialog: <DialogOptions | null>null,
+            snackbar: '',
             listScrollPos: 0,
-            loading: false
+            loading: false,
         }
     )
 
@@ -33,7 +34,7 @@ export function useStore() {
     return store
 }
 
-function makeStore<Readonly, Config>(readonly: Readonly, config: Config) {
+function makeStore<Readonly, Config extends {}>(readonly: Readonly, config: Config) {
     const store = readonly
     for (const key of Object.keys(config) as (keyof Config)[]) {
         const [value, setValue] = useState(config[key])

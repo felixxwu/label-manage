@@ -49,7 +49,7 @@ export function StylesSelector(props: {
             <Chips
                 chips={store().extra.styles.filter(style => !props.ignore.includes(style))}
                 onClick={handleClick}
-                onDelete={editMode ? handleDelete : null}
+                onDelete={editMode ? handleDelete : undefined}
                 colorful
             />
             {editMode ? (

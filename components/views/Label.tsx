@@ -5,7 +5,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { fade } from '../../utils/animate'
 import { LinkForm } from '../forms/LinkForm'
 import { NameForm } from '../forms/NameForm'
-import { FollowersForm } from '../forms/FollowersForm'
 import { ArtistsForm } from '../forms/ArtistsForm'
 import { ImageForm } from '../forms/ImageForm'
 import { SubmissionForm } from '../forms/SubmissionForm'
@@ -24,6 +23,8 @@ import { SongsSkippedForm } from '../forms/SongsSkippedForm'
 export function Label(props: { label: Label }) {
     setHistory('label')
 
+    const { db } = store()
+
     async function openConfirmDelete() {
         store().dialog = {
             message: 'Are you sure you want to delete?',
@@ -37,7 +38,7 @@ export function Label(props: { label: Label }) {
     }
 
     async function handleDelete() {
-        await deleteDocTyped(store().db, props.label.id)
+        db && (await deleteDocTyped(db, props.label.id))
         await handleBack()
     }
 

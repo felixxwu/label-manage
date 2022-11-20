@@ -15,7 +15,7 @@ import { SongPopup } from '../popups/SongPopup'
 import Add from '@mui/icons-material/Add'
 
 export function Music() {
-    const [selectedSongId, setSelectedSongId] = useState<string>(null)
+    const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
 
     setHistory('music')
 
