@@ -38,6 +38,7 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     songsSubmitted: [],
     songsSkipped: [],
     inactive: false,
+    acceptDemos: false,
     lastUploaded: '',
     lastScraped: 0,
     tracks: {

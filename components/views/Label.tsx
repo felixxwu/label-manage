@@ -22,6 +22,7 @@ import { SongsSkippedForm } from '../forms/SongsSkippedForm'
 import SmartToy from '@mui/icons-material/SmartToy'
 import { updateProfile } from '../../utils/scrape'
 import { getDaysAgoScraped } from '../../utils/getDaysAgo'
+import { AcceptDemo } from '../forms/AcceptDemo'
 
 export function Label(props: { label: Label }) {
     setHistory('label')
@@ -71,7 +72,10 @@ export function Label(props: { label: Label }) {
                         </Typography>
                     </ScraperRow>
                     <NameForm {...props} />
-                    <InactiveForm {...props} />
+                    <Toggles>
+                        <InactiveForm {...props} />
+                        <AcceptDemo {...props} />
+                    </Toggles>
                     <Divider />
                     <LinkForm {...props} />
                     <Divider />
@@ -135,4 +139,11 @@ const ScraperRow = styled('div')`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+`
+
+const Toggles = styled('div')`
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
 `

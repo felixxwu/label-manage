@@ -45,10 +45,10 @@ export function Widgets(props: { label: Label }) {
                 </IconButton>
             </Header>
 
-            <h1>Popular Uploads</h1>
-            <TrackWidgets tracks='popular' />
             <h1>Recent Uploads</h1>
             <TrackWidgets tracks='recent' />
+            <h1>Popular Uploads</h1>
+            <TrackWidgets tracks='popular' />
             <h1>Reposts</h1>
             <TrackWidgets tracks='reposts' />
         </Wrapper>
