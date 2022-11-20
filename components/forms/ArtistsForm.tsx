@@ -3,6 +3,7 @@ import { Label } from '../../utils/types'
 import React, { useState } from 'react'
 import { Chips } from '../Chips'
 import { updateDocTyped } from '../../utils/db'
+import styled from '@emotion/styled'
 
 export function ArtistsForm(props: { label: Label }) {
     const [itemToAdd, setItemToAdd] = useState('')
@@ -31,8 +32,37 @@ export function ArtistsForm(props: { label: Label }) {
                 }
 
                 async function submitItem() {
-                    await updateDocTyped( props.label.id, {
+                    if (!itemToAdd) return
+                    await updateDocTyped(props.label.id, {
                         artists: props.label.artists.concat(itemToAdd),
+                    })
+                    setItemToAdd('')
+                    closeDialog()
+                }
+
+                function getArtistSuggestions() {
+                    const t = props.label.tracks
+                    const allUploads = t.popular.concat(t.recent)
+                    const artists: string[] = []
+                    for (const upload of allUploads) {
+                        if (upload.title) {
+                            const split = upload.title.split(
+                                /-|&|,|ft.|Ft.|feat.|Feat.|\(|\)|Remix|Remixes|remix|x|X/
+                            )
+                            artists.push(
+                                ...split
+                                    .map(s => s.trim())
+                                    .filter(s => s !== '')
+                                    .filter(a => !props.label.artists.includes(a))
+                            )
+                        }
+                    }
+                    return Array.from(new Set(artists))
+                }
+
+                async function handleChooseSuggestedArtist(artist: string) {
+                    await updateDocTyped(props.label.id, {
+                        artists: props.label.artists.concat(artist),
                     })
                     setItemToAdd('')
                     closeDialog()
@@ -41,6 +71,14 @@ export function ArtistsForm(props: { label: Label }) {
                 return (
                     <>
                         <DialogContent>
+                            <Suggestions>
+                                <Chips
+                                    chips={getArtistSuggestions()}
+                                    small
+                                    colorful
+                                    onClick={handleChooseSuggestedArtist}
+                                />
+                            </Suggestions>
                             <TextField
                                 autoFocus
                                 margin='normal'
@@ -64,3 +102,11 @@ export function ArtistsForm(props: { label: Label }) {
         />
     )
 }
+
+const Suggestions = styled('div')`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 300px;
+    overflow: auto;
+`

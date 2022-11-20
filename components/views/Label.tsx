@@ -62,7 +62,14 @@ export function Label(props: { label: Label }) {
                         <ImageForm {...props} />
                         <Progress {...props} />
                     </Header>
-                    <div />
+                    <ScraperRow>
+                        <Button onClick={scrapeData} startIcon={<SmartToy />}>
+                            Re-scrape data
+                        </Button>
+                        <Typography variant='caption' sx={{ color: theme.palette.primary.dark }}>
+                            Last scraped: {getDaysAgoScraped(props.label)} days ago
+                        </Typography>
+                    </ScraperRow>
                     <NameForm {...props} />
                     <InactiveForm {...props} />
                     <Divider />
@@ -85,15 +92,7 @@ export function Label(props: { label: Label }) {
                 <CircularProgress />
             )}
 
-            <Buttons>
-                <Button onClick={scrapeData} startIcon={<SmartToy />}>
-                    Re-scrape data
-                </Button>
-                <Typography variant='caption'>
-                    Last scraped: {getDaysAgoScraped(props.label)} days ago
-                </Typography>
-                {props.label && <DeleteButton onClick={openConfirmDelete} />}
-            </Buttons>
+            <Buttons>{props.label && <DeleteButton onClick={openConfirmDelete} />}</Buttons>
         </Wrapper>
     )
 }
@@ -128,4 +127,12 @@ const Divider = styled('div')`
     height: 1px;
     width: 100%;
     background-color: ${theme.palette.divider};
+`
+
+const ScraperRow = styled('div')`
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `
