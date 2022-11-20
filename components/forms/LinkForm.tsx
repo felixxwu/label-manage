@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { updateDocTyped } from '../../utils/db'
 import { load } from '../../utils/load'
-import { scrapeSoundCloudProfile, searchSoundCloudLinks } from '../../utils/scrape'
+import { scrapeSoundCloudProfile, searchSoundCloudLinks, updateProfile } from '../../utils/scrape'
 import { store } from '../../utils/store'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
@@ -28,13 +28,8 @@ export function LinkForm(props: { label: Label }) {
 
     async function setLink(partialLink: string) {
         const link = 'https://soundcloud.com' + partialLink
-        const res = await scrapeSoundCloudProfile(link)
-        await load(updateDocTyped, props.label.id, {
-            link,
-            ...(res.profile ? { image: res.profile.image } : {}),
-            ...(res.profile ? { followers: res.profile.followers } : {}),
-            ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
-        })
+        await load(updateDocTyped, props.label.id, { link })
+        await updateProfile(props.label)
     }
 
     return (

@@ -1,4 +1,7 @@
+import { updateDocTyped } from './db'
 import { load } from './load'
+import { store } from './store'
+import { Label } from './types'
 
 export async function scrape(url: string) {
     const res = await fetch('/api/scraper', {
@@ -31,7 +34,7 @@ export async function searchSoundCloudLinks(labelName: string) {
                 .querySelectorAll('h2 > a')
         ).map((article: HTMLAnchorElement) => article.getAttribute('href'))
     } catch (error) {
-        alert(error)
+        // alert(error)
         return []
     }
 }
@@ -48,11 +51,41 @@ export async function scrapeSoundCloudProfile(url: string) {
         tracks: {
             popular: popularTracks,
             recent: recentTracks,
-            lastUpload: allTracks.reduce((prev, curr) =>
-                new Date(prev.published) > new Date(curr.published) ? prev : curr
-            ).published,
+            lastUpload:
+                allTracks.length === 0
+                    ? undefined
+                    : allTracks.reduce((prev, curr) =>
+                          new Date(prev.published) > new Date(curr.published) ? prev : curr
+                      ).published,
         },
     }
+}
+
+export async function reScrapeData() {
+    let failed = 0
+    let i = 0
+    for (const label of store().labels) {
+        try {
+            i++
+            store().dialog = {
+                actions: [],
+                message: i + '/' + store().labels.length + ' succeeded: ' + (i - failed),
+            }
+            await updateProfile(label)
+        } catch (_) {
+            failed++
+        }
+    }
+    store().dialog = null
+}
+
+export async function updateProfile(label: Label) {
+    const res = await scrapeSoundCloudProfile(label.link)
+    await load(updateDocTyped, label.id, {
+        ...(res.profile ? { image: res.profile.image } : {}),
+        ...(res.profile ? { followers: res.profile.followers } : {}),
+        ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
+    })
 }
 
 function parseSCTracks(el: HTMLHtmlElement) {
@@ -74,7 +107,7 @@ function parseSCTracks(el: HTMLHtmlElement) {
             published: article.querySelector('time').innerHTML,
         }))
     } catch (error) {
-        alert(error)
+        // alert(error)
         return null
     }
 }
@@ -90,7 +123,7 @@ function parseSCProfile(el: HTMLHtmlElement) {
             image: el.querySelector('meta[property="og:image"]').getAttribute('content'),
         }
     } catch (error) {
-        alert(error)
+        // alert(error)
         return null
     }
 }

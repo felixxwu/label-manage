@@ -11,6 +11,8 @@ import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
 import { ExportDataButton } from '../buttons/ExportDataButton'
 import { addDocTyped } from '../../utils/db'
+import SmartToyIcon from '@mui/icons-material/SmartToy'
+import { reScrapeData } from '../../utils/scrape'
 
 export function List() {
     setHistory('')
@@ -85,6 +87,10 @@ export function List() {
                     return <ListItem label={label} index={i} key={i} />
                 })}
             </ListItems>
+
+            <Button startIcon={<SmartToyIcon />} onClick={reScrapeData}>
+                Re-scrape data
+            </Button>
 
             <ExportDataButton />
 
