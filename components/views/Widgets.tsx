@@ -9,7 +9,7 @@ import { Label } from '../../utils/types'
 import { TrackWidget } from '../TrackWidget'
 
 export function Widgets(props: { label: Label }) {
-    setHistory('widgest')
+    // setHistory('widgest')
 
     async function handleBack() {
         await fade()
@@ -35,16 +35,6 @@ export function Widgets(props: { label: Label }) {
 
     return (
         <Wrapper>
-            <Header>
-                <IconButton onClick={handleBack}>
-                    <ArrowBack color='primary' />
-                </IconButton>
-                <h1>Tracks</h1>
-                <IconButton sx={{ opacity: 0 }}>
-                    <ArrowBack color='primary' />
-                </IconButton>
-            </Header>
-
             <h1>Recent Uploads</h1>
             <TrackWidgets tracks='recent' />
             <h1>Popular Uploads</h1>
@@ -74,7 +64,7 @@ const WidgetsWrapper = styled('div')`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: hsl(45deg 6% 87%);
+    background-color: hsl(0deg 0% 78%);
     border-radius: ${consts.borderRadius}px;
     filter: invert(1);
 `

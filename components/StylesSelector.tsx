@@ -1,19 +1,26 @@
 import styled from '@emotion/styled'
 import Add from '@mui/icons-material/Add'
+import Done from '@mui/icons-material/Done'
 import Edit from '@mui/icons-material/Edit'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { consts } from '../utils/consts'
 import { updateDocTyped } from '../utils/db'
 import { store } from '../utils/store'
+import { Label } from '../utils/types'
 import { Chips } from './Chips'
+import { Widgets } from './views/Widgets'
+import QueueMusicIcon from '@mui/icons-material/QueueMusic'
 
 export function StylesSelector(props: {
-    onSelectStyle: (style: string) => void
+    onSelectStyle: (styles: string[]) => void
     ignore: string[]
+    label?: Label
 }) {
     const [styleToAdd, setStyleToAdd] = useState('')
     const [editMode, setEditMode] = useState(false)
+    const [selection, setSelection] = useState<string[]>([])
+    const [showTracks, setShowTracks] = useState(false)
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
         setStyleToAdd(e.target.value)
@@ -40,18 +47,32 @@ export function StylesSelector(props: {
         })
     }
 
-    async function handleClick(style: string) {
-        props.onSelectStyle(style)
+    async function handleSelect(styles: string[]) {
+        setSelection(styles)
+    }
+
+    function handleDone() {
+        props.onSelectStyle(selection)
     }
 
     return (
         <Wrapper>
             <Chips
                 chips={store().extra.styles.filter(style => !props.ignore.includes(style))}
-                onClick={handleClick}
+                onSelect={handleSelect}
                 onDelete={editMode ? handleDelete : undefined}
                 colorful
             />
+            {props.label &&
+                (showTracks ? (
+                    <WidgetWrapper>
+                        <Widgets label={props.label} />
+                    </WidgetWrapper>
+                ) : (
+                    <Button onClick={() => setShowTracks(true)} startIcon={<QueueMusicIcon />}>
+                        Show tracks
+                    </Button>
+                ))}
             {editMode ? (
                 <>
                     <TextField
@@ -67,18 +88,24 @@ export function StylesSelector(props: {
                         autoFocus
                         sx={{ margin: 0 }}
                     />
-                    <Right>
+                    <Buttons>
                         <Button onClick={addStyle} startIcon={<Add />}>
                             Add to list
                         </Button>
-                    </Right>
+                        <Button onClick={handleDone} startIcon={<Done />}>
+                            Done
+                        </Button>
+                    </Buttons>
                 </>
             ) : (
-                <Right>
+                <Buttons>
                     <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
                         Edit
                     </Button>
-                </Right>
+                    <Button onClick={handleDone} startIcon={<Done />}>
+                        Done
+                    </Button>
+                </Buttons>
             )}
         </Wrapper>
     )
@@ -92,6 +119,12 @@ const Wrapper = styled('div')`
     padding: 20px;
 `
 
-const Right = styled('div')`
-    text-align: right;
+const Buttons = styled('div')`
+    display: flex;
+    justify-content: space-between;
+`
+
+const WidgetWrapper = styled('div')`
+    height: 300px;
+    overflow: auto;
 `

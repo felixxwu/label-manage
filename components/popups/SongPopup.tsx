@@ -117,10 +117,8 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
                                 title='Styles:'
                                 onDelete={handleDeleteStyle}
                                 addDialog={({ closeDialog }) => {
-                                    async function handleStyleSelection(style: string) {
-                                        if (!localStyles.includes(style)) {
-                                            setLocalStyles(localStyles.concat(style))
-                                        }
+                                    async function handleStyleSelection(styles: string[]) {
+                                        setLocalStyles(localStyles.concat(...styles))
                                         closeDialog()
                                     }
 

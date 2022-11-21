@@ -13,10 +13,12 @@ export function Chips(props: {
     outlined?: boolean
     onDelete?: (item: string) => Promise<void>
     onClick?: (item: string) => Promise<void>
+    onSelect?: (items: string[]) => Promise<void>
     addDialog?: (props: { closeDialog: () => void }) => React.ReactNode
 }) {
     const [dialogContent, setDialogContent] = useState<'delete' | 'add' | 'closed'>('closed')
     const [itemToDelete, setItemToDelete] = useState('')
+    const [selection, setSelection] = useState<string[]>([])
 
     function openDeleteDialog(item: string) {
         setDialogContent('delete')
@@ -39,10 +41,19 @@ export function Chips(props: {
 
     function handleClick(item: string) {
         if (props.onClick) props.onClick(item)
+        if (props.onSelect) {
+            const newSelection = selection.includes(item)
+                ? selection.filter(s => s !== item)
+                : selection.concat(item)
+            setSelection(newSelection)
+            props.onSelect(newSelection)
+        }
     }
 
+    const clickHanlder = props.onClick || props.onSelect ? true : undefined
+
     return (
-        <Wrapper noClick={!props.onDelete && !props.onClick}>
+        <Wrapper noClick={!props.onDelete && !clickHanlder}>
             {props.title}
             <ChipsWrapper>
                 {props.chips
@@ -50,7 +61,7 @@ export function Chips(props: {
                     .map((item, index) => (
                         <Chip
                             label={item}
-                            onClick={props.onClick && (() => handleClick(item))}
+                            onClick={clickHanlder && (() => handleClick(item))}
                             onDelete={props.onDelete && (() => openDeleteDialog(item))}
                             key={index}
                             size={props.small ? 'small' : 'medium'}
@@ -58,6 +69,8 @@ export function Chips(props: {
                             sx={{
                                 color: theme.palette.primary.main,
                                 backgroundColor: props.colorful ? getColorHash(item) : '',
+                                border: selection.includes(item) ? '1px solid white' : '',
+                                boxSizing: 'border-box',
                             }}
                         />
                     ))}

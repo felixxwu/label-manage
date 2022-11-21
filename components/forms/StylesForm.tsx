@@ -22,9 +22,7 @@ export function StylesForm(props: { label: Label }) {
                     {props.label.tracks.popular.length +
                         props.label.tracks.recent.length +
                         props.label.tracks.reposts.length}
-                    <IconButton onClick={() => (store().showWidgets = true)}>
-                        <MusicNote />
-                    </IconButton>
+                    <MusicNote fontSize='small' />
                 </Widgets>
             </Header>
             <Chips
@@ -32,12 +30,10 @@ export function StylesForm(props: { label: Label }) {
                 chips={props.label.styles}
                 onDelete={handleDelete}
                 addDialog={({ closeDialog }) => {
-                    async function handleStyleSelection(style: string) {
-                        if (!props.label.styles.includes(style)) {
-                            updateDocTyped(props.label.id, {
-                                styles: props.label.styles.concat(style),
-                            })
-                        }
+                    async function handleStyleSelection(styles: string[]) {
+                        updateDocTyped(props.label.id, {
+                            styles: props.label.styles.concat(...styles),
+                        })
                         closeDialog()
                     }
 
@@ -45,6 +41,7 @@ export function StylesForm(props: { label: Label }) {
                         <StylesSelector
                             onSelectStyle={handleStyleSelection}
                             ignore={props.label.styles}
+                            label={props.label}
                         />
                     )
                 }}
