@@ -85,13 +85,11 @@ export async function updateProfile(label: Label) {
 }
 
 function noscriptContent(el: HTMLHtmlElement): HTMLHtmlElement | undefined {
-    return Array.from(el.querySelectorAll('#app noscript'))
-        .map(noscript => {
-            const el = document.createElement('html')
-            el.innerHTML = noscript.innerHTML
-            return el
-        })
-        .filter(el => el.querySelectorAll('article.audible').length)[0]
+    return Array.from(el.querySelectorAll('#app noscript:not(.errorPage__inner)')).map(noscript => {
+        const el = document.createElement('html')
+        el.innerHTML = noscript.innerHTML
+        return el
+    })[0]
 }
 
 function htmlDecode(input: string) {
