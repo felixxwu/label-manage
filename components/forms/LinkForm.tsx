@@ -29,7 +29,7 @@ export function LinkForm(props: { label: Label }) {
     async function setLink(partialLink: string) {
         const link = 'https://soundcloud.com' + partialLink
         await load(updateDocTyped, props.label.id, { link })
-        await updateProfile(props.label)
+        await updateProfile({ ...props.label, link })
     }
 
     return (
