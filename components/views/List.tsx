@@ -97,7 +97,7 @@ export function List() {
             </ListItems>
 
             <Button startIcon={<SmartToyIcon />} onClick={reScrapeData}>
-                Re-scrape data
+                Re-scrape all data
             </Button>
 
             <ExportDataButton />
