@@ -6,6 +6,9 @@ export function getDaysAgo(label: Label) {
 }
 
 export function getDaysAgoScraped(label: Label) {
+    if (label.lastScraped === 0) {
+        return 'NaN'
+    }
     const seconds = new Date().getTime() - label.lastScraped
     return Math.floor(seconds / (1000 * 60 * 60 * 24))
 }

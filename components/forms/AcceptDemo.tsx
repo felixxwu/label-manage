@@ -9,7 +9,7 @@ export function AcceptDemo(props: { label: Label }) {
     return (
         <FormControlLabel
             control={<Switch onChange={handleChange} checked={props.label.acceptDemos} />}
-            label='Accepts Demos'
+            label='Explicity Want Demos'
         />
     )
 }

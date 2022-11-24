@@ -23,11 +23,24 @@ import SmartToy from '@mui/icons-material/SmartToy'
 import { updateProfile } from '../../utils/scrape'
 import { getDaysAgoScraped } from '../../utils/getDaysAgo'
 import { AcceptDemo } from '../forms/AcceptDemo'
+import { useEffect } from 'react'
+import { searchForLinks } from '../../utils/searchForLinks'
 
 export function Label(props: { label: Label }) {
     setHistory('label')
 
     const { db } = store()
+
+    useEffect(() => {
+        if (props.label.link) return
+        store().dialog = {
+            actions: [
+                { label: 'No' },
+                { label: 'Yes', callback: () => searchForLinks(props.label), callOnEnter: true },
+            ],
+            message: 'Do you want to search for a SoundCloud link?',
+        }
+    }, [])
 
     async function openConfirmDelete() {
         store().dialog = {
@@ -72,25 +85,30 @@ export function Label(props: { label: Label }) {
                         </Typography>
                     </ScraperRow>
                     <NameForm {...props} />
-                    <Toggles>
-                        <InactiveForm {...props} />
+                    <InactiveForm {...props} />
+                    <Wrapper
+                        style={{
+                            opacity: props.label.inactive ? 0.5 : 1,
+                            pointerEvents: props.label.inactive ? 'none' : 'initial',
+                        }}
+                    >
+                        <Divider />
+                        <LinkForm {...props} />
+                        <Divider />
+                        <SubmissionForm {...props} />
                         <AcceptDemo {...props} />
-                    </Toggles>
-                    <Divider />
-                    <LinkForm {...props} />
-                    <Divider />
-                    <SubmissionForm {...props} />
-                    <Divider />
-                    <NotesForm {...props} />
-                    <Divider />
-                    <ArtistsForm {...props} />
-                    <Divider />
-                    <StylesForm {...props} />
-                    <Divider />
-                    <SongsSubmittedForm {...props} />
-                    <Divider />
-                    <SongsSkippedForm {...props} />
-                    <div />
+                        <Divider />
+                        <NotesForm {...props} />
+                        <Divider />
+                        <ArtistsForm {...props} />
+                        <Divider />
+                        <StylesForm {...props} />
+                        <Divider />
+                        <SongsSubmittedForm {...props} />
+                        <Divider />
+                        <SongsSkippedForm {...props} />
+                        <div />
+                    </Wrapper>
                 </>
             ) : (
                 <CircularProgress />
@@ -139,11 +157,4 @@ const ScraperRow = styled('div')`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`
-
-const Toggles = styled('div')`
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 100%;
 `

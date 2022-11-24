@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { updateDocTyped } from '../../utils/db'
-import { load } from '../../utils/load'
-import { scrapeSoundCloudProfile, searchSoundCloudLinks, updateProfile } from '../../utils/scrape'
-import { store } from '../../utils/store'
+import { searchForLinks } from '../../utils/searchForLinks'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
 import { ClearButton } from '../buttons/ClearButton'
@@ -11,25 +9,6 @@ import { EditButton } from '../buttons/EditButton'
 export function LinkForm(props: { label: Label }) {
     function handleClear() {
         updateDocTyped(props.label.id, { link: '' })
-    }
-
-    async function handleSearch() {
-        const links = await searchSoundCloudLinks(props.label.name)
-
-        store().dialog = {
-            actions: [{ label: 'Close' }],
-            message: 'https://soundcloud.com...',
-            multiselect: {
-                choices: links,
-                onChoose: setLink,
-            },
-        }
-    }
-
-    async function setLink(partialLink: string) {
-        const link = 'https://soundcloud.com' + partialLink
-        await load(updateDocTyped, props.label.id, { link })
-        await updateProfile({ ...props.label, link })
     }
 
     return (
@@ -45,7 +24,7 @@ export function LinkForm(props: { label: Label }) {
             ) : (
                 <>
                     <div style={{ opacity: 0.5 }}>SoundCloud Link</div>
-                    <EditButton onClick={handleSearch} />
+                    <EditButton onClick={() => searchForLinks(props.label)} />
                 </>
             )}
         </Wrapper>
