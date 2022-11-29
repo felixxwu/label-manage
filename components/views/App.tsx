@@ -12,7 +12,6 @@ import { store, useStore } from '../../utils/store'
 import styled from '@emotion/styled'
 import { GeneralDialog } from '../popups/GeneralDialog'
 import { SnackbarPopup } from '../popups/SnackbarPopup'
-import { Widgets } from './Widgets'
 
 export function App() {
     useStore()
@@ -22,13 +21,8 @@ export function App() {
         if (store().error) return 'error' as const
         if (!store() || !store().db || !store().labels || !store().extra) return 'loading' as const
         if (store().showMusic) return 'music' as const
-        if (store().selectedLabelId) {
-            if (store().showWidgets) {
-                return 'widgets' as const
-            } else {
-                return 'label' as const
-            }
-        }
+        if (store().selectedLabelId) return 'label' as const
+
         return 'list' as const
     })()
 
@@ -40,7 +34,7 @@ export function App() {
     useEffect(() => {
         window.addEventListener('keyup', handleKeyUp)
         window.onhashchange = () => {
-            if (!window.location.hash || store().showWidgets) {
+            if (!window.location.hash) {
                 goBack()
             }
         }
@@ -53,11 +47,6 @@ export function App() {
     }
 
     async function goBack() {
-        if (store().showWidgets) {
-            await fade()
-            store().showWidgets = false
-            return
-        }
         if (page !== 'list') {
             await fade()
             store().selectedLabelId = null
@@ -76,7 +65,6 @@ export function App() {
                     {page === 'loading' && <CircularProgress />}
 
                     {page === 'label' && selectedLabel && <Label label={selectedLabel} />}
-                    {page === 'widgets' && selectedLabel && <Widgets label={selectedLabel} />}
                     {page === 'list' && <List />}
                     {page === 'music' && <Music />}
                 </Content>

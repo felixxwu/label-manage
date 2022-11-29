@@ -1,21 +1,9 @@
 import styled from '@emotion/styled'
-import ArrowBack from '@mui/icons-material/ArrowBack'
-import { IconButton } from '@mui/material'
-import { fade } from '../../utils/animate'
 import { consts } from '../../utils/consts'
-import { setHistory } from '../../utils/history'
-import { store } from '../../utils/store'
 import { Label } from '../../utils/types'
 import { TrackWidget } from '../TrackWidget'
 
 export function Widgets(props: { label: Label }) {
-    // setHistory('widgest')
-
-    async function handleBack() {
-        await fade()
-        store().showWidgets = false
-    }
-
     function TrackWidgets(p: { tracks: keyof Label['tracks'] }) {
         return (
             <WidgetsWrapper>

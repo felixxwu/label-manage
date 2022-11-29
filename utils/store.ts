@@ -20,7 +20,6 @@ export function useStore() {
         { db, error, labels, extra, password },
         {
             selectedLabelId: <string | null>null,
-            showWidgets: false,
             showMusic: false,
             sort: <SortType>'follower',
             dialog: <DialogOptions | null>null,
