@@ -2,12 +2,10 @@ import { Fab, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Song } from '../../utils/types'
 import { consts } from '../../utils/consts'
-import { fade } from '../../utils/animate'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'
 import { theme } from '../../utils/theme'
 import LinkIcon from '@mui/icons-material/Link'
-import { setHistory } from '../../utils/history'
 import { store } from '../../utils/store'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
@@ -17,11 +15,8 @@ import Add from '@mui/icons-material/Add'
 export function Music() {
     const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
 
-    setHistory('music')
-
     async function handleBack() {
-        await fade()
-        store().showMusic = false
+        window.history.back()
     }
 
     async function addSong() {
@@ -57,15 +52,19 @@ export function Music() {
                 </IconButton>
             </Header>
 
-            {store().extra.songs.map((song, index) => (
-                <Song onClick={() => openDialog(song.id)} key={index}>
-                    <Header>
-                        {song.title}
-                        {song.link && <LinkIcon color='primary' />}
-                    </Header>
-                    {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
-                </Song>
-            ))}
+            {store().extra.songs.length === 0 ? (
+                <div>No songs added yet :(</div>
+            ) : (
+                store().extra.songs.map((song, index) => (
+                    <Song onClick={() => openDialog(song.id)} key={index}>
+                        <Header>
+                            {song.title}
+                            {song.link && <LinkIcon color='primary' />}
+                        </Header>
+                        {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
+                    </Song>
+                ))
+            )}
 
             <Fab
                 onClick={addSong}

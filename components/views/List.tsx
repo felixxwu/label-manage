@@ -1,8 +1,6 @@
 import { Button, CircularProgress, debounce, Fab } from '@mui/material'
 import { ListItem } from '../ListItem'
 import LibraryMusicIcon from '@mui/icons-material/QueueMusic'
-import { fade } from '../../utils/animate'
-import { setHistory } from '../../utils/history'
 import { CompactViewSwitch } from '../CompactViewSwitch'
 import { Sort } from '../Sort'
 import { store } from '../../utils/store'
@@ -15,8 +13,6 @@ import SmartToyIcon from '@mui/icons-material/SmartToy'
 import { reScrapeData } from '../../utils/scrape'
 
 export function List() {
-    setHistory('')
-
     const { db } = store()
 
     useEffect(() => {
@@ -30,8 +26,7 @@ export function List() {
     }, [])
 
     async function showMusic() {
-        await fade()
-        store().showMusic = true
+        window.location.href = '/music'
     }
 
     function handleAddLabel() {
@@ -46,8 +41,7 @@ export function List() {
                         if (name && db) {
                             const doc = await addDocTyped(db, name)
                             if (!doc) return
-                            await fade()
-                            store().selectedLabelId = doc.id
+                            window.location.href = '/label/' + doc.id
                         }
                     },
                     callOnEnter: true,
@@ -73,10 +67,6 @@ export function List() {
             return !a.inactive && b.inactive ? -1 : 1
         })
 
-    if (labels.length === 0) {
-        return <CircularProgress />
-    }
-
     return (
         <Wrapper>
             <h1>Label List</h1>
@@ -85,22 +75,28 @@ export function List() {
                 Open Music Library
             </Button>
 
-            <Options>
-                <CompactViewSwitch />
-                <Sort />
-            </Options>
+            {store().labels.length === 0 ? (
+                <div>No labels added yet :(</div>
+            ) : (
+                <>
+                    <Options>
+                        <CompactViewSwitch />
+                        <Sort />
+                    </Options>
 
-            <ListItems compact={store().extra.compact}>
-                {labels.map((label, i) => {
-                    return <ListItem label={label} index={i} key={i} />
-                })}
-            </ListItems>
+                    <ListItems compact={store().extra.compact}>
+                        {labels.map((label, i) => {
+                            return <ListItem label={label} index={i} key={i} />
+                        })}
+                    </ListItems>
 
-            <Button startIcon={<SmartToyIcon />} onClick={reScrapeData}>
-                Re-scrape all data
-            </Button>
+                    <Button startIcon={<SmartToyIcon />} onClick={reScrapeData}>
+                        Re-scrape all data
+                    </Button>
 
-            <ExportDataButton />
+                    <ExportDataButton />
+                </>
+            )}
 
             <Fab
                 onClick={handleAddLabel}

@@ -2,14 +2,12 @@ import { Button, CircularProgress, IconButton, Typography } from '@mui/material'
 import { deleteDocTyped } from '../../utils/db'
 import { Label } from '../../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { fade } from '../../utils/animate'
 import { LinkForm } from '../forms/LinkForm'
 import { NameForm } from '../forms/NameForm'
 import { ArtistsForm } from '../forms/ArtistsForm'
 import { ImageForm } from '../forms/ImageForm'
 import { SubmissionForm } from '../forms/SubmissionForm'
 import { Progress } from '../Progress'
-import { setHistory } from '../../utils/history'
 import { store } from '../../utils/store'
 import { StylesForm } from '../forms/StylesForm'
 import { NotesForm } from '../forms/NotesForm'
@@ -27,8 +25,6 @@ import { useEffect } from 'react'
 import { searchForLinks } from '../../utils/searchForLinks'
 
 export function Label(props: { label: Label }) {
-    setHistory('label')
-
     const { db } = store()
 
     useEffect(() => {
@@ -50,8 +46,7 @@ export function Label(props: { label: Label }) {
     }
 
     async function handleBack() {
-        await fade()
-        store().selectedLabelId = null
+        window.history.back()
     }
 
     async function handleDelete() {

@@ -1,4 +1,3 @@
-import { fade } from '../utils/animate'
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label } from '../utils/types'
@@ -18,8 +17,7 @@ import { getDaysAgo } from '../utils/getDaysAgo'
 
 export function ListItem(props: { label: Label; index: number }) {
     async function handleClick() {
-        await fade()
-        store().selectedLabelId = props.label.id
+        window.location.href = '/label/' + props.label.id
     }
 
     return (

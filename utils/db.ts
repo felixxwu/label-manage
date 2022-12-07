@@ -9,23 +9,13 @@ import {
     updateDoc,
 } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
-import { getUrlPassword } from './getPassword'
 import { DbExtra, Label } from './types'
-import { fade } from './animate'
 import { consts } from './consts'
 import { store } from './store'
 import { snackError } from './snackError'
-
-const firebaseConfig = {
-    apiKey: 'AIzaSyDdEEWeBs77K0H7WUU1pBUYNpNKzJhfuU8',
-    authDomain: 'label-manage.firebaseapp.com',
-    projectId: 'label-manage',
-    storageBucket: 'label-manage.appspot.com',
-    messagingSenderId: '245804327017',
-    appId: '1:245804327017:web:ef7bc5eb7f4bbf6b6a02f8',
-}
+import { app } from './firebaseInit'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     image: '',
@@ -48,7 +38,7 @@ export const emptyLabel: Omit<Label, 'id' | 'name'> = {
     },
 }
 
-const emptyExtra: DbExtra = {
+export const emptyExtra: DbExtra = {
     songs: [],
     compact: false,
     styles: [],
@@ -62,9 +52,7 @@ export function useInitDb() {
     useEffect(() => {
         ;(async () => {
             try {
-                const app = initializeApp(firebaseConfig)
                 const db = getFirestore(app)
-                await fade()
                 setDb(db)
             } catch (e) {
                 setError(`${e}`)
@@ -75,26 +63,28 @@ export function useInitDb() {
     return { db, error }
 }
 
-export function useDb(db: Firestore | null) {
-    const [labels, setLabels] = useState<Label[]>([])
-    const [extra, setExtra] = useState(emptyExtra)
-
+export function useDb() {
     useEffect(() => {
-        if (!db) return
-        if (!getUrlPassword()) return
+        onAuthStateChanged(getAuth(), user => {
+            store().user = user
+            if (user) {
+                const db = getFirestore(app)
 
-        onSnapshotTyped(db, (labels, extra) => {
-            setLabels(labels.map(label => ({ ...emptyLabel, ...label })))
+                store().loading = true
+                onSnapshotTyped(db, user.uid, (labels, extra) => {
+                    store().loading = false
 
-            if (extra) {
-                setExtra({ ...emptyExtra, ...extra })
-            } else {
-                initExtra(db)
+                    store().labels = labels.map(label => ({ ...emptyLabel, ...label }))
+
+                    if (extra) {
+                        store().extra = { ...emptyExtra, ...extra }
+                    } else {
+                        setDoc(doc(db, user.uid, consts.dbExtraId), emptyExtra)
+                    }
+                })
             }
         })
-    }, [db])
-
-    return { labels, extra }
+    }, [])
 }
 
 export async function addDocTyped(db: Firestore, name: string) {
@@ -103,23 +93,12 @@ export async function addDocTyped(db: Firestore, name: string) {
         ...emptyLabel,
     }
     try {
-        const password = getUrlPassword()
-        if (password !== null) {
-            return addDoc(collection(db, password), emptyDoc)
+        const uid = store().user?.uid
+        if (uid !== undefined) {
+            return addDoc(collection(db, uid), emptyDoc)
         }
     } catch (e) {
         snackError('Could not add document. ' + e)
-    }
-}
-
-function initExtra(db: Firestore) {
-    try {
-        const password = getUrlPassword()
-        if (password !== null) {
-            return setDoc(doc(db, password, consts.dbExtraId), emptyExtra)
-        }
-    } catch (e) {
-        snackError('Could not initialise extras document. ' + e)
     }
 }
 
@@ -128,11 +107,11 @@ export async function updateDocTyped(
     item: Partial<Omit<Label, 'id'>> | Partial<DbExtra>
 ) {
     try {
-        const password = getUrlPassword()
-        if (password === null) return snackError('No password')
+        const uid = store().user?.uid
+        if (uid === undefined) return snackError('No uid')
         const db = store().db
         if (db === null) return snackError('No db set')
-        return updateDoc(doc(db, password, labelID), item)
+        return updateDoc(doc(db, uid, labelID), item)
     } catch (e) {
         snackError('Could not update document. ' + e)
     }
@@ -140,20 +119,22 @@ export async function updateDocTyped(
 
 export async function deleteDocTyped(db: Firestore, id: string) {
     try {
-        const password = getUrlPassword()
-        if (password !== null) {
-            return deleteDoc(doc(db, password, id))
+        const uid = store().user?.uid
+        if (uid !== undefined) {
+            return deleteDoc(doc(db, uid, id))
         }
     } catch (e) {
         snackError('Could not delete document. ' + e)
     }
 }
 
-export function onSnapshotTyped(db: Firestore, callback: (items: Label[], extra: DbExtra) => void) {
+export function onSnapshotTyped(
+    db: Firestore,
+    uid: string,
+    callback: (items: Label[], extra: DbExtra) => void
+) {
     try {
-        const password = getUrlPassword()
-        if (password === null) return
-        onSnapshot(collection(db, password), snapshot => {
+        onSnapshot(collection(db, uid), snapshot => {
             const items = snapshot.docs
                 .filter(doc => doc.id !== consts.dbExtraId)
                 .map(doc => {

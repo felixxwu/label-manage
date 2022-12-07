@@ -1,8 +1,8 @@
+import { User } from 'firebase/auth'
 import { useState } from 'react'
 import { DialogOptions } from '../components/popups/GeneralDialog'
-import { useDb, useInitDb } from './db'
-import { usePassword } from './getPassword'
-import { SortType } from './types'
+import { emptyExtra, emptyLabel, useInitDb } from './db'
+import { Label, SortType } from './types'
 
 export type Store = ReturnType<typeof useStore>
 
@@ -13,19 +13,18 @@ export function store() {
 
 export function useStore() {
     const { db, error } = useInitDb()
-    const { labels, extra } = useDb(db)
-    const password = usePassword()
 
     const store = makeStore(
-        { db, error, labels, extra, password },
+        { db, error },
         {
-            selectedLabelId: <string | null>null,
-            showMusic: false,
+            labels: <Label[]>[],
+            extra: emptyExtra,
             sort: <SortType>'follower',
             dialog: <DialogOptions | null>null,
             snackbar: '',
             listScrollPos: 0,
             loading: false,
+            user: <User | null>null,
         }
     )
 
