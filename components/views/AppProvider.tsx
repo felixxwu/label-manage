@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@emotion/react'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import { consts } from '../../utils/consts'
 import { theme } from '../../utils/theme'
 import { Backdrop, Button, CircularProgress } from '@mui/material'
@@ -7,15 +7,20 @@ import { store } from '../../utils/store'
 import styled from '@emotion/styled'
 import { GeneralDialog } from '../popups/GeneralDialog'
 import { SnackbarPopup } from '../popups/SnackbarPopup'
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
+import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult } from 'firebase/auth'
 import { Google } from '@mui/icons-material'
 import Head from 'next/head'
 
 export function AppProvider(props: { children: ReactNode }) {
-    function signIn() {
-        signInWithPopup(getAuth(), new GoogleAuthProvider()).then(result => {
-            store().user = result.user
+    useEffect(() => {
+        getRedirectResult(getAuth()).then(result => {
+            if (!result) return
+            store().user = result?.user
         })
+    }, [])
+
+    function signIn() {
+        signInWithRedirect(getAuth(), new GoogleAuthProvider())
     }
 
     return (
