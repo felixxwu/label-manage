@@ -84,6 +84,6 @@ const Wrapper = styled('div')`
     max-width: ${consts.maxAppWidth}px;
     margin: auto;
     gap: 30px;
-    padding: ${consts.appEndSpace} 20px;
+    padding: ${consts.appEndSpace} 10px;
     color: ${theme.palette.primary.main};
 `
