@@ -1,5 +1,7 @@
 import styled from '@emotion/styled'
+import Add from '@mui/icons-material/Add'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import { ReactNode } from 'react'
 import { store } from '../../utils/store'
 import { useStates } from '../../utils/useStateObject'
 
@@ -8,7 +10,7 @@ export interface DialogOptions {
     actions: { label: string; callback?: (input?: string) => void; callOnEnter?: boolean }[]
     input?: string
     multiselect?: {
-        choices: string[]
+        choices: { label: string; icon?: ReactNode }[]
         onChoose: (choice: string) => void
     }
 }
@@ -62,8 +64,9 @@ export function GeneralDialog() {
             {dialog?.multiselect && (
                 <DialogContent>
                     {dialog.multiselect.choices.map((choice, i) => (
-                        <Choice key={i} onClick={() => handleChoice(choice)}>
-                            {choice}
+                        <Choice key={i} onClick={() => handleChoice(choice.label)}>
+                            {choice.icon}
+                            <div>{choice.label}</div>
                         </Choice>
                     ))}
                 </DialogContent>
@@ -84,6 +87,9 @@ export function GeneralDialog() {
 }
 
 const Choice = styled('div')`
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 20px 0;
     width: 100vw;
     max-width: 100%;

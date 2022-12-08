@@ -11,6 +11,10 @@ import { reScrapeData } from '../../utils/scrape'
 import { Header } from '../Header'
 import MenuIcon from '@mui/icons-material/Menu'
 import { getAuth } from 'firebase/auth'
+import QueueMusicIcon from '@mui/icons-material/QueueMusic'
+import SmartToyIcon from '@mui/icons-material/SmartToy'
+import DownloadIcon from '@mui/icons-material/Download'
+import GoogleIcon from '@mui/icons-material/Google'
 
 export function List() {
     const { db } = store()
@@ -52,15 +56,15 @@ export function List() {
 
     function handleMenu() {
         const choices = [
-            { label: 'Open Music Library', onChoose: showMusic },
-            { label: 'Re-scrape All Data', onChoose: reScrapeData },
-            { label: 'Export Data', onChoose: handleExport },
-            { label: 'Sign Out', onChoose: () => getAuth().signOut() },
+            { label: 'Open Music Library', onChoose: showMusic, icon: <QueueMusicIcon /> },
+            { label: 'Re-scrape All Data', onChoose: reScrapeData, icon: <SmartToyIcon /> },
+            { label: 'Export Data', onChoose: handleExport, icon: <DownloadIcon /> },
+            { label: 'Sign Out', onChoose: () => getAuth().signOut(), icon: <GoogleIcon /> },
         ]
         store().dialog = {
             message: '',
             multiselect: {
-                choices: choices.map(c => c.label),
+                choices: choices.map(c => ({ label: c.label, icon: c.icon })),
                 onChoose(choice) {
                     choices.find(c => c.label === choice)?.onChoose?.()
                 },
