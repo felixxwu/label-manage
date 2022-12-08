@@ -1,16 +1,16 @@
-import { Button, CircularProgress, debounce, Fab } from '@mui/material'
+import { debounce, Fab, IconButton } from '@mui/material'
 import { ListItem } from '../ListItem'
-import LibraryMusicIcon from '@mui/icons-material/QueueMusic'
 import { CompactViewSwitch } from '../CompactViewSwitch'
 import { Sort } from '../Sort'
 import { store } from '../../utils/store'
 import { useEffect } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
-import { ExportDataButton } from '../buttons/ExportDataButton'
 import { addDocTyped } from '../../utils/db'
-import SmartToyIcon from '@mui/icons-material/SmartToy'
 import { reScrapeData } from '../../utils/scrape'
+import { Header } from '../Header'
+import MenuIcon from '@mui/icons-material/Menu'
+import { getAuth } from 'firebase/auth'
 
 export function List() {
     const { db } = store()
@@ -50,6 +50,41 @@ export function List() {
         }
     }
 
+    function handleMenu() {
+        const choices = [
+            { label: 'Open Music Library', onChoose: showMusic },
+            { label: 'Re-scrape All Data', onChoose: reScrapeData },
+            { label: 'Export Data', onChoose: handleExport },
+            { label: 'Sign Out', onChoose: () => getAuth().signOut() },
+        ]
+        store().dialog = {
+            message: '',
+            multiselect: {
+                choices: choices.map(c => c.label),
+                onChoose(choice) {
+                    choices.find(c => c.label === choice)?.onChoose?.()
+                },
+            },
+            actions: [{ label: 'Close' }],
+        }
+    }
+
+    function handleExport() {
+        const filename = 'data.json'
+        const jsonStr = JSON.stringify(store())
+
+        let element = document.createElement('a')
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr))
+        element.setAttribute('download', filename)
+
+        element.style.display = 'none'
+        document.body.appendChild(element)
+
+        element.click()
+
+        document.body.removeChild(element)
+    }
+
     const labels = store()
         .labels.slice()
         .sort((a, b) => {
@@ -69,11 +104,15 @@ export function List() {
 
     return (
         <Wrapper>
-            <h1>Label List</h1>
-
-            <Button onClick={showMusic} startIcon={<LibraryMusicIcon />}>
-                Open Music Library
-            </Button>
+            <Header
+                left={
+                    <IconButton onClick={handleMenu}>
+                        <MenuIcon />
+                    </IconButton>
+                }
+            >
+                <h1>Label List</h1>
+            </Header>
 
             {store().labels.length === 0 ? (
                 <div>No labels added yet :(</div>
@@ -89,12 +128,6 @@ export function List() {
                             return <ListItem label={label} index={i} key={i} />
                         })}
                     </ListItems>
-
-                    <Button startIcon={<SmartToyIcon />} onClick={reScrapeData}>
-                        Re-scrape all data
-                    </Button>
-
-                    <ExportDataButton />
                 </>
             )}
 

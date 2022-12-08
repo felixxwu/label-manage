@@ -11,6 +11,7 @@ import { Chips } from '../Chips'
 import styled from '@emotion/styled'
 import { SongPopup } from '../popups/SongPopup'
 import Add from '@mui/icons-material/Add'
+import { Header } from '../Header'
 
 export function Music() {
     const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
@@ -42,14 +43,14 @@ export function Music() {
 
     return (
         <Wrapper>
-            <Header>
-                <IconButton onClick={handleBack}>
-                    <ArrowBackIcon color='primary' />
-                </IconButton>
-                <h1>Music Library</h1>
-                <IconButton sx={{ opacity: 0 }}>
-                    <ArrowBackIcon color='primary' />
-                </IconButton>
+            <Header
+                left={
+                    <IconButton onClick={handleBack}>
+                        <ArrowBackIcon color='primary' />
+                    </IconButton>
+                }
+            >
+                <h1>Songs</h1>
             </Header>
 
             {store().extra.songs.length === 0 ? (
@@ -57,10 +58,10 @@ export function Music() {
             ) : (
                 store().extra.songs.map((song, index) => (
                     <Song onClick={() => openDialog(song.id)} key={index}>
-                        <Header>
+                        <SongHeader>
                             {song.title}
                             {song.link && <LinkIcon color='primary' />}
-                        </Header>
+                        </SongHeader>
                         {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
                     </Song>
                 ))
@@ -112,7 +113,7 @@ const Song = styled('div')`
     }
 `
 
-const Header = styled('div')`
+const SongHeader = styled('div')`
     display: flex;
     align-items: center;
     justify-content: space-between;

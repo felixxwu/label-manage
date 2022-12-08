@@ -40,7 +40,7 @@ export function GeneralDialog() {
 
     return (
         <Dialog open={!!store().dialog} onClose={() => (store().dialog = null)}>
-            <DialogTitle>{store().dialog?.message}</DialogTitle>
+            {store().dialog?.message && <DialogTitle>{store().dialog?.message}</DialogTitle>}
             {dialog?.input && (
                 <DialogContent>
                     <TextField

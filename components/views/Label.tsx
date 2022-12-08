@@ -23,6 +23,7 @@ import { getDaysAgoScraped } from '../../utils/getDaysAgo'
 import { AcceptDemo } from '../forms/AcceptDemo'
 import { useEffect } from 'react'
 import { searchForLinks } from '../../utils/searchForLinks'
+import { Header } from '../Header'
 
 export function Label(props: { label: Label }) {
     const { db } = store()
@@ -64,12 +65,15 @@ export function Label(props: { label: Label }) {
         <Wrapper>
             {props.label ? (
                 <>
-                    <Header>
-                        <IconButton onClick={handleBack}>
-                            <ArrowBackIcon color='primary' />
-                        </IconButton>
+                    <Header
+                        left={
+                            <IconButton onClick={handleBack}>
+                                <ArrowBackIcon color='primary' />
+                            </IconButton>
+                        }
+                        right={<Progress {...props} />}
+                    >
                         <ImageForm {...props} />
-                        <Progress {...props} />
                     </Header>
                     <ScraperRow>
                         <Button onClick={scrapeData} startIcon={<SmartToy />}>
@@ -131,13 +135,6 @@ const Buttons = styled('div')`
     flex-direction: column;
     gap: 30px;
     justify-content: center;
-`
-
-const Header = styled('div')`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 `
 
 const Divider = styled('div')`

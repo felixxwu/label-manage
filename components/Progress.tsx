@@ -6,7 +6,9 @@ import { getProgress } from '../utils/progress'
 export function Progress(props: { label: Label }) {
     const percentage = getProgress(props.label)
     return percentage === 100 ? (
-        <DoneAllIcon color='primary' />
+        <div style={{ padding: '8px' }}>
+            <DoneAllIcon color='primary' />
+        </div>
     ) : (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
             <CircularProgress variant='determinate' value={percentage} />
