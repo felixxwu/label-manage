@@ -67,6 +67,7 @@ export function useDb() {
     useEffect(() => {
         onAuthStateChanged(getAuth(), user => {
             store().user = user
+            store().loading = false
             if (user) {
                 const db = getFirestore(app)
 

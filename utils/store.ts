@@ -23,7 +23,7 @@ export function useStore() {
             dialog: <DialogOptions | null>null,
             snackbar: '',
             listScrollPos: 0,
-            loading: false,
+            loading: true,
             user: <User | null>null,
         }
     )

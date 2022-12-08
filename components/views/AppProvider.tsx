@@ -7,20 +7,21 @@ import { store } from '../../utils/store'
 import styled from '@emotion/styled'
 import { GeneralDialog } from '../popups/GeneralDialog'
 import { SnackbarPopup } from '../popups/SnackbarPopup'
-import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import {
+    GoogleAuthProvider,
+    getAuth,
+    signInWithRedirect,
+    getRedirectResult,
+    signInWithPopup,
+} from 'firebase/auth'
 import { Google } from '@mui/icons-material'
 import Head from 'next/head'
 
 export function AppProvider(props: { children: ReactNode }) {
-    useEffect(() => {
-        getRedirectResult(getAuth()).then(result => {
-            if (!result) return
+    function signIn() {
+        signInWithPopup(getAuth(), new GoogleAuthProvider()).then(result => {
             store().user = result?.user
         })
-    }, [])
-
-    function signIn() {
-        signInWithRedirect(getAuth(), new GoogleAuthProvider())
     }
 
     return (
@@ -41,13 +42,13 @@ export function AppProvider(props: { children: ReactNode }) {
                 <title>SoundCloud Label Manager</title>
             </Head>
             <Wrapper>
-                {store().user ? (
-                    props.children
-                ) : (
-                    <Button startIcon={<Google />} variant='contained' onClick={signIn}>
-                        Sign in
-                    </Button>
-                )}
+                {store().user
+                    ? props.children
+                    : !store().loading && (
+                          <Button startIcon={<Google />} variant='contained' onClick={signIn}>
+                              Sign in
+                          </Button>
+                      )}
             </Wrapper>
 
             <GeneralDialog />
