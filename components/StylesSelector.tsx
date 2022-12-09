@@ -11,6 +11,7 @@ import { Label } from '../utils/types'
 import { Chips } from './Chips'
 import { Widgets } from './views/Widgets'
 import QueueMusicIcon from '@mui/icons-material/QueueMusic'
+import ArrowBack from '@mui/icons-material/ArrowBack'
 
 export function StylesSelector(props: {
     onSelectStyle: (styles: string[]) => void
@@ -34,6 +35,7 @@ export function StylesSelector(props: {
 
     async function addStyle() {
         if (store().extra.styles.includes(styleToAdd)) return
+        if (styleToAdd.trim() === '') return
 
         await updateDocTyped(consts.dbExtraId, {
             styles: store().extra.styles.concat(styleToAdd),
@@ -89,21 +91,29 @@ export function StylesSelector(props: {
                         sx={{ margin: 0 }}
                     />
                     <Buttons>
-                        <Button onClick={addStyle} startIcon={<Add />}>
-                            Add to list
+                        <Button onClick={() => setEditMode(false)} startIcon={<ArrowBack />}>
+                            Back
                         </Button>
-                        <Button onClick={handleDone} startIcon={<Done />}>
-                            Done
+                        <Button
+                            onClick={addStyle}
+                            startIcon={<Add />}
+                            disabled={styleToAdd.trim() === ''}
+                        >
+                            Add Style
                         </Button>
                     </Buttons>
                 </>
             ) : (
                 <Buttons>
                     <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
-                        Edit
+                        Edit Styles
                     </Button>
-                    <Button onClick={handleDone} startIcon={<Done />}>
-                        Done
+                    <Button
+                        onClick={handleDone}
+                        startIcon={<Add />}
+                        disabled={selection.length === 0}
+                    >
+                        Add
                     </Button>
                 </Buttons>
             )}
@@ -125,6 +135,6 @@ const Buttons = styled('div')`
 `
 
 const WidgetWrapper = styled('div')`
-    height: 300px;
+    height: 500px;
     overflow: auto;
 `
