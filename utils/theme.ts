@@ -52,6 +52,7 @@ export const theme = createTheme({
                 root: {
                     '& .MuiDialog-paper': {
                         borderRadius: consts.borderRadius,
+                        margin: 0,
                     },
                 },
             },

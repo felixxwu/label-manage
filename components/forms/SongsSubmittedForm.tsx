@@ -26,7 +26,10 @@ export function SongsSubmittedForm(props: { label: Label }) {
     function createSubmission() {
         setLabelForSubmission(props.label)
         if (!props.label.submission.includes('@')) {
-            window.open(props.label.submission, '_blank')?.focus()
+            store().snackbar = 'Opening submission link...'
+            setTimeout(() => {
+                window.open(props.label.submission, '_blank')?.focus()
+            }, 1000)
         }
     }
 
