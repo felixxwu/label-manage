@@ -39,6 +39,20 @@ export function SongChoice(props: { label: Label; onNext: (songs: Song[]) => voi
         }
     }
 
+    function handleCopyTitle(e: React.MouseEvent, song: Song) {
+        e.stopPropagation()
+        e.preventDefault()
+        navigator.clipboard.writeText(song.title)
+        store().snackbar = `"${song.title}" copied to clipboard`
+    }
+
+    function handleCopyLink(e: React.MouseEvent, song: Song) {
+        e.stopPropagation()
+        e.preventDefault()
+        navigator.clipboard.writeText(song.link)
+        store().snackbar = `"${song.link}" copied to clipboard`
+    }
+
     return (
         <Wrapper>
             <div>Submit to: {props.label.name}</div>
@@ -50,7 +64,7 @@ export function SongChoice(props: { label: Label; onNext: (songs: Song[]) => voi
                     }
                     label={
                         <Label>
-                            {song.title}
+                            <Typography variant='h6'>{song.title}</Typography>
                             <Captions>
                                 <Typography
                                     variant='caption'
@@ -71,6 +85,24 @@ export function SongChoice(props: { label: Label; onNext: (songs: Song[]) => voi
                                         Already Submitted
                                     </Typography>
                                 )}
+                                <Actions>
+                                    <Action onClick={e => handleCopyTitle(e, song)}>
+                                        <Typography
+                                            variant='caption'
+                                            sx={{ color: theme.palette.primary.dark }}
+                                        >
+                                            Copy Title
+                                        </Typography>
+                                    </Action>
+                                    <Action onClick={e => handleCopyLink(e, song)}>
+                                        <Typography
+                                            variant='caption'
+                                            sx={{ color: theme.palette.primary.dark }}
+                                        >
+                                            Copy Link
+                                        </Typography>
+                                    </Action>
+                                </Actions>
                             </Captions>
                         </Label>
                     }
@@ -112,4 +144,14 @@ const Choice = styled(FormControlLabel)``
 
 const Buttons = styled('div')`
     text-align: right;
+`
+
+const Actions = styled('div')`
+    display: flex;
+    gap: 10px;
+`
+
+const Action = styled('div')`
+    text-decoration: underline;
+    cursor: pointer;
 `
