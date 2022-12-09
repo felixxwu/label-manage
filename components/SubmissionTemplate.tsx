@@ -75,6 +75,9 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
                 Use &lt;label&gt; to insert the label's name and &lt;songs&gt; to insert links to
                 the songs
             </Typography>
+            <Typography variant='caption' sx={{ color: theme.palette.warning.light }}>
+                {props.label.notes}
+            </Typography>
             <Right>
                 <Button
                     onClick={handleOverwriteTemplate}
