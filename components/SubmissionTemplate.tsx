@@ -52,7 +52,7 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
             'mailto:' +
             props.label.submission +
             '?subject=' +
-            encodeURIComponent('Drum & Bass Submission - WUFO') +
+            encodeURIComponent('Drum & Bass Demo - WUFO') +
             '&body=' +
             evaluateTemplate()
         )
