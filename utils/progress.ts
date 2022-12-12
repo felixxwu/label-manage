@@ -8,6 +8,7 @@ const fieldsToIgnore: (keyof Label)[] = [
     'inactive',
     'lastUploaded',
     'acceptDemos',
+    'description',
 ]
 
 export function getProgress(label: Label) {

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { consts } from '../../utils/consts'
 import { updateDocTyped } from '../../utils/db'
 import { getDaysAgo } from '../../utils/getDaysAgo'
@@ -9,7 +9,7 @@ import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
 import { useStates } from '../../utils/useStateObject'
 
-const descriptionLength = 70
+const descriptionLength = 100
 
 export function NameForm(props: { label: Label }) {
     const state = useStates({ name: props.label.name, fullDescription: false })
@@ -20,6 +20,7 @@ export function NameForm(props: { label: Label }) {
     }
 
     function getDescription() {
+        if (props.label.description.length === 0) return 'No description.'
         if (props.label.description.length > descriptionLength && !state.fullDescription) {
             return props.label.description.slice(0, descriptionLength) + '...'
         } else {
@@ -38,11 +39,14 @@ export function NameForm(props: { label: Label }) {
                 spellCheck='false'
             />
             <Description>
-                <span>{getDescription()}</span>
+                <Typography variant='caption'>{getDescription()}</Typography>
                 {props.label.description.length > descriptionLength && (
                     <>
                         &nbsp;
-                        <ShowMore onClick={() => (state.fullDescription = !state.fullDescription)}>
+                        <ShowMore
+                            variant='caption'
+                            onClick={() => (state.fullDescription = !state.fullDescription)}
+                        >
                             {state.fullDescription ? 'show less' : 'show more'}
                         </ShowMore>
                     </>
@@ -95,7 +99,7 @@ const Description = styled('div')`
     }
 `
 
-const ShowMore = styled('span')`
+const ShowMore = styled(Typography)`
     display: inline-block;
     color: ${theme.palette.primary.dark};
     text-decoration: underline;
