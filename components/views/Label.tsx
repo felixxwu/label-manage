@@ -29,13 +29,34 @@ export function Label(props: { label: Label }) {
     const { db } = store()
 
     useEffect(() => {
-        if (props.label.link) return
-        store().dialog = {
-            actions: [
-                { label: 'No' },
-                { label: 'Yes', callback: () => searchForLinks(props.label), callOnEnter: true },
-            ],
-            message: 'Do you want to search for a SoundCloud link?',
+        if (!props.label.link) {
+            store().dialog = {
+                actions: [
+                    { label: 'No' },
+                    {
+                        label: 'Yes',
+                        callback: () => searchForLinks(props.label),
+                        callOnEnter: true,
+                    },
+                ],
+                message: 'Do you want to search for a SoundCloud link?',
+            }
+        }
+        if (
+            new Date().getTime() - new Date(props.label.lastScraped).getTime() >
+            1000 * 60 * 60 * 24 * 7
+        ) {
+            store().dialog = {
+                message: 'Data may be outdated. Scrape new data?',
+                actions: [
+                    { label: 'No' },
+                    {
+                        label: 'Yes',
+                        callback: scrapeData,
+                        callOnEnter: true,
+                    },
+                ],
+            }
         }
     }, [])
 
