@@ -56,12 +56,15 @@ export async function scrapeSoundCloudProfile(url: string) {
 }
 
 export async function reScrapeData() {
+    // wait for any previous dialogs to close
+    await new Promise(r => setTimeout(r, 1000))
     let i = 0
     for (const label of store().labels) {
+        // stop if dialog is closed mid way through the scrape
         if (store().dialog === null && i > 0) return
         i++
         store().dialog = {
-            actions: [],
+            actions: [{ label: 'Cancel' }],
             message: i + '/' + store().labels.length,
         }
         await updateProfile(label)
