@@ -72,10 +72,7 @@ export function useDb() {
             if (user) {
                 const db = getFirestore(app)
 
-                store().loading = true
                 onSnapshotTyped(db, user.uid, (labels, extra) => {
-                    store().loading = false
-
                     store().labels = labels.map(label => ({ ...emptyLabel, ...label }))
 
                     if (extra) {
