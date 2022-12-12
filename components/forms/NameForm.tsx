@@ -7,25 +7,47 @@ import { getDaysAgo } from '../../utils/getDaysAgo'
 import { nFormatter } from '../../utils/nFormatter'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
+import { useStates } from '../../utils/useStateObject'
+
+const descriptionLength = 70
 
 export function NameForm(props: { label: Label }) {
-    const [name, setName] = useState(props.label.name)
+    const state = useStates({ name: props.label.name, fullDescription: false })
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setName(e.target.value)
+        state.name = e.target.value
         updateDocTyped(props.label.id, { name: e.target.value })
+    }
+
+    function getDescription() {
+        if (props.label.description.length > descriptionLength && !state.fullDescription) {
+            return props.label.description.slice(0, descriptionLength) + '...'
+        } else {
+            return props.label.description
+        }
     }
 
     return (
         <Wrapper>
             <Input
                 type='text'
-                value={name}
+                value={state.name}
                 onChange={handleChange}
                 autoComplete='off'
                 autoCorrect='off'
                 spellCheck='false'
             />
+            <Description>
+                <span>{getDescription()}</span>
+                {props.label.description.length > descriptionLength && (
+                    <>
+                        &nbsp;
+                        <ShowMore onClick={() => (state.fullDescription = !state.fullDescription)}>
+                            {state.fullDescription ? 'show less' : 'show more'}
+                        </ShowMore>
+                    </>
+                )}
+            </Description>
             <InfoBar>
                 <Typography variant='caption' color={theme.palette.primary.dark}>
                     {nFormatter(props.label.followers, 0)} Followers
@@ -65,4 +87,17 @@ const Input = styled('input')`
 const InfoBar = styled('div')`
     display: flex;
     justify-content: space-between;
+`
+
+const Description = styled('div')`
+    & span {
+        user-select: text;
+    }
+`
+
+const ShowMore = styled('span')`
+    display: inline-block;
+    color: ${theme.palette.primary.dark};
+    text-decoration: underline;
+    cursor: pointer;
 `

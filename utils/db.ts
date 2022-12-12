@@ -18,6 +18,7 @@ import { app } from './firebaseInit'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export const emptyLabel: Omit<Label, 'id' | 'name'> = {
+    description: '',
     image: '',
     artists: [],
     followers: 0,

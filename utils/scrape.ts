@@ -74,6 +74,7 @@ export async function updateProfile(label: Label) {
     await load(updateDocTyped, label.id, {
         ...(res.profile.image ? { image: res.profile.image } : {}),
         ...(res.profile.followers ? { followers: res.profile.followers } : {}),
+        ...(res.profile.description ? { description: res.profile.description } : {}),
         ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
         lastScraped: new Date().getTime(),
         tracks: {
@@ -133,6 +134,13 @@ function parseSCProfile(el: HTMLHtmlElement) {
             const imageMeta = el.querySelector('meta[property="og:image"]')
             if (!imageMeta) return snackErrorReturn('Could not find image meta tag', null)
             return imageMeta.getAttribute('content')
+        })(),
+        description: (() => {
+            const noscript = noscriptContent(el)
+            if (!noscript) return snackErrorReturn('Could not find noscript', '')
+            const description = noscript.querySelector('p[itemprop="description"]')
+            if (!description) return snackErrorReturn('Could not find description', '')
+            return htmlDecode(description.innerHTML)
         })(),
     }
 }

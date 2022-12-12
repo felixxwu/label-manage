@@ -12,6 +12,7 @@ export interface Track {
 export interface Label {
     id: string
     name: string
+    description: string
     image: string
     link: string
     followers: number
