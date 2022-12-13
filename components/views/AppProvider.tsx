@@ -38,7 +38,7 @@ export function AppProvider(props: { children: ReactNode }) {
                     href='https://fonts.googleapis.com/icon?family=Material+Icons'
                 />
                 <link rel='shortcut icon' href='/favicon.svg' />
-                <link rel='manifest' href='manifest.json' />
+                <link rel='manifest' href='/manifest.json' />
                 <title>SoundCloud Label Manager</title>
             </Head>
             <Wrapper>
