@@ -66,13 +66,14 @@ export function useInitDb() {
 
 export function useDb() {
     useEffect(() => {
+        const isFirstLoad = Object.keys(sessionStorage).length === 0
         onAuthStateChanged(getAuth(), user => {
             store().user = user
-            store().loading = false
             if (user) {
                 const db = getFirestore(app)
 
                 onSnapshotTyped(db, user.uid, (labels, extra) => {
+                    if (isFirstLoad) store().loading = false
                     store().labels = labels.map(label => ({ ...emptyLabel, ...label }))
 
                     if (extra) {
