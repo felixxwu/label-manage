@@ -94,6 +94,7 @@ export async function addDocTyped(db: Firestore, name: string) {
     }
     try {
         const uid = store().user?.uid
+        if (!navigator.onLine) return snackError('Not connected')
         if (uid !== undefined) {
             return addDoc(collection(db, uid), emptyDoc)
         }
@@ -111,6 +112,7 @@ export async function updateDocTyped(
         if (uid === undefined) return snackError('No uid')
         const db = store().db
         if (db === null) return snackError('No db set')
+        if (!navigator.onLine) return snackError('Not connected')
         return updateDoc(doc(db, uid, labelID), item)
     } catch (e) {
         snackError('Could not update document. ' + e)
@@ -120,6 +122,7 @@ export async function updateDocTyped(
 export async function deleteDocTyped(db: Firestore, id: string) {
     try {
         const uid = store().user?.uid
+        if (!navigator.onLine) return snackError('Not connected')
         if (uid !== undefined) {
             return deleteDoc(doc(db, uid, id))
         }
