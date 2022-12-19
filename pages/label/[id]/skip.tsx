@@ -18,7 +18,7 @@ export default () => {
     if (!label) return null
 
     function handleClose() {
-        window.location.href = '/label/' + label?.id
+        window.history.back()
     }
 
     const handleChooseSongs = async (songs: Song[]) => {

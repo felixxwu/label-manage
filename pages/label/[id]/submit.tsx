@@ -25,7 +25,7 @@ export default () => {
 
     function handleClose() {
         if (songsToSubmit.length === 0) {
-            window.location.href = '/label/' + label?.id
+            window.history.back()
         } else {
             setSongsToSubmit([])
         }

@@ -30,7 +30,7 @@ export function List() {
     }, [])
 
     async function showMusic() {
-        window.location.href = '/music'
+        window.location.href += '/music'
     }
 
     function handleAddLabel() {
@@ -45,7 +45,7 @@ export function List() {
                         if (name && db) {
                             const doc = await addDocTyped(db, name)
                             if (!doc) return
-                            window.location.href = '/label/' + doc.id
+                            window.location.href += '/label/' + doc.id
                         }
                     },
                     callOnEnter: true,

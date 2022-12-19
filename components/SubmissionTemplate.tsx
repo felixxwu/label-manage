@@ -30,7 +30,7 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[] }) {
                 ...props.songs.map(song => song.title)
             ),
         })
-        window.location.href = '/label/' + props.label.id
+        window.history.back()
     }
 
     function evaluateTemplateForClipboard() {

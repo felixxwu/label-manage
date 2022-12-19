@@ -17,7 +17,7 @@ import { getDaysAgo } from '../utils/getDaysAgo'
 
 export function ListItem(props: { label: Label; index: number }) {
     async function handleClick() {
-        window.location.href = '/label/' + props.label.id
+        window.location.href += '/label/' + props.label.id
     }
 
     return (
