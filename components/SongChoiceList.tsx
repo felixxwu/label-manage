@@ -24,6 +24,10 @@ export function alreadySubmitted(song: Song, label: Label) {
     return label.songsSubmitted.includes(song.title)
 }
 
+export function markedAsSkip(song: Song, label: Label) {
+    return label.songsSkipped.includes(song.title)
+}
+
 export function SongChoiceList(props: {
     songs: Song[]
     label: Label
@@ -61,7 +65,7 @@ export function SongChoiceList(props: {
                         <Checkbox onChange={(_, checked) => handleCheckInput(song, checked)} />
                     }
                     label={
-                        <Label>
+                        <Label style={{ opacity: alreadySubmitted(song, props.label) ? 0.5 : 1 }}>
                             <Typography variant='h6'>{song.title}</Typography>
                             <Captions>
                                 <Typography
@@ -81,6 +85,14 @@ export function SongChoiceList(props: {
                                         sx={{ color: theme.palette.warning.light }}
                                     >
                                         Already Submitted
+                                    </Typography>
+                                )}
+                                {markedAsSkip(song, props.label) && (
+                                    <Typography
+                                        variant='caption'
+                                        sx={{ color: theme.palette.warning.light }}
+                                    >
+                                        In the Skip List
                                     </Typography>
                                 )}
                                 <Actions>
