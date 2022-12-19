@@ -1,29 +1,18 @@
-import { Label, Song } from '../../utils/types'
+import { Label } from '../../utils/types'
 import { updateDocTyped } from '../../utils/db'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
-import { Dialog, IconButton } from '@mui/material'
+import { IconButton } from '@mui/material'
 import Send from '@mui/icons-material/Send'
-import { useStates } from '../../utils/useStateObject'
-import { SongChoice } from '../SongChoice'
 import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
 import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
 export function SongsSkippedForm(props: { label: Label }) {
-    const state = useStates({ dialogOpen: false })
-
     async function handleDelete(song: string) {
         updateDocTyped(props.label.id, {
             songsSkipped: props.label.songsSkipped.filter(item => item !== song),
         })
-    }
-
-    function handleChooseSongs(songs: Song[]) {
-        updateDocTyped(props.label.id, {
-            songsSkipped: props.label.songsSkipped.concat(...songs.map(song => song.title)),
-        })
-        state.dialogOpen = false
     }
 
     const songs = props.label.songsSkipped.filter(song =>
@@ -43,7 +32,7 @@ export function SongsSkippedForm(props: { label: Label }) {
                     </IconButton>
                 ) : (
                     <IconButton
-                        onClick={() => (state.dialogOpen = true)}
+                        onClick={() => (window.location.href += '/skip')}
                         disabled={!props.label.submission}
                     >
                         <Send />
@@ -51,9 +40,6 @@ export function SongsSkippedForm(props: { label: Label }) {
                 )}
             </Header>
             {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
-            <Dialog open={state.dialogOpen} onClose={() => (state.dialogOpen = false)}>
-                <SongChoice label={props.label} onNext={handleChooseSongs} />
-            </Dialog>
         </Wrapper>
     )
 }
@@ -71,9 +57,4 @@ const Header = styled('div')`
     display: flex;
     justify-content: space-between;
     align-items: center;
-`
-
-const Right = styled('div')`
-    width: 100%;
-    text-align: right;
 `

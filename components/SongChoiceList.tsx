@@ -28,6 +28,10 @@ export function markedAsSkip(song: Song, label: Label) {
     return label.songsSkipped.includes(song.title)
 }
 
+export function submittedOrSkipped(song: Song, label: Label) {
+    return alreadySubmitted(song, label) || markedAsSkip(song, label)
+}
+
 export function SongChoiceList(props: {
     songs: Song[]
     label: Label
@@ -65,9 +69,9 @@ export function SongChoiceList(props: {
                         <Checkbox onChange={(_, checked) => handleCheckInput(song, checked)} />
                     }
                     label={
-                        <Label style={{ opacity: alreadySubmitted(song, props.label) ? 0.5 : 1 }}>
-                            <Typography variant='h6'>{song.title}</Typography>
-                            <Captions>
+                        <Label style={{ opacity: submittedOrSkipped(song, props.label) ? 0.5 : 1 }}>
+                            <Title>
+                                <Typography variant='h6'>{song.title}</Typography>
                                 <Typography
                                     variant='caption'
                                     sx={{
@@ -79,6 +83,8 @@ export function SongChoiceList(props: {
                                 >
                                     {matchingStylesList(song, props.label).label}
                                 </Typography>
+                            </Title>
+                            <Captions>
                                 {alreadySubmitted(song, props.label) && (
                                     <Typography
                                         variant='caption'
@@ -127,12 +133,26 @@ const Label = styled('div')`
     flex-direction: column;
 `
 
+const Title = styled('div')`
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    justify-content: space-between;
+`
+
 const Captions = styled('div')`
     display: flex;
     flex-direction: column;
 `
 
-const Choice = styled(FormControlLabel)``
+const Choice = styled(FormControlLabel)`
+    width: 100%;
+    margin: 0;
+    margin-left: -8px;
+    & .MuiFormControlLabel-label {
+        width: 100%;
+    }
+`
 
 const Actions = styled('div')`
     display: flex;

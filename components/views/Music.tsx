@@ -17,7 +17,7 @@ export function Music() {
     const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
 
     async function handleBack() {
-        window.history.back()
+        window.location.href = '/'
     }
 
     async function addSong() {

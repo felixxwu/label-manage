@@ -4,33 +4,19 @@ import { Chips } from '../Chips'
 import styled from '@emotion/styled'
 import { IconButton } from '@mui/material'
 import Send from '@mui/icons-material/Send'
-import { CreateSubmissionPopup } from '../popups/CreateSubmissionPopup'
-import { useState } from 'react'
 import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
 import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
 export function SongsSubmittedForm(props: { label: Label }) {
-    const [labelForSubmission, setLabelForSubmission] = useState<Label | null>(null)
-
     async function handleDelete(song: string) {
         updateDocTyped(props.label.id, {
             songsSubmitted: props.label.songsSubmitted.filter(item => item !== song),
         })
     }
 
-    function close() {
-        setLabelForSubmission(null)
-    }
-
     function createSubmission() {
-        setLabelForSubmission(props.label)
-        if (!props.label.submission.includes('@')) {
-            store().snackbar = 'Opening submission link...'
-            setTimeout(() => {
-                window.open(props.label.submission, '_blank')?.focus()
-            }, 1000)
-        }
+        window.location.href += '/submit'
     }
 
     const songs = props.label.songsSubmitted.filter(song =>
@@ -55,9 +41,6 @@ export function SongsSubmittedForm(props: { label: Label }) {
                 )}
             </Header>
             {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
-            {labelForSubmission && (
-                <CreateSubmissionPopup label={labelForSubmission} close={close} />
-            )}
         </Wrapper>
     )
 }

@@ -10,7 +10,7 @@ import { store } from '../../utils/store'
 import styled from '@emotion/styled'
 import { snackError } from '../../utils/snackError'
 
-export function ImageForm(props: { label: Label }) {
+export function ImageForm(props: { label: Label; readonly?: boolean }) {
     const [open, setOpen] = useState(false)
 
     function handleSearch() {
@@ -62,7 +62,7 @@ export function ImageForm(props: { label: Label }) {
     }
 
     return (
-        <Wrapper>
+        <Wrapper style={{ pointerEvents: props.readonly ? 'none' : 'all' }}>
             {props.label.image ? (
                 <>
                     <div onClick={handleClear}>

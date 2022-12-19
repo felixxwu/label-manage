@@ -68,7 +68,7 @@ export function Label(props: { label: Label }) {
     }
 
     async function handleBack() {
-        window.history.back()
+        window.location.href = '/'
     }
 
     async function handleDelete() {

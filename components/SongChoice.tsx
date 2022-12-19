@@ -7,7 +7,11 @@ import { store } from '../utils/store'
 import { Label, Song } from '../utils/types'
 import { alreadySubmitted, matchingStylesList, SongChoiceList } from './SongChoiceList'
 
-export function SongChoice(props: { label: Label; onNext: (songs: Song[]) => void }) {
+export function SongChoice(props: {
+    label: Label
+    onNext: (songs: Song[]) => void
+    title: string
+}) {
     const [selectedSongs, setSelectedSongs] = useState<Song[]>([])
 
     if (!props.label) return <>'no label specified'</>
@@ -26,7 +30,7 @@ export function SongChoice(props: { label: Label; onNext: (songs: Song[]) => voi
 
     return (
         <Wrapper>
-            <div>Submit to: {props.label.name}</div>
+            <Header>{props.title}</Header>
             <SongChoiceList
                 label={props.label}
                 selectedSongs={selectedSongs}
@@ -53,12 +57,17 @@ export function SongChoice(props: { label: Label; onNext: (songs: Song[]) => voi
 }
 
 const Wrapper = styled('div')`
-    padding: 20px;
+    padding: 20px 5px;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    max-width: 100%;
-    width: ${consts.maxAppWidth}px;
+    width: 100%;
+    max-width: ${consts.maxAppWidth}px;
+`
+
+const Header = styled('div')`
+    text-align: center;
+    width: 100%;
 `
 
 const Label = styled('div')`
