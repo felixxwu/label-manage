@@ -49,7 +49,7 @@ export default () => {
                     title={`Submit to: ${label.name}`}
                 />
             ) : (
-                <SubmissionTemplate label={label} songs={songsToSubmit} onClose={handleClose} />
+                <SubmissionTemplate label={label} songs={songsToSubmit} />
             )}
         </Wrapper>
     )

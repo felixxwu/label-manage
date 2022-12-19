@@ -12,7 +12,7 @@ import { store } from '../utils/store'
 import { theme } from '../utils/theme'
 import { Label, Song } from '../utils/types'
 
-export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose: () => void }) {
+export function SubmissionTemplate(props: { label: Label; songs: Song[] }) {
     const [localTemplate, setLocalTemplate] = useState(store().extra.template)
 
     function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -30,7 +30,7 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
                 ...props.songs.map(song => song.title)
             ),
         })
-        props.onClose()
+        window.location.href = '/label/' + props.label.id
     }
 
     function evaluateTemplateForClipboard() {
