@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import ContentPaste from '@mui/icons-material/ContentPaste'
 import DoneAll from '@mui/icons-material/DoneAll'
 import Email from '@mui/icons-material/Email'
 import Save from '@mui/icons-material/Save'
@@ -32,16 +33,19 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
         props.onClose()
     }
 
-    function evaluateTemplate() {
+    function evaluateTemplateForClipboard() {
         const config = {
             label: props.label.name,
             songs: props.songs.map(song => `${song.title}: ${song.link}`).join('\n\n'),
         }
 
-        return localTemplate
-            .replace(/<(.*?)>/g, match => {
-                return config[match.split(/<|>/).filter(Boolean)[0]]
-            })
+        return localTemplate.replace(/<(.*?)>/g, match => {
+            return config[match.split(/<|>/).filter(Boolean)[0]]
+        })
+    }
+
+    function evaluateTemplateForEmail() {
+        return evaluateTemplateForClipboard()
             .split('\n')
             .map(part => encodeURIComponent(part))
             .join('%0D%0A')
@@ -54,9 +58,14 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
             '?subject=' +
             encodeURIComponent('Drum & Bass Demo - WUFO') +
             '&body=' +
-            evaluateTemplate()
+            evaluateTemplateForEmail()
         )
     })()
+
+    async function copyContent() {
+        await window.navigator.clipboard.writeText(evaluateTemplateForClipboard())
+        store().snackbar = 'Copied to clipboard'
+    }
 
     return (
         <Wrapper>
@@ -88,9 +97,15 @@ export function SubmissionTemplate(props: { label: Label; songs: Song[]; onClose
                 </Button>
             </Right>
             <Right>
-                <Link href={anchorLink} target='_blank'>
-                    <Button startIcon={<Email />}>Send Email</Button>
-                </Link>
+                {props.label.submission.includes('@') ? (
+                    <Link href={anchorLink} target='_blank'>
+                        <Button startIcon={<Email />}>Send Email</Button>
+                    </Link>
+                ) : (
+                    <Button onClick={copyContent} startIcon={<ContentPaste />}>
+                        Copy content
+                    </Button>
+                )}
             </Right>
             <Right>
                 <Button onClick={finishUp} startIcon={<DoneAll />}>
