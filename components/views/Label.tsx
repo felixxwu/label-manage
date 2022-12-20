@@ -41,8 +41,7 @@ export function Label(props: { label: Label }) {
                 ],
                 message: 'Do you want to search for a SoundCloud link?',
             }
-        }
-        if (
+        } else if (
             new Date().getTime() - new Date(props.label.lastScraped).getTime() >
             1000 * 60 * 60 * 24 * 7
         ) {
