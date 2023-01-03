@@ -18,8 +18,6 @@ export function AppProvider(props: { children: ReactNode }) {
         })
     }
 
-    console.log(`store()`, store())
-
     return (
         <ThemeProvider theme={theme}>
             <Head>
@@ -38,13 +36,13 @@ export function AppProvider(props: { children: ReactNode }) {
                 <title>SoundCloud Label Manager</title>
             </Head>
             <Wrapper>
-                {store().user
-                    ? props.children
-                    : !store().loading && (
-                          <Button startIcon={<Google />} variant='contained' onClick={signIn}>
-                              Sign in
-                          </Button>
-                      )}
+                {store().user ? (
+                    props.children
+                ) : (
+                    <Button startIcon={<Google />} variant='contained' onClick={signIn}>
+                        Sign in
+                    </Button>
+                )}
             </Wrapper>
 
             <GeneralDialog />
