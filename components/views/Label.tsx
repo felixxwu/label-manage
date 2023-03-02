@@ -78,7 +78,7 @@ export function Label(props: { label: Label }) {
     async function scrapeData() {
         store().snackbar = 'Getting profile data...'
         await updateProfile(props.label)
-        store().snackbar = 'Auto-filled some fields.'
+        store().snackbar = 'Auto-filled fields.'
     }
 
     return (

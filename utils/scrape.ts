@@ -31,8 +31,11 @@ export async function searchSoundCloudLinks(labelName: string) {
 }
 
 export async function scrapeSoundCloudProfile(url: string) {
+    store().snackbar = 'Scraping reposts...'
     const repostScrape = await load(scrape, url + '/reposts')
+    store().snackbar = 'Scraping popular tracks...'
     const popularTracks = parseSCTracks(await load(scrape, url + '/popular-tracks'))
+    store().snackbar = 'Scraping recent tracks...'
     const recentTracks = parseSCTracks(await load(scrape, url + '/tracks'))
     const reposts = parseSCTracks(repostScrape)
     const profile = parseSCProfile(repostScrape)
@@ -74,6 +77,7 @@ export async function reScrapeData() {
 
 export async function updateProfile(label: Label) {
     const res = await scrapeSoundCloudProfile(label.link)
+    store().snackbar = 'Updating database...'
     await load(updateDocTyped, label.id, {
         ...(res.profile.image ? { image: res.profile.image } : {}),
         ...(res.profile.followers ? { followers: res.profile.followers } : {}),
