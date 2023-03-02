@@ -20,5 +20,9 @@ export async function searchForLinks(label: Label) {
 async function setLink(partialLink: string, label: Label) {
     const link = 'https://soundcloud.com' + partialLink
     await load(updateDocTyped, label.id, { link })
-    await updateProfile({ ...label, link })
+    try {
+        await updateProfile({ ...label, link })
+    } catch (e) {
+        store().snackbar = 'Could not update profile: ' + e
+    }
 }
