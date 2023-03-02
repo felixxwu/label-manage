@@ -82,6 +82,7 @@ export function Label(props: { label: Label }) {
             store().snackbar = 'Auto-filled fields.'
         } catch (_) {
             store().snackbar = 'Failed to scrape data.'
+            store().loading = false
         }
     }
 

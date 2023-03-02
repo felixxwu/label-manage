@@ -24,5 +24,6 @@ async function setLink(partialLink: string, label: Label) {
         await updateProfile({ ...label, link })
     } catch (e) {
         store().snackbar = 'Could not update profile: ' + e
+        store().loading = false
     }
 }
