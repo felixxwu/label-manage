@@ -5,15 +5,20 @@ import { store } from './store'
 import { Label } from './types'
 
 export async function searchForLinks(label: Label) {
-    const links = await searchSoundCloudLinks(label.name)
+    try {
+        const links = await searchSoundCloudLinks(label.name)
 
-    store().dialog = {
-        actions: [{ label: 'Close' }],
-        message: 'https://soundcloud.com...',
-        multiselect: {
-            choices: links.map(l => ({ label: l })),
-            onChoose: link => setLink(link, label),
-        },
+        store().dialog = {
+            actions: [{ label: 'Close' }],
+            message: 'https://soundcloud.com...',
+            multiselect: {
+                choices: links.map(l => ({ label: l })),
+                onChoose: link => setLink(link, label),
+            },
+        }
+    } catch (_) {
+        store().snackbar = 'Could not find links for ' + label.name
+        store().loading = false
     }
 }
 
