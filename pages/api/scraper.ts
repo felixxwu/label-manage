@@ -1,5 +1,5 @@
 export default async (req, res) => {
-    console.info(`req`, req)
+    console.info(`req.body.url`, req.body.url)
     if (req.method === 'POST') {
         try {
             const response = await fetch(req.body.url)
