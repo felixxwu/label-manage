@@ -1,6 +1,5 @@
 export default async (req, res) => {
-    console.log(`req.body.url`, req.body.url)
-    console.log(`req`, req)
+    console.info(`req`, req)
     if (req.method === 'POST') {
         try {
             const response = await fetch(req.body.url)
@@ -11,7 +10,7 @@ export default async (req, res) => {
             })
         } catch (e) {
             res.statusCode = 404
-            console.log(`e`, e)
+            console.info(`e`, e)
             return res.json({
                 error: `${e}`,
             })
