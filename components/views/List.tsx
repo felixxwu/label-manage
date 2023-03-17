@@ -16,6 +16,7 @@ import SmartToyIcon from '@mui/icons-material/SmartToy'
 import DownloadIcon from '@mui/icons-material/Download'
 import GoogleIcon from '@mui/icons-material/Google'
 import { Chips } from '../Chips'
+import { StylesSelector } from '../StylesSelector'
 
 export function List() {
   const { db } = store()
@@ -135,17 +136,23 @@ export function List() {
         <div>No labels added yet :(</div>
       ) : (
         <>
+          <StyleFilter>
+            Filter by style:
+            <Chips
+              chips={store().extra.styles}
+              onSelect={handleStyleSelect}
+              colorful
+              selection={store().styleFilter}
+              addDialog={() => (
+                <StylesSelector onSelectStyle={async () => {}} ignore={[]} editOnlyMode />
+              )}
+            />
+          </StyleFilter>
+
           <Options>
             <CompactViewSwitch />
             <Sort />
           </Options>
-
-          <Chips
-            chips={store().extra.styles}
-            onSelect={handleStyleSelect}
-            colorful
-            selection={store().styleFilter}
-          />
 
           <ListItems compact={store().extra.compact}>
             {labels.map((label, i) => {
@@ -193,4 +200,10 @@ const Options = styled('div')`
 const Link = styled('a')`
   cursor: pointer;
   text-decoration: underline;
+`
+
+const StyleFilter = styled('div')`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 `
