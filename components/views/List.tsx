@@ -148,6 +148,13 @@ export function List() {
         <div>No labels added yet :(</div>
       ) : (
         <>
+          <Search label='Search...' size='small' value={searchTerm} onChange={handleSearch} />
+
+          <Options>
+            <CompactViewSwitch />
+            <Sort />
+          </Options>
+
           <StyleFilter>
             Filter by style:
             <Chips
@@ -160,13 +167,6 @@ export function List() {
               )}
             />
           </StyleFilter>
-
-          <Options>
-            <CompactViewSwitch />
-            <Sort />
-          </Options>
-
-          <Search label='Search...' size='small' value={searchTerm} onChange={handleSearch} />
 
           <ListItems compact={store().extra.compact}>
             {labels.map((label, i) => {

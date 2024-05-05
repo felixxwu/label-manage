@@ -50,11 +50,11 @@ export function ListItem(props: { label: Label; index: number }) {
               ))}
           </Name>
           <Icons>
+            {getDaysAgo(props.label) > consts.uploadWarning && (
+              <HourglassDisabledIcon fontSize='small' />
+            )}
             {!props.label.inactive && (
               <>
-                {getDaysAgo(props.label) > consts.uploadWarning && (
-                  <HourglassDisabledIcon fontSize='small' />
-                )}
                 {getProgress(props.label) !== 100 && <QuestionMarkIcon fontSize='small' />}
                 {areAllSongsDealtWith(props.label) && <DoneIcon color='primary' fontSize='small' />}
               </>
@@ -77,7 +77,7 @@ const Wrapper = styled('div')<{ compact: boolean; index: number; inactive: boole
   max-width: ${consts.maxAppWidth}px;
   color: ${theme.palette.primary.main};
   background-color: ${({ compact, index }) =>
-    compact && index % 2 === 0 ? '' : theme.palette.secondary.main};
+    compact && index % 2 === 1 ? '' : theme.palette.secondary.main};
   padding: ${({ compact }) => (compact ? '2px' : '20px')};
   border-radius: ${({ compact }) => (compact ? 0 : consts.borderRadius)}px;
   cursor: pointer;
@@ -109,11 +109,11 @@ const Name = styled('div')`
 const Icons = styled('div')`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   opacity: 0.5;
 `
 
 const Followers = styled('div')`
-  min-width: 36px;
+  min-width: 40px;
   text-align: right;
 `
