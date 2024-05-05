@@ -4,14 +4,14 @@ import { updateDocTyped } from '../utils/db'
 import { store } from '../utils/store'
 
 export function CompactViewSwitch() {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateDocTyped(consts.dbExtraId, { compact: event.target.checked })
-    }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateDocTyped(consts.dbExtraId, { compact: event.target.checked })
+  }
 
-    return (
-        <FormControlLabel
-            control={<Switch onChange={handleChange} checked={store().extra.compact} />}
-            label='Compact View'
-        />
-    )
+  return (
+    <FormControlLabel
+      control={<Switch onChange={handleChange} checked={store().extra.compact} />}
+      label='Compact View'
+    />
+  )
 }

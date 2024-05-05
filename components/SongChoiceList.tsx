@@ -6,160 +6,146 @@ import { theme } from '../utils/theme'
 import { Label, Song } from '../utils/types'
 
 export function matchingStylesList(song: Song, label: Label) {
-    const styles = song.styles.filter(songStyle => label.styles.includes(songStyle))
-    if (styles.length === 0) {
-        return {
-            value: [],
-            label: 'No shared styles',
-        }
-    } else {
-        return {
-            value: styles,
-            label: 'Shared styles: ' + styles.join(', '),
-        }
+  const styles = song.styles.filter(songStyle => label.styles.includes(songStyle))
+  if (styles.length === 0) {
+    return {
+      value: [],
+      label: 'No shared styles',
     }
+  } else {
+    return {
+      value: styles,
+      label: 'Shared styles: ' + styles.join(', '),
+    }
+  }
 }
 
 export function alreadySubmitted(song: Song, label: Label) {
-    return label.songsSubmitted.includes(song.title)
+  return label.songsSubmitted.includes(song.title)
 }
 
 export function markedAsSkip(song: Song, label: Label) {
-    return label.songsSkipped.includes(song.title)
+  return label.songsSkipped.includes(song.title)
 }
 
 export function submittedOrSkipped(song: Song, label: Label) {
-    return alreadySubmitted(song, label) || markedAsSkip(song, label)
+  return alreadySubmitted(song, label) || markedAsSkip(song, label)
 }
 
 export function SongChoiceList(props: {
-    songs: Song[]
-    label: Label
-    selectedSongs: Song[]
-    setSelectedSongs: (songs: Song[]) => void
+  songs: Song[]
+  label: Label
+  selectedSongs: Song[]
+  setSelectedSongs: (songs: Song[]) => void
 }) {
-    function handleCheckInput(song: Song, checked: boolean) {
-        if (checked) {
-            props.setSelectedSongs(props.selectedSongs.concat(song))
-        } else {
-            props.setSelectedSongs(props.selectedSongs.filter(s => s !== song))
-        }
+  function handleCheckInput(song: Song, checked: boolean) {
+    if (checked) {
+      props.setSelectedSongs(props.selectedSongs.concat(song))
+    } else {
+      props.setSelectedSongs(props.selectedSongs.filter(s => s !== song))
     }
+  }
 
-    function handleCopyTitle(e: React.MouseEvent, song: Song) {
-        e.stopPropagation()
-        e.preventDefault()
-        navigator.clipboard.writeText(song.title)
-        store().snackbar = `"${song.title}" copied to clipboard`
-    }
+  function handleCopyTitle(e: React.MouseEvent, song: Song) {
+    e.stopPropagation()
+    e.preventDefault()
+    navigator.clipboard.writeText(song.title)
+    store().snackbar = `"${song.title}" copied to clipboard`
+  }
 
-    function handleCopyLink(e: React.MouseEvent, song: Song) {
-        e.stopPropagation()
-        e.preventDefault()
-        navigator.clipboard.writeText(song.link)
-        store().snackbar = `"${song.link}" copied to clipboard`
-    }
+  function handleCopyLink(e: React.MouseEvent, song: Song) {
+    e.stopPropagation()
+    e.preventDefault()
+    navigator.clipboard.writeText(song.link)
+    store().snackbar = `"${song.link}" copied to clipboard`
+  }
 
-    return (
-        <>
-            {props.songs.map(song => (
-                <Choice
-                    key={song.title + '2'}
-                    control={
-                        <Checkbox onChange={(_, checked) => handleCheckInput(song, checked)} />
-                    }
-                    label={
-                        <Label style={{ opacity: submittedOrSkipped(song, props.label) ? 0.5 : 1 }}>
-                            <Title>
-                                <Typography variant='h6'>{song.title}</Typography>
-                                <Typography
-                                    variant='caption'
-                                    sx={{
-                                        color:
-                                            matchingStylesList(song, props.label).value.length === 0
-                                                ? theme.palette.warning.light
-                                                : theme.palette.primary.dark,
-                                    }}
-                                >
-                                    {matchingStylesList(song, props.label).label}
-                                </Typography>
-                            </Title>
-                            <Captions>
-                                {alreadySubmitted(song, props.label) && (
-                                    <Typography
-                                        variant='caption'
-                                        sx={{ color: theme.palette.warning.light }}
-                                    >
-                                        Already Submitted
-                                    </Typography>
-                                )}
-                                {markedAsSkip(song, props.label) && (
-                                    <Typography
-                                        variant='caption'
-                                        sx={{ color: theme.palette.warning.light }}
-                                    >
-                                        In the Skip List
-                                    </Typography>
-                                )}
-                                <Actions>
-                                    <Action onClick={e => handleCopyTitle(e, song)}>
-                                        <Typography
-                                            variant='caption'
-                                            sx={{ color: theme.palette.primary.dark }}
-                                        >
-                                            Copy Title
-                                        </Typography>
-                                    </Action>
-                                    <Action onClick={e => handleCopyLink(e, song)}>
-                                        <Typography
-                                            variant='caption'
-                                            sx={{ color: theme.palette.primary.dark }}
-                                        >
-                                            Copy Link
-                                        </Typography>
-                                    </Action>
-                                </Actions>
-                            </Captions>
-                        </Label>
-                    }
-                />
-            ))}
-        </>
-    )
+  return (
+    <>
+      {props.songs.map(song => (
+        <Choice
+          key={song.title + '2'}
+          control={<Checkbox onChange={(_, checked) => handleCheckInput(song, checked)} />}
+          label={
+            <Label style={{ opacity: submittedOrSkipped(song, props.label) ? 0.5 : 1 }}>
+              <Title>
+                <Typography variant='h6'>{song.title}</Typography>
+                <Typography
+                  variant='caption'
+                  sx={{
+                    color:
+                      matchingStylesList(song, props.label).value.length === 0
+                        ? theme.palette.warning.light
+                        : theme.palette.primary.dark,
+                  }}
+                >
+                  {matchingStylesList(song, props.label).label}
+                </Typography>
+              </Title>
+              <Captions>
+                {alreadySubmitted(song, props.label) && (
+                  <Typography variant='caption' sx={{ color: theme.palette.warning.light }}>
+                    Already Submitted
+                  </Typography>
+                )}
+                {markedAsSkip(song, props.label) && (
+                  <Typography variant='caption' sx={{ color: theme.palette.warning.light }}>
+                    In the Skip List
+                  </Typography>
+                )}
+                <Actions>
+                  <Action onClick={e => handleCopyTitle(e, song)}>
+                    <Typography variant='caption' sx={{ color: theme.palette.primary.dark }}>
+                      Copy Title
+                    </Typography>
+                  </Action>
+                  <Action onClick={e => handleCopyLink(e, song)}>
+                    <Typography variant='caption' sx={{ color: theme.palette.primary.dark }}>
+                      Copy Link
+                    </Typography>
+                  </Action>
+                </Actions>
+              </Captions>
+            </Label>
+          }
+        />
+      ))}
+    </>
+  )
 }
 
 const Label = styled('div')`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `
 
 const Title = styled('div')`
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    justify-content: space-between;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  justify-content: space-between;
 `
 
 const Captions = styled('div')`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `
 
 const Choice = styled(FormControlLabel)`
+  width: 100%;
+  margin: 0;
+  margin-left: -8px;
+  & .MuiFormControlLabel-label {
     width: 100%;
-    margin: 0;
-    margin-left: -8px;
-    & .MuiFormControlLabel-label {
-        width: 100%;
-    }
+  }
 `
 
 const Actions = styled('div')`
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 `
 
 const Action = styled('div')`
-    text-decoration: underline;
-    cursor: pointer;
+  text-decoration: underline;
+  cursor: pointer;
 `

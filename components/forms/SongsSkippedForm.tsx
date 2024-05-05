@@ -9,52 +9,52 @@ import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
 export function SongsSkippedForm(props: { label: Label }) {
-    async function handleDelete(song: string) {
-        updateDocTyped(props.label.id, {
-            songsSkipped: props.label.songsSkipped.filter(item => item !== song),
-        })
-    }
+  async function handleDelete(song: string) {
+    updateDocTyped(props.label.id, {
+      songsSkipped: props.label.songsSkipped.filter(item => item !== song),
+    })
+  }
 
-    const songs = props.label.songsSkipped.filter(song =>
-        store()
-            .extra.songs.map(s => s.title)
-            .includes(song)
-    )
+  const songs = props.label.songsSkipped.filter(song =>
+    store()
+      .extra.songs.map(s => s.title)
+      .includes(song)
+  )
 
-    return (
-        <Wrapper>
-            <Header>
-                <div>Songs Skipped:</div>
+  return (
+    <Wrapper>
+      <Header>
+        <div>Songs Skipped:</div>
 
-                {areAllSongsDealtWith(props.label) ? (
-                    <IconButton>
-                        <DoneAll />
-                    </IconButton>
-                ) : (
-                    <IconButton
-                        onClick={() => (window.location.href += '/skip')}
-                        disabled={!props.label.submission}
-                    >
-                        <Send />
-                    </IconButton>
-                )}
-            </Header>
-            {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
-        </Wrapper>
-    )
+        {areAllSongsDealtWith(props.label) ? (
+          <IconButton>
+            <DoneAll />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => (window.location.href += '/skip')}
+            disabled={!props.label.submission}
+          >
+            <Send />
+          </IconButton>
+        )}
+      </Header>
+      {songs.length !== 0 && <Chips colorful chips={songs} onDelete={handleDelete} />}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled('div')`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
 `
 
 const Header = styled('div')`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `

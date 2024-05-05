@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 export function setHistory(name: string) {
-    useEffect(() => {
-        history.pushState('nohb', '', '#' + name)
-    }, [])
+  useEffect(() => {
+    history.pushState('nohb', '', '#' + name)
+  }, [])
 }

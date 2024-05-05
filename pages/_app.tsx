@@ -4,12 +4,12 @@ import { useDb } from '../utils/db'
 import { useStore } from '../utils/store'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-    useStore()
-    useDb()
+  useStore()
+  useDb()
 
-    return (
-        <AppProvider>
-            <Component {...pageProps} />
-        </AppProvider>
-    )
+  return (
+    <AppProvider>
+      <Component {...pageProps} />
+    </AppProvider>
+  )
 }

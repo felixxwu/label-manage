@@ -1,7 +1,7 @@
 import { consts } from '../utils/consts'
 import { theme } from '../utils/theme'
 import { Label } from '../utils/types'
-import { Avatar, Typography } from '@mui/material'
+import { Avatar } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Link'
 import EmailIcon from '@mui/icons-material/EmailOutlined'
 import { store } from '../utils/store'

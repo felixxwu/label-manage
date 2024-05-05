@@ -5,62 +5,58 @@ import GoogleIcon from '@mui/icons-material/Google'
 import styled from '@emotion/styled'
 
 export function PasteSearchPopup(props: {
-    open: boolean
-    prompt: string
-    setOpen: (state: boolean) => void
-    handlePaste: () => void
-    handleSearch: () => void
-    useGoogleIcon: boolean
+  open: boolean
+  prompt: string
+  setOpen: (state: boolean) => void
+  handlePaste: () => void
+  handleSearch: () => void
+  useGoogleIcon: boolean
 }) {
-    async function handlePaste() {
-        props.handlePaste()
-    }
+  async function handlePaste() {
+    props.handlePaste()
+  }
 
-    async function handleSearch() {
-        props.handleSearch()
-    }
+  async function handleSearch() {
+    props.handleSearch()
+  }
 
-    return (
-        <Dialog open={props.open} onClose={() => props.setOpen(false)}>
-            <Header>{props.prompt}</Header>
-            <Choices>
-                <Choice onClick={handlePaste}>
-                    <ContentPasteIcon color='primary' />
-                    Paste
-                </Choice>
-                <Choice onClick={handleSearch}>
-                    {props.useGoogleIcon ? (
-                        <GoogleIcon color='primary' />
-                    ) : (
-                        <LaunchIcon color='primary' />
-                    )}
-                    Search
-                </Choice>
-            </Choices>
-        </Dialog>
-    )
+  return (
+    <Dialog open={props.open} onClose={() => props.setOpen(false)}>
+      <Header>{props.prompt}</Header>
+      <Choices>
+        <Choice onClick={handlePaste}>
+          <ContentPasteIcon color='primary' />
+          Paste
+        </Choice>
+        <Choice onClick={handleSearch}>
+          {props.useGoogleIcon ? <GoogleIcon color='primary' /> : <LaunchIcon color='primary' />}
+          Search
+        </Choice>
+      </Choices>
+    </Dialog>
+  )
 }
 
 const Choices = styled('div')`
-    display: flex;
+  display: flex;
 `
 
 const Header = styled('div')`
-    padding: 20px;
-    text-align: center;
+  padding: 20px;
+  text-align: center;
 `
 
 const Choice = styled('div')`
-    width: 200px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    cursor: pointer;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: pointer;
 
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 `
