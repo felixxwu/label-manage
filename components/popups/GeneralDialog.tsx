@@ -49,7 +49,6 @@ export function GeneralDialog() {
             margin='normal'
             label={store().dialog?.input}
             fullWidth
-            variant='standard'
             onChange={e => {
               state.dialogInput = e.target.value
             }}

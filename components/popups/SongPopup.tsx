@@ -93,7 +93,6 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
                 margin='normal'
                 label='Song Title'
                 fullWidth
-                variant='standard'
                 onChange={handleTitleChange}
                 value={localTitle}
                 autoFocus
@@ -104,7 +103,6 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
                     margin='normal'
                     label='Song Link'
                     fullWidth
-                    variant='standard'
                     onChange={handleLinkChange}
                     value={localLink}
                   />
@@ -153,7 +151,6 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
 const Fields = styled('div')`
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 450px;
   max-width: 100%;
 `
@@ -161,8 +158,9 @@ const Fields = styled('div')`
 const TextWithIcon = styled('div')`
   width: 100%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 10px;
+  margin-bottom: 20px;
 `
 
 const ComboText = styled('div')`

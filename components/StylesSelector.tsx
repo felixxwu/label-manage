@@ -81,7 +81,6 @@ export function StylesSelector(props: {
             margin='normal'
             label='New style name...'
             fullWidth
-            variant='standard'
             onChange={handleInput}
             onKeyUp={handleKeyUp}
             value={styleToAdd}

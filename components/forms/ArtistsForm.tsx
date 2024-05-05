@@ -83,7 +83,6 @@ export function ArtistsForm(props: { label: Label }) {
                 margin='normal'
                 label='Artist Name'
                 fullWidth
-                variant='standard'
                 onChange={handleInput}
                 onKeyUp={handleKeyUp}
                 value={itemToAdd}
