@@ -15,6 +15,7 @@ import QueueMusicIcon from '@mui/icons-material/QueueMusic'
 import SmartToyIcon from '@mui/icons-material/SmartToy'
 import DownloadIcon from '@mui/icons-material/Download'
 import GoogleIcon from '@mui/icons-material/Google'
+import Email from '@mui/icons-material/Email'
 import { Chips } from '../Chips'
 import { StylesSelector } from '../StylesSelector'
 
@@ -34,6 +35,10 @@ export function List() {
 
   async function showMusic() {
     window.location.href += '/music'
+  }
+
+  async function showTemplate() {
+    window.location.href += '/template'
   }
 
   function handleAddLabel() {
@@ -60,6 +65,7 @@ export function List() {
   function handleMenu() {
     const choices = [
       { label: 'Open Music Library', onChoose: showMusic, icon: <QueueMusicIcon /> },
+      { label: 'Edit Email Template', onChoose: showTemplate, icon: <Email /> },
       { label: 'Re-scrape All Data', onChoose: reScrapeData, icon: <SmartToyIcon /> },
       { label: 'Export Data', onChoose: handleExport, icon: <DownloadIcon /> },
       { label: 'Sign Out', onChoose: () => getAuth().signOut(), icon: <GoogleIcon /> },

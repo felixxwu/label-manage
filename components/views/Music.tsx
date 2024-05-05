@@ -14,108 +14,103 @@ import Add from '@mui/icons-material/Add'
 import { Header } from '../Header'
 
 export function Music() {
-    const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
+  const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
 
-    async function handleBack() {
-        window.history.back()
+  async function handleBack() {
+    window.history.back()
+  }
+
+  async function addSong() {
+    const emptySong: Song = {
+      id: new Date().getTime().toString(),
+      title: '',
+      link: '',
+      styles: [],
     }
+    await updateDocTyped(consts.dbExtraId, {
+      songs: store().extra.songs.concat(emptySong),
+    })
+    setSelectedSongId(emptySong.id)
+  }
 
-    async function addSong() {
-        const emptySong: Song = {
-            id: new Date().getTime().toString(),
-            title: '',
-            link: '',
-            styles: [],
+  function openDialog(songId: string) {
+    setSelectedSongId(songId)
+  }
+
+  function closeDialog() {
+    setSelectedSongId(null)
+  }
+
+  return (
+    <Wrapper>
+      <Header
+        left={
+          <IconButton onClick={handleBack}>
+            <ArrowBackIcon color='primary' />
+          </IconButton>
         }
-        await updateDocTyped(consts.dbExtraId, {
-            songs: store().extra.songs.concat(emptySong),
-        })
-        setSelectedSongId(emptySong.id)
-    }
+      >
+        <h1>Songs</h1>
+      </Header>
 
-    function openDialog(songId: string) {
-        setSelectedSongId(songId)
-    }
+      {store().extra.songs.length === 0 ? (
+        <div>No songs added yet :(</div>
+      ) : (
+        store().extra.songs.map((song, index) => (
+          <Song onClick={() => openDialog(song.id)} key={index}>
+            <SongHeader>
+              {song.title}
+              {song.link && <LinkIcon color='primary' />}
+            </SongHeader>
+            {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
+          </Song>
+        ))
+      )}
 
-    function closeDialog() {
-        setSelectedSongId(null)
-    }
+      <Fab
+        onClick={addSong}
+        color='secondary'
+        sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
+        size='large'
+      >
+        <Add color='primary' />
+      </Fab>
 
-    return (
-        <Wrapper>
-            <Header
-                left={
-                    <IconButton onClick={handleBack}>
-                        <ArrowBackIcon color='primary' />
-                    </IconButton>
-                }
-            >
-                <h1>Songs</h1>
-            </Header>
-
-            {store().extra.songs.length === 0 ? (
-                <div>No songs added yet :(</div>
-            ) : (
-                store().extra.songs.map((song, index) => (
-                    <Song onClick={() => openDialog(song.id)} key={index}>
-                        <SongHeader>
-                            {song.title}
-                            {song.link && <LinkIcon color='primary' />}
-                        </SongHeader>
-                        {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
-                    </Song>
-                ))
-            )}
-
-            <Fab
-                onClick={addSong}
-                color='secondary'
-                sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
-                size='large'
-            >
-                <Add color='primary' />
-            </Fab>
-
-            {selectedSongId && <SongPopup selectedSongId={selectedSongId} close={closeDialog} />}
-        </Wrapper>
-    )
+      {selectedSongId && <SongPopup selectedSongId={selectedSongId} close={closeDialog} />}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled('div')`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin: auto;
-`
-
-const Buttons = styled('div')`
-    display: flex;
-    gap: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: auto;
 `
 
 const Song = styled('div')`
-    width: 100%;
-    color: ${theme.palette.primary.main};
-    background-color: ${theme.palette.secondary.main};
-    padding: 20px;
-    border-radius: ${consts.borderRadius}px;
-    cursor: pointer;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  width: 100%;
+  color: ${theme.palette.primary.main};
+  background-color: ${theme.palette.secondary.main};
+  padding: 20px;
+  border-radius: ${consts.borderRadius}px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
-    &:hover {
-        background-color: ${theme.palette.secondary.light};
-    }
+  &:hover {
+    background-color: ${theme.palette.secondary.light};
+  }
 `
 
 const SongHeader = styled('div')`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `
