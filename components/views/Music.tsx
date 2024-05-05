@@ -72,8 +72,10 @@ export function Music() {
         color='secondary'
         sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
         size='large'
+        variant='extended'
       >
-        <Add color='primary' />
+        <Add color='primary' sx={{ mr: 1 }} />
+        New Song
       </Fab>
 
       {selectedSongId && <SongPopup selectedSongId={selectedSongId} close={closeDialog} />}

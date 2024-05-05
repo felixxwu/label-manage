@@ -44,20 +44,18 @@ export function ListItem(props: { label: Label; index: number }) {
 
             {props.label.submission &&
               (props.label.submission.includes('@') ? (
-                <EmailIcon fontSize={store().extra.compact ? 'small' : 'medium'} opacity={0.5} />
+                <EmailIcon fontSize='small' opacity={0.5} />
               ) : (
-                <LinkIcon fontSize={store().extra.compact ? 'small' : 'medium'} opacity={0.5} />
+                <LinkIcon fontSize='small' opacity={0.5} />
               ))}
           </Name>
           <Icons>
             {!props.label.inactive && (
               <>
                 {getDaysAgo(props.label) > consts.uploadWarning && (
-                  <HourglassDisabledIcon fontSize={store().extra.compact ? 'small' : 'medium'} />
+                  <HourglassDisabledIcon fontSize='small' />
                 )}
-                {getProgress(props.label) !== 100 && (
-                  <QuestionMarkIcon fontSize={store().extra.compact ? 'small' : 'medium'} />
-                )}
+                {getProgress(props.label) !== 100 && <QuestionMarkIcon fontSize='small' />}
                 {areAllSongsDealtWith(props.label) && <DoneIcon color='primary' fontSize='small' />}
               </>
             )}

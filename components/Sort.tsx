@@ -1,30 +1,31 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { store } from '../utils/store'
 import { SortType } from '../utils/types'
+import SwapVertIcon from '@mui/icons-material/SwapVert'
+import styled from '@emotion/styled'
 
 export function Sort() {
-  const handleChange = (event: SelectChangeEvent<SortType>) => {
-    store().sort = event.target.value as SortType
+  const handleChange = (_: React.MouseEvent<HTMLElement>, value: SortType) => {
+    store().sort = value
   }
 
   return (
-    <FormControl sx={{ minWidth: 120 }} size='small'>
-      <InputLabel id='select'>Sort</InputLabel>
-      <Select labelId='select' id='select' value={store().sort} label='Age' onChange={handleChange}>
-        <MenuItem value={'follower' as SortType}>
-          <Typography color='primary'>Followers</Typography>
-        </MenuItem>
-        <MenuItem value={'name' as SortType}>
-          <Typography color='primary'>Name</Typography>
-        </MenuItem>
-      </Select>
-    </FormControl>
+    <Wrapper>
+      <SwapVertIcon />
+      <ToggleButtonGroup value={store().sort} exclusive onChange={handleChange} size='small'>
+        <ToggleButton value={'follower' as SortType} size='small'>
+          Followers
+        </ToggleButton>
+        <ToggleButton value={'name' as SortType} size='small'>
+          Name
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`

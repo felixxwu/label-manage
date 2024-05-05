@@ -1,9 +1,9 @@
-import { debounce, Fab, IconButton } from '@mui/material'
+import { debounce, Fab, IconButton, TextField } from '@mui/material'
 import { ListItem } from '../ListItem'
 import { CompactViewSwitch } from '../CompactViewSwitch'
 import { Sort } from '../Sort'
 import { store } from '../../utils/store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
 import { addDocTyped } from '../../utils/db'
@@ -21,6 +21,7 @@ import { StylesSelector } from '../StylesSelector'
 
 export function List() {
   const { db } = store()
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     window.scrollTo(0, store().listScrollPos)
@@ -101,6 +102,7 @@ export function List() {
   const labels = store()
     .labels.slice()
     .filter(label => {
+      if (searchTerm && !label.name.toLowerCase().includes(searchTerm.toLowerCase())) return false
       if (store().styleFilter.length === 0) return true
       return store().styleFilter.some(style => label.styles.includes(style))
     })
@@ -119,6 +121,10 @@ export function List() {
 
   const handleStyleSelect = async (styles: string[]) => {
     store().styleFilter = styles
+  }
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
   }
 
   return (
@@ -160,6 +166,8 @@ export function List() {
             <Sort />
           </Options>
 
+          <Search label='Search...' size='small' value={searchTerm} onChange={handleSearch} />
+
           <ListItems compact={store().extra.compact}>
             {labels.map((label, i) => {
               return <ListItem label={label} index={i} key={i} />
@@ -173,8 +181,10 @@ export function List() {
         color='secondary'
         sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
         size='large'
+        variant='extended'
       >
-        <Add color='primary' />
+        <Add color='primary' sx={{ mr: 1 }} />
+        New Label
       </Fab>
     </Wrapper>
   )
@@ -212,4 +222,8 @@ const StyleFilter = styled('div')`
   display: flex;
   gap: 10px;
   flex-direction: column;
+`
+
+const Search = styled(TextField)`
+  width: 100%;
 `
