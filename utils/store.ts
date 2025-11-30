@@ -19,7 +19,7 @@ export function useStore() {
     {
       labels: <Label[]>[],
       extra: emptyExtra,
-      sort: <SortType>'follower',
+      sort: <SortType>'popularity',
       dialog: <DialogOptions | null>null,
       snackbar: '',
       listScrollPos: 0,
