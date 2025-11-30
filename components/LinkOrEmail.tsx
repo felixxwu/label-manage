@@ -6,6 +6,9 @@ import { useState } from 'react'
 import { ClearButton } from './buttons/ClearButton'
 import { PasteSearchPopup } from './popups/PasteSearchPopup'
 import styled from '@emotion/styled'
+import { Button } from '@mui/material'
+import { Edit } from '@mui/icons-material'
+import { store } from '../utils/store'
 
 type StringOnlyKeys<T extends Label> = {
   [K in keyof T]: T[K] extends String ? K : never
@@ -17,9 +20,9 @@ export function LinkOrEmail(props: {
   dbKey: StringOnlyKeys<Label>
   useGoogleIcon: boolean
   prompt: string
+  open: boolean
+  setOpen: (open: boolean) => void
 }) {
-  const [open, setOpen] = useState(false)
-
   async function handleSearch() {
     window.open(props.searchUrl, '_blank')?.focus()
   }
@@ -38,11 +41,17 @@ export function LinkOrEmail(props: {
       updateDocTyped(props.label.id, { [props.dbKey]: link })
     }
 
-    setOpen(false)
+    props.setOpen(false)
   }
 
   function handleClear() {
-    updateDocTyped(props.label.id, { [props.dbKey]: '' })
+    store().dialog = {
+      message: 'Are you sure you want to clear this field?',
+      actions: [
+        { label: 'No' },
+        { label: 'Clear', callback: () => updateDocTyped(props.label.id, { [props.dbKey]: '' }) },
+      ],
+    }
   }
 
   const value = props.label[props.dbKey]
@@ -62,18 +71,13 @@ export function LinkOrEmail(props: {
           )}
           <ClearButton onClick={handleClear} secondary />
         </>
-      ) : (
-        <>
-          <div style={{ opacity: 0.5 }}>{props.prompt}</div>
-          <EditButton onClick={() => setOpen(true)} />
-        </>
-      )}
+      ) : null}
 
       <PasteSearchPopup
         {...{
-          open,
+          open: props.open,
           prompt: props.prompt,
-          setOpen,
+          setOpen: props.setOpen,
           handlePaste,
           handleSearch,
           useGoogleIcon: props.useGoogleIcon,
@@ -92,7 +96,7 @@ const Wrapper = styled('div')`
 `
 
 const Link = styled('a')`
-  color: ${theme.palette.primary.main};
+  color: ${theme.palette.primary.dark};
   flex: 1;
   word-break: break-all;
 `

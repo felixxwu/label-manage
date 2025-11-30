@@ -67,6 +67,7 @@ export function GeneralDialog() {
               <div>{choice.label}</div>
             </Choice>
           ))}
+          {!dialog.multiselect.choices.length && <div>No results found</div>}
         </DialogContent>
       )}
       {dialog?.actions.length !== 0 && (

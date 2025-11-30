@@ -1,13 +1,13 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { Label } from '../utils/types'
-import DoneAllIcon from '@mui/icons-material/DoneAll'
+import CheckCircle from '@mui/icons-material/CheckCircle'
 import { getProgress } from '../utils/progress'
 
 export function Progress(props: { label: Label }) {
   const percentage = getProgress(props.label)
   return percentage === 100 ? (
     <div style={{ padding: '8px' }}>
-      <DoneAllIcon color='primary' />
+      <CheckCircle color='success' />
     </div>
   ) : (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>

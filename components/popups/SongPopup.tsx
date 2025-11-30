@@ -128,6 +128,7 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
                     <StylesSelector
                       onSelectStyle={handleStyleSelection}
                       ignore={getSong()?.styles ?? []}
+                      onClose={closeDialog}
                     />
                   )
                 }}

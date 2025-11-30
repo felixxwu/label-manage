@@ -10,7 +10,7 @@ export async function searchForLinks(label: Label) {
 
     store().dialog = {
       actions: [{ label: 'Close' }],
-      message: 'https://soundcloud.com...',
+      message: `Searching SoundCloud for "${label.name}"`,
       multiselect: {
         choices: links.map(l => ({ label: l })),
         onChoose: link => setLink(link, label),

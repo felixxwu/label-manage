@@ -20,6 +20,7 @@ import { Chips } from '../Chips'
 import { StylesSelector } from '../StylesSelector'
 
 import { useRouter } from 'next/router'
+import { consts } from '../../utils/consts'
 
 export function List() {
   const { db } = store()
@@ -133,6 +134,10 @@ export function List() {
     store().styleFilter = styles
   }
 
+  const handleStyleDelete = async (item: string) => {
+    await handleStyleSelect(store().styleFilter.filter(style => style !== item))
+  }
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
@@ -149,40 +154,58 @@ export function List() {
         <h1>Label List</h1>
       </Header>
 
-      <Link onClick={showMusic}>
-        {store().extra.songs.length} song{store().extra.songs.length === 1 ? '' : 's'} ready to send
-        out
-      </Link>
-
       {store().labels.length === 0 ? (
         <div>No labels added yet :(</div>
       ) : (
         <>
-          <Search label='Search...' size='small' value={searchTerm} onChange={handleSearch} />
-
-          <Options>
-            <CompactViewSwitch />
-            <Sort />
-          </Options>
-
-          <StyleFilter>
-            Filter by style:
-            <Chips
-              chips={store().extra.styles}
-              onSelect={handleStyleSelect}
-              colorful
-              selection={store().styleFilter}
-              addDialog={() => (
-                <StylesSelector onSelectStyle={async () => {}} ignore={[]} editOnlyMode />
-              )}
+          <SearchAndOptions>
+            <Search
+              label='Search...'
+              size='small'
+              value={searchTerm}
+              onChange={handleSearch}
+              variant='filled'
+              sx={{ borderBottom: 'none' }}
             />
-          </StyleFilter>
 
-          <ListItems compact={store().extra.compact}>
-            {activeLabelsWithSubmission.map((label, i) => {
-              return <ListItem label={label} index={i} key={i} />
-            })}
-          </ListItems>
+            <Options>
+              <CompactViewSwitch />
+              <Sort />
+            </Options>
+          </SearchAndOptions>
+
+          <Link onClick={showMusic}>
+            {store().extra.songs.length} song{store().extra.songs.length === 1 ? '' : 's'} ready to
+            send out
+          </Link>
+
+          <ListWrapper>
+            <StyleFilter>
+              Filter by style:
+              <Chips
+                chips={store().styleFilter}
+                onDelete={handleStyleDelete}
+                skipDeleteDialog
+                colorful
+                addDialog={({ closeDialog }) => (
+                  <StylesSelector
+                    onSelectStyle={async styles => {
+                      handleStyleSelect([...store().styleFilter, ...styles])
+                      closeDialog()
+                    }}
+                    ignore={store().styleFilter}
+                    onClose={closeDialog}
+                  />
+                )}
+              />
+            </StyleFilter>
+
+            <ListItems compact={store().extra.compact}>
+              {activeLabelsWithSubmission.map((label, i) => {
+                return <ListItem label={label} index={i} key={i} />
+              })}
+            </ListItems>
+          </ListWrapper>
 
           {activeLabelsWithoutSubmission.length > 0 && (
             <>
@@ -228,8 +251,23 @@ const Wrapper = styled('div')`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 30px;
+`
+
+const SearchAndOptions = styled('div')`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+`
+
+const ListWrapper = styled('div')`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `
 
 const ListItems = styled('div')<{ compact: boolean }>`
@@ -248,7 +286,7 @@ const Options = styled('div')`
   flex-wrap: wrap;
   gap: 10px;
 
-  @media (max-width: 500px) {
+  @media screen and (max-width: 500px) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -257,12 +295,14 @@ const Options = styled('div')`
 const Link = styled('a')`
   cursor: pointer;
   text-decoration: underline;
+  width: 100%;
+  text-align: center;
 `
 
 const StyleFilter = styled('div')`
   display: flex;
   gap: 10px;
-  flex-direction: column;
+  align-items: center;
 `
 
 const Search = styled(TextField)`

@@ -31,4 +31,8 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+
+  @media screen and (max-width: 522px) {
+    flex-direction: row-reverse;
+  }
 `

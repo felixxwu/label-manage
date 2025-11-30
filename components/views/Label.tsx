@@ -20,7 +20,6 @@ import { SongsSkippedForm } from '../forms/SongsSkippedForm'
 import SmartToy from '@mui/icons-material/SmartToy'
 import { updateProfile } from '../../utils/scrape'
 import { getDaysAgoScraped } from '../../utils/getDaysAgo'
-import { AcceptDemo } from '../forms/AcceptDemo'
 import { useEffect } from 'react'
 import { searchForLinks } from '../../utils/searchForLinks'
 import { Header } from '../Header'
@@ -99,36 +98,21 @@ export function Label(props: { label: Label }) {
                 <ArrowBackIcon color='primary' />
               </IconButton>
             }
-            right={<Progress {...props} />}
           >
             <ImageForm {...props} />
           </Header>
           <NameForm {...props} />
-          <InactiveForm {...props} />
           <NotesForm {...props} />
-          <Wrapper
-            style={{
-              opacity: props.label.inactive ? 0.5 : 1,
-              pointerEvents: props.label.inactive ? 'none' : 'initial',
-            }}
-          >
-            <Divider />
+          <Wrapper style={{ opacity: props.label.inactive ? 0.5 : 1 }}>
             <LinkForm {...props} />
-            <Divider />
             <SubmissionForm {...props} />
-            <AcceptDemo {...props} />
-            <Divider />
             <ArtistsForm {...props} />
-            <Divider />
             <StylesForm {...props} />
-            <Divider />
             <SongsSubmittedForm {...props} />
-            <Divider />
             <SongsSkippedForm {...props} />
-            <div />
           </Wrapper>
           <ScraperRow>
-            <Button onClick={scrapeData} startIcon={<SmartToy />}>
+            <Button onClick={scrapeData} startIcon={<SmartToy />} variant='contained' size='small'>
               Re-scrape data
             </Button>
             <Typography variant='caption' sx={{ color: theme.palette.primary.dark }}>
@@ -151,7 +135,7 @@ const Wrapper = styled('div')`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
+  gap: 15px;
   margin: auto;
 `
 
@@ -160,15 +144,9 @@ const Buttons = styled('div')`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
   justify-content: center;
-  margin-top: 50px;
-`
-
-const Divider = styled('div')`
-  height: 1px;
-  width: 100%;
-  background-color: ${theme.palette.divider};
+  margin-top: 20px;
 `
 
 const ScraperRow = styled('div')`
@@ -177,4 +155,5 @@ const ScraperRow = styled('div')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 `

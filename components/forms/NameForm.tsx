@@ -8,6 +8,7 @@ import { nFormatter } from '../../utils/nFormatter'
 import { theme } from '../../utils/theme'
 import { Label } from '../../utils/types'
 import { useStates } from '../../utils/useStateObject'
+import { Progress } from '../Progress'
 
 const descriptionLength = 100
 
@@ -30,57 +31,64 @@ export function NameForm(props: { label: Label }) {
 
   return (
     <Wrapper>
-      <Input
-        type='text'
-        value={state.name}
-        onChange={handleChange}
-        autoComplete='off'
-        autoCorrect='off'
-        spellCheck='false'
-      />
-      <Description>
-        <Typography variant='caption'>{getDescription()}</Typography>
-        {props.label.description.length > descriptionLength && (
-          <>
-            &nbsp;
-            <ShowMore
-              variant='caption'
-              onClick={() => (state.fullDescription = !state.fullDescription)}
+      <TopRow>
+        <Input
+          type='text'
+          value={state.name}
+          onChange={handleChange}
+          autoComplete='off'
+          autoCorrect='off'
+          spellCheck='false'
+        />
+        <Progress {...props} />
+      </TopRow>
+      <BottomRow>
+        <Description>
+          <Typography variant='caption' color={theme.palette.primary.dark}>
+            {getDescription()}
+          </Typography>
+          {props.label.description.length > descriptionLength && (
+            <>
+              &nbsp;
+              <ShowMore
+                variant='caption'
+                onClick={() => (state.fullDescription = !state.fullDescription)}
+              >
+                {state.fullDescription ? 'show less' : 'show more'}
+              </ShowMore>
+            </>
+          )}
+        </Description>
+        <InfoBar>
+          <Typography variant='caption' color={theme.palette.primary.dark}>
+            {nFormatter(props.label.followers, 0)} Followers •{' '}
+            <span
+              style={{ cursor: 'pointer', textDecoration: 'underline' }}
+              onClick={() =>
+                window.open(
+                  `https://open.spotify.com/search/label:${encodeURIComponent(
+                    props.label.name
+                  )}/tracks`,
+                  '_blank'
+                )
+              }
             >
-              {state.fullDescription ? 'show less' : 'show more'}
-            </ShowMore>
-          </>
-        )}
-      </Description>
-      <InfoBar>
-        <Typography variant='caption' color={theme.palette.primary.dark}>
-          {nFormatter(props.label.followers, 0)} Followers •{' '}
-          <span
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={() =>
-              window.open(
-                `https://open.spotify.com/search/label:${encodeURIComponent(
-                  props.label.name
-                )}/tracks`,
-                '_blank'
-              )
+              {props.label.popularity || 0}% ({Math.round(props.label.popularityVariance || 0)})
+              Popularity
+            </span>
+          </Typography>
+          <Typography
+            variant='caption'
+            color={
+              getDaysAgo(props.label) > consts.uploadWarning
+                ? theme.palette.warning.light
+                : theme.palette.primary.dark
             }
           >
-            {props.label.popularity || 0}% ({Math.round(props.label.popularityVariance || 0)})
-            Popularity
-          </span>
-        </Typography>
-        <Typography
-          variant='caption'
-          color={
-            getDaysAgo(props.label) > consts.uploadWarning
-              ? theme.palette.warning.light
-              : theme.palette.primary.dark
-          }
-        >
-          Last Upload: {getDaysAgo(props.label)} days
-        </Typography>
-      </InfoBar>
+            Last Upload: {getDaysAgo(props.label)} days
+          </Typography>
+        </InfoBar>
+      </BottomRow>
     </Wrapper>
   )
 }
@@ -90,6 +98,22 @@ const Wrapper = styled('div')`
   flex-direction: column;
   gap: 10px;
   width: 100%;
+`
+
+const TopRow = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+`
+
+const BottomRow = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: ${theme.palette.secondary.main};
+  padding: 10px;
+  border-radius: ${consts.borderRadius}px;
 `
 
 const Input = styled('input')`

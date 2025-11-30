@@ -17,10 +17,10 @@ export function StylesSelector(props: {
   ignore: string[]
   label?: Label
   editOnlyMode?: boolean
+  onClose: () => void
 }) {
   const [styleToAdd, setStyleToAdd] = useState('')
   const [editMode, setEditMode] = useState(!!props.editOnlyMode)
-  const [selection, setSelection] = useState<string[]>([])
   const [showTracks, setShowTracks] = useState(false)
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -50,11 +50,7 @@ export function StylesSelector(props: {
   }
 
   async function handleSelect(styles: string[]) {
-    setSelection(styles)
-  }
-
-  function handleDone() {
-    props.onSelectStyle(selection)
+    props.onSelectStyle(styles)
   }
 
   return (
@@ -65,16 +61,6 @@ export function StylesSelector(props: {
         onDelete={editMode ? handleDelete : undefined}
         colorful
       />
-      {props.label &&
-        (showTracks ? (
-          <WidgetWrapper>
-            <Widgets label={props.label} />
-          </WidgetWrapper>
-        ) : (
-          <Button onClick={() => setShowTracks(true)} startIcon={<QueueMusicIcon />}>
-            Show tracks
-          </Button>
-        ))}
       {editMode ? (
         <>
           <TextField
@@ -103,13 +89,21 @@ export function StylesSelector(props: {
       ) : (
         <Buttons>
           <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
-            Edit Styles
+            Add/Remove Styles
           </Button>
-          <Button onClick={handleDone} startIcon={<Add />} disabled={selection.length === 0}>
-            Add
-          </Button>
+          <Button onClick={() => props.onClose()}>Close</Button>
         </Buttons>
       )}
+      {props.label &&
+        (showTracks ? (
+          <WidgetWrapper>
+            <Widgets label={props.label} />
+          </WidgetWrapper>
+        ) : (
+          <Button onClick={() => setShowTracks(true)} startIcon={<QueueMusicIcon />}>
+            Show tracks
+          </Button>
+        ))}
     </Wrapper>
   )
 }

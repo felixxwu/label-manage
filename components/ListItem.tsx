@@ -32,70 +32,69 @@ export function ListItem(props: { label: Label; index: number }) {
         index={props.index}
         inactive={props.label.inactive}
       >
-        <Header>
-          <Name>
-            {!store().extra.compact && (
-              <Avatar
-                src={props.label.image}
-                sx={{
-                  width: consts.listAvatarSize,
-                  height: consts.listAvatarSize,
-                }}
-              />
-            )}
+        <Avatar
+          src={props.label.image}
+          sx={{
+            width: store().extra.compact ? 20 : 60,
+            height: store().extra.compact ? 20 : 60,
+          }}
+        />
+        <Content compact={store().extra.compact}>
+          <Header>
+            <Name>
+              {props.label.name}
 
-            {props.label.name}
-
-            {props.label.submission &&
-              (props.label.submission.includes('@') ? (
-                <Tooltip title='Email Submission' placement='right'>
-                  <EmailIcon fontSize='small' opacity={0.5} />
-                </Tooltip>
-              ) : (
-                <Tooltip title='Web Form Submission' placement='right'>
-                  <LinkIcon fontSize='small' opacity={0.5} />
-                </Tooltip>
-              ))}
-          </Name>
-          <Icons>
-            {!props.label.inactive && (
-              <>
-                {getProgress(props.label) !== 100 && (
-                  <Tooltip title={`Label is missing some information`} placement='right'>
-                    <QuestionMarkIcon fontSize='small' />
+              {props.label.submission &&
+                (props.label.submission.includes('@') ? (
+                  <Tooltip title='Email Submission' placement='right'>
+                    <EmailIcon fontSize='small' opacity={0.5} />
                   </Tooltip>
-                )}
-                {areAllSongsDealtWith(props.label) && (
-                  <Tooltip title='All songs processed' placement='right'>
-                    <DoneIcon color='primary' fontSize='small' />
+                ) : (
+                  <Tooltip title='Web Form Submission' placement='right'>
+                    <LinkIcon fontSize='small' opacity={0.5} />
                   </Tooltip>
-                )}
-              </>
-            )}
-            {getDaysAgo(props.label) > consts.uploadWarning && (
-              <Tooltip
-                title={`Inactive for more than ${consts.uploadWarning} days`}
-                placement='right'
-              >
-                <AccessTimeIcon fontSize='small' />
+                ))}
+            </Name>
+            <Icons>
+              {!props.label.inactive && (
+                <>
+                  {getProgress(props.label) !== 100 && (
+                    <Tooltip title={`Label is missing some information`} placement='right'>
+                      <QuestionMarkIcon fontSize='small' />
+                    </Tooltip>
+                  )}
+                  {areAllSongsDealtWith(props.label) && (
+                    <Tooltip title='All songs processed' placement='right'>
+                      <DoneIcon color='primary' fontSize='small' />
+                    </Tooltip>
+                  )}
+                </>
+              )}
+              {getDaysAgo(props.label) > consts.uploadWarning && (
+                <Tooltip
+                  title={`Inactive for more than ${consts.uploadWarning} days`}
+                  placement='right'
+                >
+                  <AccessTimeIcon fontSize='small' />
+                </Tooltip>
+              )}
+              <Tooltip title='Spotify Popularity %' placement='right'>
+                <Popularity>{Math.round(props.label.popularity || 0)}</Popularity>
               </Tooltip>
-            )}
-            <Tooltip title='Spotify Popularity %' placement='right'>
-              <Popularity>{Math.round(props.label.popularity || 0)}</Popularity>
-            </Tooltip>
-            <Tooltip title='Popularity Standard Deviation' placement='right'>
-              <Variance>{Math.round(props.label.popularityVariance || 0)}</Variance>
-            </Tooltip>
-            <Tooltip title='SoundCloud Followers' placement='right'>
-              <Followers>{nFormatter(props.label.followers, 0)}</Followers>
-            </Tooltip>
-          </Icons>
-        </Header>
-        {props.label.styles.length !== 0 && !store().extra.compact && (
-          <div>
-            <Chips chips={props.label.styles} small colorful />
-          </div>
-        )}
+              <Tooltip title='Popularity Standard Deviation' placement='right'>
+                <Variance>{Math.round(props.label.popularityVariance || 0)}</Variance>
+              </Tooltip>
+              <Tooltip title='SoundCloud Followers' placement='right'>
+                <Followers>{nFormatter(props.label.followers, 0)}</Followers>
+              </Tooltip>
+            </Icons>
+          </Header>
+          {props.label.styles.length !== 0 && !store().extra.compact && (
+            <div>
+              <Chips chips={props.label.styles} small colorful />
+            </div>
+          )}
+        </Content>
       </Wrapper>
     </>
   )
@@ -112,7 +111,8 @@ const Wrapper = styled('div')<{ compact: boolean; index: number; inactive: boole
   cursor: pointer;
   text-align: left;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 10px;
   opacity: ${({ inactive }) => (inactive ? 0.5 : 1)};
   transition: 300ms;
@@ -120,6 +120,13 @@ const Wrapper = styled('div')<{ compact: boolean; index: number; inactive: boole
   &:hover {
     background-color: ${({ compact }) => (compact ? '' : theme.palette.secondary.light)};
   }
+`
+
+const Content = styled('div')<{ compact: boolean }>`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: ${({ compact }) => (compact ? '0px' : '10px')};
 `
 
 const Header = styled('div')`

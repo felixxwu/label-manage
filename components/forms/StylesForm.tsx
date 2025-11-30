@@ -4,6 +4,9 @@ import { Chips } from '../Chips'
 import { StylesSelector } from '../StylesSelector'
 import styled from '@emotion/styled'
 import MusicNote from '@mui/icons-material/MusicNote'
+import { theme } from '../../utils/theme'
+import { consts } from '../../utils/consts'
+import { Tooltip } from '@mui/material'
 
 export function StylesForm(props: { label: Label }) {
   async function handleDelete(style: string) {
@@ -13,16 +16,10 @@ export function StylesForm(props: { label: Label }) {
   }
 
   return (
-    <Wrapper>
-      <Header>
-        <div>Styles:</div>
-        <Widgets>
-          {props.label.tracks.popular.length +
-            props.label.tracks.recent.length +
-            props.label.tracks.reposts.length}
-          <MusicNote fontSize='small' />
-        </Widgets>
-      </Header>
+    <Wrapper
+      style={props.label.styles.length ? {} : { backgroundColor: theme.palette.warning.dark }}
+    >
+      Styles:
       <Chips
         colorful
         chips={props.label.styles}
@@ -40,6 +37,7 @@ export function StylesForm(props: { label: Label }) {
               onSelectStyle={handleStyleSelection}
               ignore={props.label.styles}
               label={props.label}
+              onClose={closeDialog}
             />
           )
         }}
@@ -51,8 +49,13 @@ export function StylesForm(props: { label: Label }) {
 const Wrapper = styled('div')`
   width: 100%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 10px;
+  background-color: ${theme.palette.secondary.main};
+  padding: 10px;
+  border-radius: ${consts.borderRadius}px;
 `
 
 const Header = styled('div')`
@@ -64,4 +67,5 @@ const Header = styled('div')`
 const Widgets = styled('div')`
   display: flex;
   align-items: center;
+  opacity: 0.5;
 `

@@ -58,7 +58,7 @@ export function AppProvider(props: { children: ReactNode }) {
 
         * {
           box-sizing: border-box;
-          font-family: 'Lexend Deca', sans-serif;
+          font-family: 'Lexend Deca', sans-serif !important;
           user-select: none;
           -webkit-tap-highlight-color: transparent;
         }

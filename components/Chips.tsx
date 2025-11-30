@@ -16,6 +16,7 @@ export function Chips(props: {
   onClick?: (item: string) => Promise<void>
   onSelect?: (items: string[]) => Promise<void>
   addDialog?: (props: { closeDialog: () => void }) => React.ReactNode
+  skipDeleteDialog?: boolean
 }) {
   const [dialogContent, setDialogContent] = useState<'delete' | 'add' | 'closed'>('closed')
   const [itemToDelete, setItemToDelete] = useState('')
@@ -38,6 +39,15 @@ export function Chips(props: {
     if (itemToDelete === '' || !props.onDelete) return
     await props.onDelete(itemToDelete)
     closeDialog()
+  }
+
+  async function handleDelete(item: string) {
+    if (!props.onDelete) return
+    if (props.skipDeleteDialog) {
+      await props.onDelete(item)
+    } else {
+      openDeleteDialog(item)
+    }
   }
 
   function handleClick(item: string) {
@@ -63,7 +73,7 @@ export function Chips(props: {
             <Chip
               label={item}
               onClick={clickHanlder && (() => handleClick(item))}
-              onDelete={props.onDelete && (() => openDeleteDialog(item))}
+              onDelete={props.onDelete && (() => handleDelete(item))}
               key={index}
               size={props.small ? 'small' : 'medium'}
               variant={props.outlined ? 'outlined' : 'filled'}
@@ -85,7 +95,7 @@ export function Chips(props: {
         {dialogContent === 'add' && props.addDialog && props.addDialog({ closeDialog })}
         {dialogContent === 'delete' && (
           <>
-            <DialogTitle>Remove {itemToDelete} from skip list?</DialogTitle>
+            <DialogTitle>Remove {itemToDelete} from this list?</DialogTitle>
             <DialogActions>
               <Button onClick={closeDialog}>No</Button>
               <Button onClick={deleteItem}>Remove</Button>

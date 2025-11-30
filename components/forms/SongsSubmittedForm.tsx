@@ -9,6 +9,8 @@ import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
 import { useRouter } from 'next/router'
+import { theme } from '../../utils/theme'
+import { consts } from '../../utils/consts'
 
 export function SongsSubmittedForm(props: { label: Label }) {
   const router = useRouter()
@@ -32,8 +34,7 @@ export function SongsSubmittedForm(props: { label: Label }) {
   return (
     <Wrapper>
       <Header>
-        <div>Songs Submitted:</div>
-
+        Songs Submitted:
         {areAllSongsDealtWith(props.label) ? (
           <IconButton>
             <DoneAll />
@@ -55,6 +56,9 @@ const Wrapper = styled('div')`
   gap: 10px;
   align-items: flex-start;
   width: 100%;
+  background-color: ${theme.palette.secondary.main};
+  padding: 10px;
+  border-radius: ${consts.borderRadius}px;
 `
 
 const Header = styled('div')`
