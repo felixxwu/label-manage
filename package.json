@@ -18,8 +18,7 @@
     "firebase": "^9.10.0",
     "next": "latest",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "truly-global-state": "^1.0.7"
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
