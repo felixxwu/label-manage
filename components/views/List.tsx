@@ -123,9 +123,11 @@ export function List() {
       }
       return 0
     })
-    .sort((a, b) => {
-      return !a.inactive && b.inactive ? -1 : 1
-    })
+
+  const activeLabels = labels.filter(label => !label.inactive)
+  const activeLabelsWithSubmission = activeLabels.filter(label => label.submission)
+  const activeLabelsWithoutSubmission = activeLabels.filter(label => !label.submission)
+  const inactiveLabels = labels.filter(label => label.inactive)
 
   const handleStyleSelect = async (styles: string[]) => {
     store().styleFilter = styles
@@ -177,10 +179,34 @@ export function List() {
           </StyleFilter>
 
           <ListItems compact={store().extra.compact}>
-            {labels.map((label, i) => {
+            {activeLabelsWithSubmission.map((label, i) => {
               return <ListItem label={label} index={i} key={i} />
             })}
           </ListItems>
+
+          {activeLabelsWithoutSubmission.length > 0 && (
+            <>
+              <h2 style={{ alignSelf: 'flex-start', margin: '20px 0 10px 0' }}>
+                No submission info
+              </h2>
+              <ListItems compact={store().extra.compact}>
+                {activeLabelsWithoutSubmission.map((label, i) => {
+                  return <ListItem label={label} index={i} key={i} />
+                })}
+              </ListItems>
+            </>
+          )}
+
+          {inactiveLabels.length > 0 && (
+            <>
+              <h2 style={{ alignSelf: 'flex-start', margin: '20px 0 10px 0' }}>Do not submit to</h2>
+              <ListItems compact={store().extra.compact}>
+                {inactiveLabels.map((label, i) => {
+                  return <ListItem label={label} index={i} key={i} />
+                })}
+              </ListItems>
+            </>
+          )}
         </>
       )}
 

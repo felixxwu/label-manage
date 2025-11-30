@@ -9,7 +9,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import { nFormatter } from '../utils/nFormatter'
 import { Chips } from './Chips'
 import { getDaysAgo } from '../utils/getDaysAgo'
-import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import { areAllSongsDealtWith } from '../utils/allSongsDealtWith'
 import DoneIcon from '@mui/icons-material/Done'
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark'
@@ -58,21 +58,10 @@ export function ListItem(props: { label: Label; index: number }) {
               ))}
           </Name>
           <Icons>
-            {getDaysAgo(props.label) > consts.uploadWarning && (
-              <Tooltip
-                title={`Inactive for more than ${consts.uploadWarning} days`}
-                placement='right'
-              >
-                <HourglassDisabledIcon fontSize='small' />
-              </Tooltip>
-            )}
             {!props.label.inactive && (
               <>
                 {getProgress(props.label) !== 100 && (
-                  <Tooltip
-                    title={`Profile ${Math.round(getProgress(props.label))}% complete`}
-                    placement='right'
-                  >
+                  <Tooltip title={`Label is missing some information`} placement='right'>
                     <QuestionMarkIcon fontSize='small' />
                   </Tooltip>
                 )}
@@ -82,6 +71,14 @@ export function ListItem(props: { label: Label; index: number }) {
                   </Tooltip>
                 )}
               </>
+            )}
+            {getDaysAgo(props.label) > consts.uploadWarning && (
+              <Tooltip
+                title={`Inactive for more than ${consts.uploadWarning} days`}
+                placement='right'
+              >
+                <AccessTimeIcon fontSize='small' />
+              </Tooltip>
             )}
             <Tooltip title='Spotify Popularity %' placement='right'>
               <Popularity>{Math.round(props.label.popularity || 0)}</Popularity>
