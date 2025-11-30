@@ -44,7 +44,7 @@ export function AppProvider(props: { children: ReactNode }) {
 
       <GeneralDialog />
       <SnackbarPopup />
-      <Backdrop open={store().loading}>
+      <Backdrop open={store().loading || store().userLoading || store().tracksLoading}>
         <CircularProgress />
       </Backdrop>
 

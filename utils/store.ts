@@ -24,6 +24,8 @@ export function useStore() {
       snackbar: '',
       listScrollPos: 0,
       loading: false,
+      userLoading: true,
+      tracksLoading: true,
       user: <User | null>null,
       styleFilter: <string[]>[],
     }
@@ -61,6 +63,8 @@ function makeStore<Readonly, Config extends {}>(readonly: Readonly, config: Conf
 
 const session = {
   save(key: string | number | symbol, newValue: any) {
+    if (key === 'userLoading') return
+    if (key === 'tracksLoading') return
     if (typeof key === 'string') sessionStorage.setItem(key, JSON.stringify(newValue))
   },
   hasKey(key: string | number | symbol) {

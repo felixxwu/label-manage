@@ -71,10 +71,13 @@ export function useDb() {
     const isFirstLoad = Object.keys(sessionStorage).length === 0
     onAuthStateChanged(getAuth(), user => {
       store().user = user
+      store().userLoading = false
       if (user) {
+        store().tracksLoading = true
         const db = getFirestore(app)
 
         onSnapshotTyped(db, user.uid, (labels, extra) => {
+          store().tracksLoading = false
           if (isFirstLoad) store().loading = false
           store().labels = labels.map(label => ({ ...emptyLabel, ...label }))
 
@@ -84,6 +87,8 @@ export function useDb() {
             setDoc(doc(db, user.uid, consts.dbExtraId), emptyExtra)
           }
         })
+      } else {
+        store().tracksLoading = false
       }
     })
   }, [])
