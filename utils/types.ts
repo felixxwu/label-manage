@@ -1,6 +1,6 @@
 export const followerOptions = ['2k', '5k', '10k', '20k', '50k', '100k', '200k'] as const
 
-export const sortTypes = ['follower', 'name'] as const
+export const sortTypes = ['follower', 'name', 'popularity'] as const
 export type SortType = (typeof sortTypes)[number]
 
 export interface Track {
@@ -26,6 +26,8 @@ export interface Label {
   acceptDemos: boolean
   lastUploaded: string
   lastScraped: number
+  popularity: number
+  popularityVariance: number
   tracks: {
     popular: Track[]
     recent: Track[]

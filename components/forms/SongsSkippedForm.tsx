@@ -8,7 +8,11 @@ import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
 import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
+import { useRouter } from 'next/router'
+
 export function SongsSkippedForm(props: { label: Label }) {
+  const router = useRouter()
+
   async function handleDelete(song: string) {
     updateDocTyped(props.label.id, {
       songsSkipped: props.label.songsSkipped.filter(item => item !== song),
@@ -32,7 +36,7 @@ export function SongsSkippedForm(props: { label: Label }) {
           </IconButton>
         ) : (
           <IconButton
-            onClick={() => (window.location.href += '/skip')}
+            onClick={() => router.push('/label/' + props.label.id + '/skip')}
             disabled={!props.label.submission}
           >
             <Send />

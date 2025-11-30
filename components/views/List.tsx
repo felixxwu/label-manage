@@ -19,11 +19,16 @@ import Email from '@mui/icons-material/Email'
 import { Chips } from '../Chips'
 import { StylesSelector } from '../StylesSelector'
 
+import { useRouter } from 'next/router'
+
 export function List() {
   const { db } = store()
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
+    fetch('/api/getPopularity?name=Fokuz')
+
     window.scrollTo(0, store().listScrollPos)
     window.onscroll = debounce(() => {
       store().listScrollPos = window.scrollY
@@ -35,11 +40,11 @@ export function List() {
   }, [])
 
   async function showMusic() {
-    window.location.href += '/music'
+    router.push('/music')
   }
 
   async function showTemplate() {
-    window.location.href += '/template'
+    router.push('/template')
   }
 
   function handleAddLabel() {
@@ -54,7 +59,7 @@ export function List() {
             if (name && db) {
               const doc = await addDocTyped(db, name)
               if (!doc) return
-              window.location.href += '/label/' + doc.id
+              router.push('/label/' + doc.id)
             }
           },
           callOnEnter: true,
@@ -109,6 +114,9 @@ export function List() {
     .sort((a, b) => {
       if (store().sort === 'follower') {
         return (isNaN(b.followers) ? 0 : b.followers) - (isNaN(a.followers) ? 0 : a.followers)
+      }
+      if (store().sort === 'popularity') {
+        return (isNaN(b.popularity) ? 0 : b.popularity) - (isNaN(a.popularity) ? 0 : a.popularity)
       }
       if (store().sort === 'name') {
         return a.name > b.name ? 1 : -1
@@ -211,6 +219,13 @@ const Options = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 const Link = styled('a')`

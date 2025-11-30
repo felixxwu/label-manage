@@ -54,7 +54,21 @@ export function NameForm(props: { label: Label }) {
       </Description>
       <InfoBar>
         <Typography variant='caption' color={theme.palette.primary.dark}>
-          {nFormatter(props.label.followers, 0)} Followers
+          {nFormatter(props.label.followers, 0)} Followers •{' '}
+          <span
+            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+            onClick={() =>
+              window.open(
+                `https://open.spotify.com/search/label:${encodeURIComponent(
+                  props.label.name
+                )}/tracks`,
+                '_blank'
+              )
+            }
+          >
+            {props.label.popularity || 0}% ({Math.round(props.label.popularityVariance || 0)})
+            Popularity
+          </span>
         </Typography>
         <Typography
           variant='caption'

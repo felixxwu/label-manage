@@ -1,6 +1,6 @@
 import { Button, CircularProgress, IconButton, Typography } from '@mui/material'
 import { deleteDocTyped } from '../../utils/db'
-import { Label } from '../../utils/types'
+import type { Label } from '../../utils/types'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { LinkForm } from '../forms/LinkForm'
 import { NameForm } from '../forms/NameForm'
@@ -25,8 +25,11 @@ import { useEffect } from 'react'
 import { searchForLinks } from '../../utils/searchForLinks'
 import { Header } from '../Header'
 
+import { useRouter } from 'next/router'
+
 export function Label(props: { label: Label }) {
   const { db } = store()
+  const router = useRouter()
 
   useEffect(() => {
     if (!props.label.link) {
@@ -67,7 +70,7 @@ export function Label(props: { label: Label }) {
   }
 
   async function handleBack() {
-    window.history.back()
+    router.back()
   }
 
   async function handleDelete() {
@@ -102,6 +105,7 @@ export function Label(props: { label: Label }) {
           </Header>
           <NameForm {...props} />
           <InactiveForm {...props} />
+          <NotesForm {...props} />
           <Wrapper
             style={{
               opacity: props.label.inactive ? 0.5 : 1,
@@ -113,8 +117,6 @@ export function Label(props: { label: Label }) {
             <Divider />
             <SubmissionForm {...props} />
             <AcceptDemo {...props} />
-            <Divider />
-            <NotesForm {...props} />
             <Divider />
             <ArtistsForm {...props} />
             <Divider />

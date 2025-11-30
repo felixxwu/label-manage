@@ -75,6 +75,19 @@ export async function reScrapeData() {
 
 export async function updateProfile(label: Label) {
   const res = await scrapeSoundCloudProfile(label.link)
+
+  store().snackbar = 'Fetching popularity...'
+  let popularity = 0
+  let popularityVariance = 0
+  try {
+    const popRes = await fetch(`/api/getPopularity?name=${encodeURIComponent(label.name)}`)
+    const popData = await popRes.json()
+    popularity = popData.averagePopularity || 0
+    popularityVariance = popData.stdDev || 0
+  } catch (e) {
+    console.error('Failed to fetch popularity', e)
+  }
+
   store().snackbar = 'Updating database...'
   await load(updateDocTyped, label.id, {
     ...(res.profile.image ? { image: res.profile.image } : {}),
@@ -82,6 +95,8 @@ export async function updateProfile(label: Label) {
     ...(res.profile.description ? { description: res.profile.description } : {}),
     ...(res.tracks.lastUpload ? { lastUploaded: res.tracks.lastUpload } : {}),
     lastScraped: new Date().getTime(),
+    popularity,
+    popularityVariance,
     tracks: {
       popular: res.tracks.popular,
       recent: res.tracks.recent,

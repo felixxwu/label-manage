@@ -1,5 +1,5 @@
 export const consts = {
-  maxAppWidth: 500,
+  maxAppWidth: 650,
   borderRadius: 6,
   appEndSpace: '20vh',
   transition: 200,

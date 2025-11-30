@@ -85,10 +85,10 @@ export function Chips(props: {
         {dialogContent === 'add' && props.addDialog && props.addDialog({ closeDialog })}
         {dialogContent === 'delete' && (
           <>
-            <DialogTitle>Delete {itemToDelete}?</DialogTitle>
+            <DialogTitle>Remove {itemToDelete} from skip list?</DialogTitle>
             <DialogActions>
               <Button onClick={closeDialog}>No</Button>
-              <Button onClick={deleteItem}>Delete</Button>
+              <Button onClick={deleteItem}>Remove</Button>
             </DialogActions>
           </>
         )}

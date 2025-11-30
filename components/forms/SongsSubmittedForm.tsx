@@ -8,7 +8,11 @@ import { areAllSongsDealtWith } from '../../utils/allSongsDealtWith'
 import DoneAll from '@mui/icons-material/Done'
 import { store } from '../../utils/store'
 
+import { useRouter } from 'next/router'
+
 export function SongsSubmittedForm(props: { label: Label }) {
+  const router = useRouter()
+
   async function handleDelete(song: string) {
     updateDocTyped(props.label.id, {
       songsSubmitted: props.label.songsSubmitted.filter(item => item !== song),
@@ -16,7 +20,7 @@ export function SongsSubmittedForm(props: { label: Label }) {
   }
 
   function createSubmission() {
-    window.location.href += '/submit'
+    router.push('/label/' + props.label.id + '/submit')
   }
 
   const songs = props.label.songsSubmitted.filter(song =>

@@ -9,7 +9,7 @@ export function InactiveForm(props: { label: Label }) {
   return (
     <FormControlLabel
       control={<Switch onChange={handleChange} checked={props.label.inactive} />}
-      label='Inactive / No Submission'
+      label='Do not submit to'
     />
   )
 }

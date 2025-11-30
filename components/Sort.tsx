@@ -16,6 +16,9 @@ export function Sort() {
         <ToggleButton value={'follower' as SortType} size='small'>
           Followers
         </ToggleButton>
+        <ToggleButton value={'popularity' as SortType} size='small'>
+          Popularity
+        </ToggleButton>
         <ToggleButton value={'name' as SortType} size='small'>
           Name
         </ToggleButton>
