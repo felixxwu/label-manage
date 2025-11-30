@@ -1,6 +1,6 @@
 import { Fab, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Song } from '../../utils/types'
+import type { Song } from '../../utils/types'
 import { consts } from '../../utils/consts'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'

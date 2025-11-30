@@ -4,7 +4,7 @@ import { Button } from '@mui/material'
 import React, { useState } from 'react'
 import { consts } from '../utils/consts'
 import { store } from '../utils/store'
-import { Label, Song } from '../utils/types'
+import type { Label, Song } from '../utils/types'
 import { alreadySubmitted, matchingStylesList, SongChoiceList } from './SongChoiceList'
 
 export function SongChoice(props: {

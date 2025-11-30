@@ -3,7 +3,7 @@ import { FormControlLabel, Checkbox, Typography } from '@mui/material'
 import React from 'react'
 import { store } from '../utils/store'
 import { theme } from '../utils/theme'
-import { Label, Song } from '../utils/types'
+import type { Label, Song } from '../utils/types'
 
 export function matchingStylesList(song: Song, label: Label) {
   const styles = song.styles.filter(songStyle => label.styles.includes(songStyle))
