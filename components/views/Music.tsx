@@ -115,4 +115,5 @@ const SongHeader = styled('div')`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  font-size: 2rem;
 `

@@ -73,8 +73,8 @@ export function NameForm(props: { label: Label }) {
                 )
               }
             >
-              {props.label.popularity || 0}% ({Math.round(props.label.popularityVariance || 0)})
-              Popularity
+              {Math.round(props.label.popularity || 0)}% (
+              {Math.round(props.label.popularityVariance || 0)}) Popularity
             </span>
           </Typography>
           <Typography
@@ -85,7 +85,7 @@ export function NameForm(props: { label: Label }) {
                 : theme.palette.primary.dark
             }
           >
-            Last Upload: {getDaysAgo(props.label)} days
+            Last Active: {getDaysAgo(props.label)} days ago
           </Typography>
         </InfoBar>
       </BottomRow>
