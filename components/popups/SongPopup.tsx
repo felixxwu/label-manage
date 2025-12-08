@@ -63,7 +63,8 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
   }
 
   function handleConfirmPaste() {
-    setLocalLink(clipboardContent)
+    const linkWithoutQuery = clipboardContent.split('?')[0]
+    setLocalLink(linkWithoutQuery)
     setClipboardContent('')
     setDialogMode('edit')
   }

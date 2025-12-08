@@ -15,11 +15,13 @@ export function PasteConfirmationDialog(props: {
   onCancel: () => void
   onConfirm: () => void
 }) {
+  const trimmedContent = props.content.split('?')[0]
+
   return (
     <>
       <DialogTitle>Confirm Paste</DialogTitle>
       <DialogContent>
-        <PastePreview>{props.content}</PastePreview>
+        <PastePreview>{trimmedContent}</PastePreview>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onCancel}>Cancel</Button>
@@ -28,4 +30,3 @@ export function PasteConfirmationDialog(props: {
     </>
   )
 }
-
