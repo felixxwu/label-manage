@@ -89,7 +89,7 @@ export function StylesSelector(props: {
       ) : (
         <Buttons>
           <Button onClick={() => setEditMode(true)} startIcon={<Edit />}>
-            Add/Remove Styles
+            Edit Global Style List
           </Button>
           <Button onClick={() => props.onClose()}>Close</Button>
         </Buttons>
