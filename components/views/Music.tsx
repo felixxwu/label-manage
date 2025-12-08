@@ -12,6 +12,7 @@ import styled from '@emotion/styled'
 import { SongPopup } from '../popups/SongPopup'
 import Add from '@mui/icons-material/Add'
 import { Header } from '../Header'
+import { StylesSelector } from '../StylesSelector'
 
 export function Music() {
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
@@ -41,6 +42,21 @@ export function Music() {
     setSelectedSongId(null)
   }
 
+  const handleStyleSelect = async (styles: string[]) => {
+    store().styleFilter = styles
+  }
+
+  const handleStyleDelete = async (item: string) => {
+    await handleStyleSelect(store().styleFilter.filter(style => style !== item))
+  }
+
+  const songs = store()
+    .extra.songs.slice()
+    .filter(song => {
+      if (store().styleFilter.length === 0) return true
+      return store().styleFilter.some(style => song.styles.includes(style))
+    })
+
   return (
     <Wrapper>
       <Header
@@ -56,15 +72,47 @@ export function Music() {
       {store().extra.songs.length === 0 ? (
         <div>No songs added yet :(</div>
       ) : (
-        store().extra.songs.map((song, index) => (
-          <Song onClick={() => openDialog(song.id)} key={index}>
-            <SongHeader>
-              {song.title}
-              {song.link && <LinkIcon color='primary' />}
-            </SongHeader>
-            {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
-          </Song>
-        ))
+        <>
+          <StyleFilter>
+            Filter by style:
+            <Chips
+              chips={store().styleFilter}
+              onDelete={handleStyleDelete}
+              skipDeleteDialog
+              colorful
+              addDialog={({ closeDialog }) => (
+                <StylesSelector
+                  onSelectStyle={async styles => {
+                    handleStyleSelect([...store().styleFilter, ...styles])
+                    closeDialog()
+                  }}
+                  ignore={store().styleFilter}
+                  onClose={closeDialog}
+                />
+              )}
+            />
+          </StyleFilter>
+
+          {store().styleFilter.length > 0 && songs.length > 0 && (
+            <ResultsCount>
+              {songs.length} {songs.length === 1 ? 'result' : 'results'}
+            </ResultsCount>
+          )}
+
+          {songs.length === 0 ? (
+            <div>No songs match the selected filters</div>
+          ) : (
+            songs.map((song, index) => (
+              <Song onClick={() => openDialog(song.id)} key={index}>
+                <SongHeader>
+                  {song.title}
+                  {song.link && <LinkIcon color='primary' />}
+                </SongHeader>
+                {song.styles.length !== 0 && <Chips chips={song.styles} colorful />}
+              </Song>
+            ))
+          )}
+        </>
       )}
 
       <Fab
@@ -116,4 +164,16 @@ const SongHeader = styled('div')`
   justify-content: space-between;
   width: 100%;
   font-size: 2rem;
+`
+
+const StyleFilter = styled('div')`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+`
+
+const ResultsCount = styled('div')`
+  width: 100%;
+  text-align: left;
 `
