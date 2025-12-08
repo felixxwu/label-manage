@@ -1,12 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  TextField,
-} from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import { consts } from '../../utils/consts'
 import React, { useState } from 'react'
 import { updateDocTyped } from '../../utils/db'
@@ -14,29 +6,28 @@ import { store } from '../../utils/store'
 import { StylesSelector } from '../StylesSelector'
 import { Chips } from '../Chips'
 import styled from '@emotion/styled'
-import { Launch } from '@mui/icons-material'
+import { DeleteConfirmationDialog } from './DeleteConfirmationDialog'
+import { PasteConfirmationDialog } from './PasteConfirmationDialog'
+import { SongLinkInput } from './SongLinkInput'
+
+type DialogMode = 'edit' | 'delete' | 'paste'
 
 export function SongPopup(props: { selectedSongId: string; close: () => void }) {
-  const [deleteDialog, setDeleteDialog] = useState(false)
-  const [localTitle, setLocalTitle] = useState(getSong()?.title ?? '')
-  const [localLink, setLocalLink] = useState(getSong()?.link ?? '')
-  const [localStyles, setLocalStyles] = useState(getSong()?.styles ?? [])
+  const [dialogMode, setDialogMode] = useState<DialogMode>('edit')
+  const [clipboardContent, setClipboardContent] = useState('')
+  const [localTitle, setLocalTitle] = useState('')
+  const [localLink, setLocalLink] = useState('')
+  const [localStyles, setLocalStyles] = useState<string[]>([])
 
-  function getSong() {
-    return store().extra.songs.find(song => song.id === props.selectedSongId)
-  }
+  const song = store().extra.songs.find(song => song.id === props.selectedSongId)
 
-  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setLocalTitle(e.target.value)
-  }
-
-  function handleLinkChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setLocalLink(e.target.value)
-  }
-
-  async function handleDeleteStyle(style: string) {
-    setLocalStyles(localStyles.filter(s => s !== style))
-  }
+  React.useEffect(() => {
+    if (song) {
+      setLocalTitle(song.title ?? '')
+      setLocalLink(song.link ?? '')
+      setLocalStyles(song.styles ?? [])
+    }
+  }, [song?.id])
 
   async function saveEdit() {
     await updateDocTyped(consts.dbExtraId, {
@@ -48,9 +39,8 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
             link: localLink,
             styles: localStyles,
           }
-        } else {
-          return song
         }
+        return song
       }),
     })
   }
@@ -62,87 +52,109 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
     })
   }
 
-  function openLink(link: string) {
-    window.open(link, '_blank')?.focus()
+  async function handlePasteFromClipboard() {
+    try {
+      const text = await navigator.clipboard.readText()
+      setClipboardContent(text)
+      setDialogMode('paste')
+    } catch (err) {
+      console.error('Failed to read clipboard:', err)
+    }
+  }
+
+  function handleConfirmPaste() {
+    setLocalLink(clipboardContent)
+    setClipboardContent('')
+    setDialogMode('edit')
+  }
+
+  function handleCancelPaste() {
+    setClipboardContent('')
+    setDialogMode('edit')
   }
 
   async function handleClose() {
-    if (deleteDialog) {
-      setDeleteDialog(false)
+    if (dialogMode === 'delete') {
+      setDialogMode('edit')
+      return
+    }
+    if (dialogMode === 'paste') {
+      handleCancelPaste()
       return
     }
     await saveEdit()
     props.close()
   }
 
+  function renderDialogContent() {
+    if (dialogMode === 'delete') {
+      return (
+        <DeleteConfirmationDialog onCancel={() => setDialogMode('edit')} onConfirm={deleteSong} />
+      )
+    }
+
+    if (dialogMode === 'paste') {
+      return (
+        <PasteConfirmationDialog
+          content={clipboardContent}
+          onCancel={handleCancelPaste}
+          onConfirm={handleConfirmPaste}
+        />
+      )
+    }
+
+    return (
+      <>
+        <DialogTitle>Edit Song</DialogTitle>
+        <DialogContent>
+          <Fields>
+            <TextField
+              margin='normal'
+              label='Song Title'
+              fullWidth
+              onChange={e => setLocalTitle(e.target.value)}
+              value={localTitle}
+              autoFocus
+            />
+            <SongLinkInput
+              value={localLink}
+              onChange={setLocalLink}
+              onPasteClick={handlePasteFromClipboard}
+            />
+            <Chips
+              chips={localStyles}
+              colorful
+              title='Styles:'
+              onDelete={async style => setLocalStyles(localStyles.filter(s => s !== style))}
+              addDialog={({ closeDialog }) => {
+                async function handleStyleSelection(styles: string[]) {
+                  setLocalStyles(localStyles.concat(...styles))
+                  closeDialog()
+                }
+
+                return (
+                  <StylesSelector
+                    onSelectStyle={handleStyleSelection}
+                    ignore={song?.styles ?? []}
+                    onClose={closeDialog}
+                  />
+                )
+              }}
+            />
+          </Fields>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogMode('delete')} color='error'>
+            Delete
+          </Button>
+        </DialogActions>
+      </>
+    )
+  }
+
   return (
     <Dialog open={props.selectedSongId !== null} onClose={handleClose}>
-      {deleteDialog ? (
-        <>
-          <DialogTitle>Are you sure you want to delete this song?</DialogTitle>
-          <DialogActions>
-            <Button onClick={() => setDeleteDialog(false)}>No</Button>
-            <Button onClick={deleteSong}>Delete</Button>
-          </DialogActions>
-        </>
-      ) : (
-        <>
-          <DialogTitle>Edit Song</DialogTitle>
-          <DialogContent>
-            <Fields>
-              <TextField
-                margin='normal'
-                label='Song Title'
-                fullWidth
-                onChange={handleTitleChange}
-                value={localTitle}
-                autoFocus
-              />
-              <TextWithIcon>
-                <ComboText>
-                  <TextField
-                    margin='normal'
-                    label='Song Link'
-                    fullWidth
-                    onChange={handleLinkChange}
-                    value={localLink}
-                  />
-                </ComboText>
-                <ComboIcon>
-                  <IconButton onClick={() => openLink(localLink)}>
-                    <Launch color='primary' />
-                  </IconButton>
-                </ComboIcon>
-              </TextWithIcon>
-              <Chips
-                chips={localStyles}
-                colorful
-                title='Styles:'
-                onDelete={handleDeleteStyle}
-                addDialog={({ closeDialog }) => {
-                  async function handleStyleSelection(styles: string[]) {
-                    setLocalStyles(localStyles.concat(...styles))
-                    closeDialog()
-                  }
-
-                  return (
-                    <StylesSelector
-                      onSelectStyle={handleStyleSelection}
-                      ignore={getSong()?.styles ?? []}
-                      onClose={closeDialog}
-                    />
-                  )
-                }}
-              />
-            </Fields>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDeleteDialog(true)} color='error'>
-              Delete
-            </Button>
-          </DialogActions>
-        </>
-      )}
+      {renderDialogContent()}
     </Dialog>
   )
 }
@@ -152,21 +164,4 @@ const Fields = styled('div')`
   flex-direction: column;
   width: 450px;
   max-width: 100%;
-`
-
-const TextWithIcon = styled('div')`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-`
-
-const ComboText = styled('div')`
-  width: 100%;
-`
-
-const ComboIcon = styled('div')`
-  flex: 1;
-  margin-bottom: 5px;
 `
