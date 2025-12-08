@@ -21,6 +21,7 @@ import { StylesSelector } from '../StylesSelector'
 
 import { useRouter } from 'next/router'
 import { consts } from '../../utils/consts'
+import { getDaysAgo } from '../../utils/getDaysAgo'
 
 export function List() {
   const { db } = store()
@@ -127,6 +128,12 @@ export function List() {
 
   const activeLabels = labels.filter(label => !label.inactive)
   const activeLabelsWithSubmission = activeLabels.filter(label => label.submission)
+  const activeLabelsWithSubmissionNoWarning = activeLabelsWithSubmission.filter(
+    label => getDaysAgo(label) <= consts.uploadWarning
+  )
+  const activeLabelsWithUploadWarning = activeLabels.filter(
+    label => getDaysAgo(label) > consts.uploadWarning
+  )
   const activeLabelsWithoutSubmission = activeLabels.filter(label => !label.submission)
   const inactiveLabels = labels.filter(label => label.inactive)
 
@@ -200,12 +207,27 @@ export function List() {
               />
             </StyleFilter>
 
-            <ListItems compact={store().extra.compact}>
-              {activeLabelsWithSubmission.map((label, i) => {
-                return <ListItem label={label} index={i} key={i} />
-              })}
-            </ListItems>
+            {activeLabelsWithSubmissionNoWarning.length > 0 && (
+              <ListItems compact={store().extra.compact}>
+                {activeLabelsWithSubmissionNoWarning.map((label, i) => {
+                  return <ListItem label={label} index={i} key={i} />
+                })}
+              </ListItems>
+            )}
           </ListWrapper>
+
+          {activeLabelsWithUploadWarning.length > 0 && (
+            <>
+              <h2 style={{ alignSelf: 'flex-start', margin: '20px 0 10px 0' }}>
+                Inactive for more than {consts.uploadWarning} days
+              </h2>
+              <ListItems compact={store().extra.compact}>
+                {activeLabelsWithUploadWarning.map((label, i) => {
+                  return <ListItem label={label} index={i} key={i} />
+                })}
+              </ListItems>
+            </>
+          )}
 
           {activeLabelsWithoutSubmission.length > 0 && (
             <>
