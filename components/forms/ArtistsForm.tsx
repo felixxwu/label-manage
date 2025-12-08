@@ -52,7 +52,7 @@ export function ArtistsForm(props: { label: Label }) {
             for (const upload of allUploads) {
               if (upload.title) {
                 const split = upload.title.split(
-                  /-|&|,|ft.|Ft.|feat.|Feat.|\(|\)|Remix|Remixes|remix|x|X/
+                  /-|&|,|ft.|Ft.|feat.|Feat.|\(|\)|\[|\]|Remix|Remixes|remix|x|X/
                 )
                 artists.push(
                   ...split
