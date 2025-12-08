@@ -115,7 +115,6 @@ export function SongPopup(props: { selectedSongId: string; close: () => void }) 
               fullWidth
               onChange={e => setLocalTitle(e.target.value)}
               value={localTitle}
-              autoFocus
             />
             <SongLinkInput
               value={localLink}
