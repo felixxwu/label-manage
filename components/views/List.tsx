@@ -6,7 +6,7 @@ import { store } from '../../utils/store'
 import { useEffect, useState } from 'react'
 import Add from '@mui/icons-material/Add'
 import styled from '@emotion/styled'
-import { addDocTyped } from '../../utils/db'
+import { createNewLabelDialog } from '../../utils/labelDialog'
 import { reScrapeData } from '../../utils/scrape'
 import { Header } from '../Header'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -55,24 +55,8 @@ export function List() {
   }
 
   function handleAddLabel() {
-    store().dialog = {
-      message: 'New label',
-      input: 'Label name',
-      actions: [
-        { label: 'Cancel' },
-        {
-          label: 'OK',
-          callback: async name => {
-            if (name && db) {
-              const doc = await addDocTyped(db, name)
-              if (!doc) return
-              router.push('/label/' + doc.id)
-            }
-          },
-          callOnEnter: true,
-        },
-      ],
-    }
+    if (!db) return
+    store().dialog = createNewLabelDialog(router, db)
   }
 
   function handleMenu() {
