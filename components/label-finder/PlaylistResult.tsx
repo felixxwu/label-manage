@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
-import { Accordion, AccordionSummary, AccordionDetails, Avatar } from '@mui/material'
+import { Accordion, AccordionSummary, AccordionDetails, Avatar, IconButton } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { theme } from '../../utils/theme'
 import { PlaylistResult as PlaylistResultType } from './types'
 import { AlbumsTable } from './AlbumsTable'
 import { store } from '../../utils/store'
+import { STORAGE_KEY } from './utils'
 
 interface PlaylistResultProps {
   result: PlaylistResultType
@@ -18,6 +20,26 @@ export function PlaylistResult({ result, accordionKey }: PlaylistResultProps) {
     store().expandedAccordion = isExpanded ? accordionKey : false
   }
 
+  function handleDelete(e: React.MouseEvent) {
+    e.stopPropagation() // Prevent accordion from toggling when clicking delete
+    // Remove the playlist from store
+    store().playlistResults = store().playlistResults.filter(
+      r => r.playlistId !== result.playlistId
+    )
+    // Update localStorage
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(store().playlistResults))
+      store().snackbar = 'Playlist deleted'
+    } catch (error) {
+      store().snackbar = 'Error deleting playlist from local storage'
+      console.error('Error deleting from localStorage:', error)
+    }
+    // Close accordion if it was expanded
+    if (expanded) {
+      store().expandedAccordion = false
+    }
+  }
+
   return (
     <PlaylistAccordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -26,6 +48,14 @@ export function PlaylistResult({ result, accordionKey }: PlaylistResultProps) {
             <Avatar src={result.playlistImage} sx={{ width: 40, height: 40, mr: 1 }} />
           )}
           {result.playlistName}
+          <IconButton
+            size='small'
+            onClick={handleDelete}
+            sx={{ ml: 'auto', color: theme.palette.error.main }}
+            aria-label='Delete playlist'
+          >
+            <DeleteIcon fontSize='small' />
+          </IconButton>
         </AccordionTitleContent>
       </AccordionSummary>
       <StyledAccordionDetails>
@@ -49,4 +79,5 @@ const AccordionTitleContent = styled('div')`
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
 `

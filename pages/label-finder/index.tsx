@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Header } from '../../components/Header'
 import { IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { store } from '../../utils/store'
 import { STORAGE_KEY } from '../../components/label-finder/utils'
 import { PlaylistInput } from '../../components/label-finder/PlaylistInput'
@@ -10,6 +10,7 @@ import { PlaylistResult } from '../../components/label-finder/PlaylistResult'
 
 export default () => {
   const [, forceUpdate] = useState({})
+  const playlistLengthRef = useRef(store().playlistResults.length)
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -24,6 +25,18 @@ export default () => {
       store().snackbar = 'Error loading saved playlists from local storage'
       console.error('Error loading from localStorage:', error)
     }
+  }, [])
+
+  // Watch for changes to playlistResults and force re-render
+  useEffect(() => {
+    const checkInterval = setInterval(() => {
+      const currentLength = store().playlistResults.length
+      if (currentLength !== playlistLengthRef.current) {
+        playlistLengthRef.current = currentLength
+        forceUpdate({})
+      }
+    }, 100)
+    return () => clearInterval(checkInterval)
   }, [])
 
   // Save to localStorage whenever playlistResults changes
