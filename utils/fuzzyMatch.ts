@@ -48,7 +48,7 @@ export function similarityRatio(str1: string, str2: string): number {
  */
 export function findSimilarLabel(
   input: string,
-  threshold: number = 0.7
+  threshold: number = 0.6
 ): { label: string; similarity: number } | null {
   const inputLower = input.toLowerCase().trim()
   let bestMatch: { label: string; similarity: number } | null = null

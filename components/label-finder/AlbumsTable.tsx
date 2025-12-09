@@ -32,6 +32,12 @@ export function AlbumsTable({ albums }: AlbumsTableProps) {
   const router = useRouter()
   const { db } = store()
 
+  function removeYearFromStart(text: string): string {
+    // Remove copyright symbols (©, (C), (P)) followed by year, or just year from the start
+    // Matches: © 2023, (C) 2024, (P)2023, 2023, etc.
+    return text.replace(/^(?:(?:©|\(C\)|\(P\))\s*)?\d{4}[\s\-\.,]?\s*/, '').trim()
+  }
+
   function handleAddLabel(copyrights: string) {
     if (!db) return
     store().dialog = createNewLabelDialog(router, db, copyrights)
@@ -52,7 +58,8 @@ export function AlbumsTable({ albums }: AlbumsTableProps) {
             const artists = album.artists?.map(a => a.name).join(', ') || 'Unknown'
             const albumName = album.name || 'Unknown'
             const artistAlbum = `${artists} - ${albumName}`
-            const copyrights = album.copyrights?.[0]?.text || 'No copyright info'
+            const rawCopyrights = album.copyrights?.[0]?.text || 'No copyright info'
+            const copyrights = removeYearFromStart(rawCopyrights)
             const matchingLabel = findMatchingLabel(copyrights, 0.6)
 
             return (
