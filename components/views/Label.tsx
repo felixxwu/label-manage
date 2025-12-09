@@ -18,6 +18,7 @@ import { theme } from '../../utils/theme'
 import { InactiveForm } from '../forms/InactiveForm'
 import { SongsSkippedForm } from '../forms/SongsSkippedForm'
 import SmartToy from '@mui/icons-material/SmartToy'
+import GoogleIcon from '@mui/icons-material/Google'
 import { updateProfile } from '../../utils/scrape'
 import { getDaysAgoScraped } from '../../utils/getDaysAgo'
 import { useEffect } from 'react'
@@ -72,6 +73,11 @@ export function Label(props: { label: Label }) {
     router.back()
   }
 
+  function handleGoogleSearch() {
+    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(props.label.name)}`
+    window.open(searchUrl, '_blank')
+  }
+
   async function handleDelete() {
     db && (await deleteDocTyped(db, props.label.id))
     await handleBack()
@@ -96,6 +102,11 @@ export function Label(props: { label: Label }) {
             left={
               <IconButton onClick={handleBack}>
                 <ArrowBackIcon color='primary' />
+              </IconButton>
+            }
+            right={
+              <IconButton onClick={handleGoogleSearch}>
+                <GoogleIcon color='primary' />
               </IconButton>
             }
           >
