@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { DialogOptions } from '../components/popups/GeneralDialog'
 import { emptyExtra, useInitDb } from './db'
 import { Label, SortType } from './types'
+import { PlaylistResult } from '../components/label-finder/types'
 
 export type Store = ReturnType<typeof useStore>
 
@@ -28,6 +29,10 @@ export function useStore() {
       tracksLoading: true,
       user: <User | null>null,
       styleFilter: <string[]>[],
+      playlistLink: '',
+      playlistLoading: false,
+      playlistResults: <PlaylistResult[]>[],
+      expandedAccordion: <string | false>false,
     }
   )
 
@@ -65,6 +70,8 @@ const session = {
   save(key: string | number | symbol, newValue: any) {
     if (key === 'userLoading') return
     if (key === 'tracksLoading') return
+    if (key === 'playlistLoading') return // Transient loading state, should not persist
+    if (key === 'playlistResults') return // Too large for sessionStorage, using localStorage instead
     if (typeof key === 'string') sessionStorage.setItem(key, JSON.stringify(newValue))
   },
   hasKey(key: string | number | symbol) {

@@ -16,6 +16,7 @@ import SmartToyIcon from '@mui/icons-material/SmartToy'
 import DownloadIcon from '@mui/icons-material/Download'
 import GoogleIcon from '@mui/icons-material/Google'
 import Email from '@mui/icons-material/Email'
+import SearchIcon from '@mui/icons-material/Search'
 import { Chips } from '../Chips'
 import { StylesSelector } from '../StylesSelector'
 
@@ -49,6 +50,10 @@ export function List() {
     router.push('/template')
   }
 
+  async function showLabelFinder() {
+    router.push('/label-finder')
+  }
+
   function handleAddLabel() {
     store().dialog = {
       message: 'New label',
@@ -74,6 +79,7 @@ export function List() {
     const choices = [
       { label: 'Open Music Library', onChoose: showMusic, icon: <QueueMusicIcon /> },
       { label: 'Edit Email Template', onChoose: showTemplate, icon: <Email /> },
+      { label: 'Label Finder', onChoose: showLabelFinder, icon: <SearchIcon /> },
       { label: 'Re-scrape All Data', onChoose: reScrapeData, icon: <SmartToyIcon /> },
       { label: 'Export Data', onChoose: handleExport, icon: <DownloadIcon /> },
       { label: 'Sign Out', onChoose: () => getAuth().signOut(), icon: <GoogleIcon /> },
