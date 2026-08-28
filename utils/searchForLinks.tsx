@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material'
 import { updateDocTyped } from './db'
 import { load } from './load'
 import { nFormatter } from './nFormatter'
@@ -25,14 +26,18 @@ export async function searchForLinks(label: Label) {
             const followers = followerMeta
               ? parseInt(followerMeta.getAttribute('content') ?? '0')
               : null
+            const image =
+              scraped.querySelector('meta[property="og:image"]')?.getAttribute('content') ?? null
             return {
               link: partialLink,
               followers,
+              image,
             }
           } catch (_) {
             return {
               link: partialLink,
               followers: null,
+              image: null,
             }
           }
         })
@@ -43,8 +48,9 @@ export async function searchForLinks(label: Label) {
       actions: [{ label: 'Close' }],
       message: `Searching SoundCloud for "${label.name}"`,
       multiselect: {
-        choices: linksWithFollowers.map(({ link, followers }) => ({
+        choices: linksWithFollowers.map(({ link, followers, image }) => ({
           label: `${link}${followers !== null ? ` (${nFormatter(followers, 1)} followers)` : ''}`,
+          icon: image ? <Avatar src={image} sx={{ width: 40, height: 40 }} /> : undefined,
         })),
         onChoose: formattedLabel => {
           // Extract the original link (everything before " (" or just the whole string if no followers)
