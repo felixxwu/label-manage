@@ -2,6 +2,7 @@ import { Dialog } from '@mui/material'
 import LaunchIcon from '@mui/icons-material/Launch'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import GoogleIcon from '@mui/icons-material/Google'
+import SmartToyIcon from '@mui/icons-material/SmartToy'
 import styled from '@emotion/styled'
 
 export function PasteSearchPopup(props: {
@@ -11,6 +12,7 @@ export function PasteSearchPopup(props: {
   handlePaste: () => void
   handleSearch: () => void
   useGoogleIcon: boolean
+  handleAiPrompt?: () => void
 }) {
   async function handlePaste() {
     props.handlePaste()
@@ -18,6 +20,10 @@ export function PasteSearchPopup(props: {
 
   async function handleSearch() {
     props.handleSearch()
+  }
+
+  async function handleAiPrompt() {
+    props.handleAiPrompt?.()
   }
 
   return (
@@ -32,6 +38,12 @@ export function PasteSearchPopup(props: {
           {props.useGoogleIcon ? <GoogleIcon color='primary' /> : <LaunchIcon color='primary' />}
           Search
         </Choice>
+        {props.handleAiPrompt && (
+          <Choice onClick={handleAiPrompt}>
+            <SmartToyIcon color='primary' />
+            AI Prompt
+          </Choice>
+        )}
       </Choices>
     </Dialog>
   )

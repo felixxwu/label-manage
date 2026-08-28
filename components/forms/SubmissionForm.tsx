@@ -15,6 +15,12 @@ export function SubmissionForm(props: { label: Label }) {
   const [open, setOpen] = useState(false)
   const search =
     'https://www.google.com/search?q=' + encodeURIComponent(props.label.name + ' demo submission')
+  const aiPrompt = `I'm a music producer looking to submit my music to the record label "${props.label.name}" for them to consider releasing it. Please search for how "${props.label.name}" accepts demo submissions and find the best way for me to submit my music to them. Specifically look for:
+- A demo submission email address
+- An online submission form (e.g. on their website, or via a platform like SubmitHub, Musosoup, Groover, etc.)
+- Any submission guidelines they list (accepted genres, file formats, what to include, etc.)
+
+Please give me the exact email address or form link you find, along with any submission requirements.`
 
   return (
     <Wrapper style={props.label.submission ? {} : { backgroundColor: theme.palette.warning.dark }}>
@@ -32,6 +38,7 @@ export function SubmissionForm(props: { label: Label }) {
         dbKey='submission'
         useGoogleIcon={true}
         searchUrl={search}
+        aiPrompt={aiPrompt}
         open={open}
         setOpen={setOpen}
       />

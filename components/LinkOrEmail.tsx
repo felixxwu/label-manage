@@ -22,9 +22,17 @@ export function LinkOrEmail(props: {
   prompt: string
   open: boolean
   setOpen: (open: boolean) => void
+  aiPrompt?: string
 }) {
   async function handleSearch() {
     window.open(props.searchUrl, '_blank')?.focus()
+  }
+
+  async function handleAiPrompt() {
+    if (!props.aiPrompt) return
+    await navigator.clipboard.writeText(props.aiPrompt)
+    store().snackbar = 'Prompt copied to clipboard'
+    props.setOpen(false)
   }
 
   async function handlePaste() {
@@ -81,6 +89,7 @@ export function LinkOrEmail(props: {
           handlePaste,
           handleSearch,
           useGoogleIcon: props.useGoogleIcon,
+          handleAiPrompt: props.aiPrompt ? handleAiPrompt : undefined,
         }}
       />
     </Wrapper>
