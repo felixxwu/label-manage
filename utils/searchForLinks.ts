@@ -9,27 +9,34 @@ export async function searchForLinks(label: Label) {
   try {
     const links = await searchSoundCloudLinks(label.name)
 
-    // Scrape each link for follower count
-    const linksWithFollowers = await Promise.all(
-      links.map(async partialLink => {
-        try {
-          const fullUrl = 'https://soundcloud.com' + partialLink
-          const scraped = await load(scrape, fullUrl)
-          const followerMeta = scraped.querySelector('meta[property="soundcloud:follower_count"]')
-          const followers = followerMeta
-            ? parseInt(followerMeta.getAttribute('content') ?? '0')
-            : null
-          return {
-            link: partialLink,
-            followers,
+    // Scrape each link for follower count. These run concurrently, so they're wrapped in a
+    // single load() call rather than one each - load() tracks loading state with a plain
+    // boolean, and the first of several concurrent calls to finish would otherwise clear it
+    // while the rest are still in flight.
+    const linksWithFollowers = await load(() =>
+      Promise.all(
+        links.map(async partialLink => {
+          try {
+            const fullUrl = 'https://soundcloud.com' + partialLink
+            const scraped = await scrape(fullUrl)
+            const followerMeta = scraped.querySelector(
+              'meta[property="soundcloud:follower_count"]'
+            )
+            const followers = followerMeta
+              ? parseInt(followerMeta.getAttribute('content') ?? '0')
+              : null
+            return {
+              link: partialLink,
+              followers,
+            }
+          } catch (_) {
+            return {
+              link: partialLink,
+              followers: null,
+            }
           }
-        } catch (_) {
-          return {
-            link: partialLink,
-            followers: null,
-          }
-        }
-      })
+        })
+      )
     )
 
     store().dialog = {
